@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
-namespace Test.model;
+namespace Models.Unit;
 
-internal class ByteSegment(byte[] data, int offset, int segmentLength) : IEnumerable<byte> {
+internal class ByteSegment(byte[] data, int offset, int segmentLength, int byteLength) : IEnumerable<byte> {
 
     /// <summary>
     /// 片段长度
@@ -38,14 +33,34 @@ internal class ByteSegment(byte[] data, int offset, int segmentLength) : IEnumer
     }
 
     /// <summary>
+    /// 字节数组实际处理长度
+    /// </summary>
+    private int actualLength = Math.Min(byteLength, data.Length);
+    public int ActualLength {
+        get => actualLength;
+        set {
+            if (actualLength < 0) {
+                value = 0;
+            }
+            actualLength = value;
+        }
+    }
+
+    /// <summary>
     /// 字节数组
     /// </summary>
     public byte[] Data { get; } = data;
 
 
-    public ByteSegment(byte[] data) : this(data, 0, 0) { }
+    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
 
-    public ByteSegment(byte[] data, int offset) : this(data, offset, 0) { }
+
+    public byte this[int index] {
+        get => Data[offset + index];
+        set {
+            Data[offset + index] = value;
+        }
+    }
 
     public ByteSegment GetNextSegment() {
         int length = Data.Length - (offset + segmentLength);
@@ -54,13 +69,14 @@ internal class ByteSegment(byte[] data, int offset, int segmentLength) : IEnumer
 
     public ByteSegment GetNextSegment(int length) {
         int startOffset = offset + segmentLength;
-        length = Math.Min(length, Data.Length - startOffset);
-        return new ByteSegment(Data, startOffset, length);
+        length = Math.Min(length, actualLength - startOffset);
+        int bytesLength = startOffset + length;
+        return new ByteSegment(Data, startOffset, length, bytesLength);
     }
 
     public IEnumerator<byte> GetEnumerator() {
-        int to = offset + segmentLength;
-        for (int i = Offset; i < to; i++) {
+        int length = offset + segmentLength;
+        for (int i = offset; i < length; i++) {
             yield return Data[i];
         }
     }

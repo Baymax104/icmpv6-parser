@@ -1,19 +1,19 @@
-﻿using SharpPcap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models.Unit;
+using SharpPcap;
 
-namespace Test.model;
+namespace Models.Packet;
 
 internal abstract class NetPacket(ByteSegment packet) {
 
-    protected ByteSegment Header { get; } = packet;
+    public ByteSegment Header { get; } = packet;
 
-    protected Lazy<NetPacket> PayloadPacket { get; set; } = new();
+    protected Payload? Payload { get; set; } = null;
 
-    public abstract NetPacket ParseNextPacket();
+    public NetPacket? PayloadPacket => Payload?.Packet;
+
+    public ByteSegment? PayloadBytes => Payload?.Bytes;
+
+    public abstract Payload ParseNextPayload();
 
     /// <summary>
     /// 解析包入口方法，从链路层开始解析

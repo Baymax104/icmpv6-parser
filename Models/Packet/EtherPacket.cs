@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Test.constant;
+﻿using Models.Constant;
+using Models.Unit;
 
-namespace Test.model;
+namespace Models.Packet;
 internal class EtherPacket : NetPacket {
 
     /// <summary>
@@ -18,7 +12,7 @@ internal class EtherPacket : NetPacket {
             // 地址长度6B
             byte[] array = new byte[EtherFields.MacAddressLength];
             int start = Header.Offset + EtherFields.SourceMacPosition;
-            Unsafe.CopyBlockUnaligned(ref array[0], ref Header.Data[start], (uint)EtherFields.MacAddressLength);
+            Array.Copy(Header.Data, start, array, 0, EtherFields.MacAddressLength);
             return new(array);
         }
         set {
@@ -27,7 +21,7 @@ internal class EtherPacket : NetPacket {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
             int start = Header.Offset + EtherFields.SourceMacPosition;
-            Unsafe.CopyBlockUnaligned(ref Header.Data[start], ref bytes[0], (uint)EtherFields.MacAddressLength);
+            Array.Copy(bytes, 0, Header.Data, start, EtherFields.MacAddressLength);
         }
     }
 
@@ -38,7 +32,7 @@ internal class EtherPacket : NetPacket {
         get {
             byte[] array = new byte[EtherFields.MacAddressLength];
             int start = Header.Offset + EtherFields.DestinationMacPosition;
-            Unsafe.CopyBlockUnaligned(ref array[0], ref Header.Data[start], (uint)EtherFields.MacAddressLength);
+            Array.Copy(Header.Data, start, array, 0, EtherFields.MacAddressLength);
             return new(array);
         }
         set {
@@ -47,7 +41,7 @@ internal class EtherPacket : NetPacket {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
             int start = Header.Offset + EtherFields.DestinationMacPosition;
-            Unsafe.CopyBlockUnaligned(ref Header.Data[start], ref bytes[0], (uint)EtherFields.MacAddressLength);
+            Array.Copy(bytes, 0, Header.Data, start, EtherFields.MacAddressLength);
         }
     }
 
@@ -70,22 +64,27 @@ internal class EtherPacket : NetPacket {
 
     public EtherPacket(ByteSegment data) : base(data) {
         Header.SegmentLength = EtherFields.HeaderLength;
-        PayloadPacket = new(ParseNextPacket);
-    }
-
-    public EtherPacket(byte[] data) : base(new ByteSegment(data)) {
-        Header.SegmentLength = EtherFields.HeaderLength;
-        PayloadPacket = new(ParseNextPacket);
+        Payload = ParseNextPayload();
     }
 
 
-
-    public override NetPacket ParseNextPacket() {
+    public override Payload ParseNextPayload() {
         ByteSegment nextSegment = Header.GetNextSegment();
-        return Type switch {
-            EtherType.IPv6 => new Ipv6Packet(nextSegment),
-            _ => throw new NotSupportedException(nameof(Type)),
+        NetPacket? packet = Type switch {
+            EtherType.IPv6 => new Ip6Packet(nextSegment),
+            _ => null
         };
+        return packet is not null ? new(packet) : new(nextSegment);
+    }
+
+    public override string ToString() {
+        return $@"
+{{
+    {nameof(DestinationMacAddress)} = {DestinationMacAddress},
+    {nameof(SourceMacAddress)} = {SourceMacAddress},
+    {nameof(Type)} = {Type}
+}}
+        ".Trim();
     }
 }
 
