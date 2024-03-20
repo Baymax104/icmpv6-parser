@@ -1,5 +1,5 @@
-﻿namespace Models.Constant;
-public readonly struct Ipv6Fields {
+﻿namespace Models.Field;
+public readonly struct Ipv6Field {
 
     /// <summary>
     /// 版本(4bit)+流量类型(8bit)+流标签(20bit) = 32bit = 4B
@@ -71,7 +71,7 @@ public readonly struct Ipv6Fields {
     /// </summary>
     public static readonly int TeredoPort;
 
-    static Ipv6Fields() {
+    static Ipv6Field() {
         VersionTrafficClassFlowLabelLength = 4;
         FragmentOffsetPosition = 2;
         PayloadLengthLength = 2;

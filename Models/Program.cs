@@ -1,4 +1,5 @@
 ﻿using Models.Packet;
+using Models.Packet.Ndp;
 using SharpPcap;
 using SharpPcap.LibPcap;
 
@@ -34,6 +35,10 @@ internal class Program {
                 if (ipv6.PayloadPacket is Icmp6Packet icmp6) {
                     Console.WriteLine("----------ICMPv6----------");
                     Console.WriteLine(icmp6);
+                    if (icmp6.PayloadPacket is RouterAdvertisementPacket routerSolicitation) {
+                        Console.WriteLine("----------RA----------");
+                        Console.WriteLine(routerSolicitation);
+                    }
                 }
             }
         }

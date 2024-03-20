@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models.Constant;
+﻿namespace Models.Type;
 internal enum ProtocolType : byte {
     IPv6HopByHopOptions = 0,
     Icmp = 1,

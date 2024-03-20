@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
+﻿namespace Models.Field;
 
-namespace Models.Constant;
-
-public readonly struct EtherFields {
+public readonly struct EtherField {
 
     /// <summary>
     /// 目的地址偏移
@@ -35,7 +33,7 @@ public readonly struct EtherFields {
     public static readonly int TypePosition;
 
 
-    static EtherFields() {
+    static EtherField() {
         DestinationMacPosition = 0;
         MacAddressLength = 6;
         TypeLength = 2;
@@ -43,16 +41,5 @@ public readonly struct EtherFields {
         TypePosition = MacAddressLength * 2;
         HeaderLength = TypePosition + TypeLength;
     }
-}
-
-internal enum EtherType {
-    [Description("None (0x0)")]
-    None = 0,
-
-    [Description("IPv4 (0x0800)")]
-    IPv4 = 0x0800,
-
-    [Description("IPv6 (0x86DD)")]
-    IPv6 = 0x86dd,
 }
 

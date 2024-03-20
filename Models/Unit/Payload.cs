@@ -1,11 +1,5 @@
-﻿using Models.Constant;
-using Models.Packet;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models.Packet;
+using Models.Type;
 
 namespace Models.Unit;
 internal class Payload {

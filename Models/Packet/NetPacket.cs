@@ -13,7 +13,9 @@ internal abstract class NetPacket(ByteSegment packet) {
 
     public ByteSegment? PayloadBytes => Payload?.Bytes;
 
-    public abstract Payload ParseNextPayload();
+    protected virtual Payload? ParsePayload() {
+        return null;
+    }
 
     /// <summary>
     /// 解析包入口方法，从链路层开始解析
