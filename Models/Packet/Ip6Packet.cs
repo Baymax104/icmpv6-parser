@@ -19,7 +19,7 @@ public class Ip6Packet : NetPacket {
 
     public IPAddress SourceAddress {
         get {
-            var span = Header.Data.AsSpan(Header.Offset + Ipv6Field.SourceAddressPosition, Ipv6Field.AddressLength);
+            var span = Header.AsSpan(Ipv6Field.SourceAddressPosition, Ipv6Field.AddressLength);
             return new(span);
         }
         set {
@@ -31,7 +31,7 @@ public class Ip6Packet : NetPacket {
 
     public IPAddress DestinationAddress {
         get {
-            var span = Header.Data.AsSpan(Header.Offset + Ipv6Field.DestinationAddressPosition, Ipv6Field.AddressLength);
+            var span = Header.AsSpan(Ipv6Field.DestinationAddressPosition, Ipv6Field.AddressLength);
             return new(span);
         }
         set {

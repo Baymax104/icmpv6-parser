@@ -18,8 +18,7 @@ public class NeighborSolicitationPacket : NdpPacket {
 
     public IPAddress TargetAddress {
         get {
-            var start = Header.Offset + NdpField.NSTargetAddressPosition;
-            var span = Header.Data.AsSpan(start, Ipv6Field.AddressLength);
+            var span = Header.AsSpan(NdpField.NSTargetAddressPosition, Ipv6Field.AddressLength);
             return new(span);
         }
         set {

@@ -46,8 +46,7 @@ public class NeighborAdvertisementPacket : NdpPacket {
 
     public IPAddress TargetAddress {
         get {
-            var start = Header.Offset + NdpField.NATargetAddressPosition;
-            var span = Header.Data.AsSpan(start, Ipv6Field.AddressLength);
+            var span = Header.AsSpan(NdpField.NATargetAddressPosition, Ipv6Field.AddressLength);
             return new(span);
         }
         set {

@@ -67,7 +67,7 @@ internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
 
     public IPAddress Prefix {
         get {
-            var span = Payload.Data.AsSpan(Payload.Offset + PrefixInformationOptionField.PrefixPosition, Ipv6Field.AddressLength);
+            var span = Payload.AsSpan(PrefixInformationOptionField.PrefixPosition, Ipv6Field.AddressLength);
             return new(span);
         }
         set {
