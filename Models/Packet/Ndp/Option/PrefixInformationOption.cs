@@ -3,13 +3,12 @@ using Models.Field;
 using Models.Unit;
 
 namespace Models.Packet.Ndp.Option;
+
 internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
 
     public byte PrefixLength {
         get => Payload[PrefixInformationOptionField.PrefixLengthPosition];
-        set {
-            Payload[PrefixInformationOptionField.PrefixLengthPosition] = value;
-        }
+        set => Payload[PrefixInformationOptionField.PrefixLengthPosition] = value;
     }
 
     public bool OnLink {
@@ -36,32 +35,32 @@ internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
 
     public uint ValidLifetime {
         get {
-            byte[] bytes = new byte[PrefixInformationOptionField.ValidLifetimeLength];
-            int start = Payload.Offset + PrefixInformationOptionField.ValidLifetimePosition;
+            var bytes = new byte[PrefixInformationOptionField.ValidLifetimeLength];
+            var start = Payload.Offset + PrefixInformationOptionField.ValidLifetimePosition;
             Array.Copy(Payload.Data, start, bytes, 0, PrefixInformationOptionField.ValidLifetimeLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Payload.Offset + PrefixInformationOptionField.ValidLifetimePosition;
+            var start = Payload.Offset + PrefixInformationOptionField.ValidLifetimePosition;
             Array.Copy(bytes, 0, Payload.Data, start, PrefixInformationOptionField.ValidLifetimeLength);
         }
     }
 
     public uint PreferredLifetime {
         get {
-            byte[] bytes = new byte[PrefixInformationOptionField.PreferredLifetimeLength];
-            int start = Payload.Offset + PrefixInformationOptionField.PreferredLifetimePosition;
+            var bytes = new byte[PrefixInformationOptionField.PreferredLifetimeLength];
+            var start = Payload.Offset + PrefixInformationOptionField.PreferredLifetimePosition;
             Array.Copy(Payload.Data, start, bytes, 0, PrefixInformationOptionField.PreferredLifetimeLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Payload.Offset + PrefixInformationOptionField.PreferredLifetimePosition;
+            var start = Payload.Offset + PrefixInformationOptionField.PreferredLifetimePosition;
             Array.Copy(bytes, 0, Payload.Data, start, PrefixInformationOptionField.PreferredLifetimeLength);
         }
     }
@@ -72,10 +71,23 @@ internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
             return new(span);
         }
         set {
-            byte[] bytes = value.GetAddressBytes();
-            int start = Payload.Offset + PrefixInformationOptionField.PrefixPosition;
+            var bytes = value.GetAddressBytes();
+            var start = Payload.Offset + PrefixInformationOptionField.PrefixPosition;
             Array.Copy(bytes, 0, Payload.Data, start, Ipv6Field.AddressLength);
         }
     }
-}
 
+    public override string ToString() {
+        return $@"
+    {{
+        {nameof(Type)} = {Type},
+        {nameof(Length)} = {Length},
+        {nameof(PrefixLength)} = {PrefixLength},
+        {nameof(OnLink)} = {OnLink},
+        {nameof(AutonomousAddressConfiguration)} = {AutonomousAddressConfiguration},
+        {nameof(ValidLifetime)} = {ValidLifetime},
+        {nameof(PreferredLifetime)} = {PreferredLifetime},
+        {nameof(Prefix)} = {Prefix}
+    }}";
+    }
+}

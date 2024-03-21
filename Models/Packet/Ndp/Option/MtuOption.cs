@@ -7,17 +7,26 @@ internal class MtuOption(ByteSegment data) : NdpOption(data) {
 
     public uint Mtu {
         get {
-            byte[] bytes = new byte[MtuOptionField.MtuLength];
-            int start = Payload.Offset + MtuOptionField.MtuPosition;
+            var bytes = new byte[MtuOptionField.MtuLength];
+            var start = Payload.Offset + MtuOptionField.MtuPosition;
             Array.Copy(Payload.Data, start, bytes, 0, MtuOptionField.MtuLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Payload.Offset + MtuOptionField.MtuPosition;
+            var start = Payload.Offset + MtuOptionField.MtuPosition;
             Array.Copy(bytes, 0, Payload.Data, start, MtuOptionField.MtuLength);
         }
+    }
+
+    public override string ToString() {
+        return $@"
+    {{
+        {nameof(Type)} = {Type},
+        {nameof(Length)} = {Length},
+        {nameof(Mtu)} = {Mtu}
+    }}";
     }
 }

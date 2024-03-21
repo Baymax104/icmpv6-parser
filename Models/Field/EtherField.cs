@@ -3,32 +3,32 @@
 public readonly struct EtherField {
 
     /// <summary>
-    /// 目的地址偏移
+    ///     目的地址偏移
     /// </summary>
     public static readonly int DestinationMacPosition;
 
     /// <summary>
-    /// 首部长度
+    ///     首部长度
     /// </summary>
     public static readonly int HeaderLength;
 
     /// <summary>
-    /// MAC地址长度
+    ///     MAC地址长度
     /// </summary>
     public static readonly int MacAddressLength;
 
     /// <summary>
-    /// 源地址偏移
+    ///     源地址偏移
     /// </summary>
     public static readonly int SourceMacPosition;
 
     /// <summary>
-    /// 类型字段长度
+    ///     类型字段长度
     /// </summary>
     public static readonly int TypeLength;
 
     /// <summary>
-    /// 类型字段偏移
+    ///     类型字段偏移
     /// </summary>
     public static readonly int TypePosition;
 
@@ -42,4 +42,3 @@ public readonly struct EtherField {
         HeaderLength = TypePosition + TypeLength;
     }
 }
-

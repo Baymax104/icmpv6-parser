@@ -2,12 +2,26 @@
 
 namespace Models.Unit;
 
-internal class ByteSegment(byte[] data, int offset, int segmentLength, int byteLength) : IEnumerable<byte> {
+public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLength) : IEnumerable<byte> {
 
     /// <summary>
-    /// 片段长度
+    ///     字节数组实际处理长度
+    /// </summary>
+    private int actualLength = Math.Min(byteLength, data.Length);
+
+    /// <summary>
+    ///     字节数组偏移
+    /// </summary>
+    private int offset = offset;
+
+    /// <summary>
+    ///     片段长度
     /// </summary>
     private int segmentLength = segmentLength;
+
+
+    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
+
     public int SegmentLength {
         get => segmentLength;
         set {
@@ -17,11 +31,6 @@ internal class ByteSegment(byte[] data, int offset, int segmentLength, int byteL
             segmentLength = value;
         }
     }
-
-    /// <summary>
-    /// 字节数组偏移
-    /// </summary>
-    private int offset = offset;
     public int Offset {
         get => offset;
         set {
@@ -31,11 +40,6 @@ internal class ByteSegment(byte[] data, int offset, int segmentLength, int byteL
             offset = value;
         }
     }
-
-    /// <summary>
-    /// 字节数组实际处理长度
-    /// </summary>
-    private int actualLength = Math.Min(byteLength, data.Length);
     public int ActualLength {
         get => actualLength;
         set {
@@ -47,36 +51,19 @@ internal class ByteSegment(byte[] data, int offset, int segmentLength, int byteL
     }
 
     /// <summary>
-    /// 字节数组
+    ///     字节数组
     /// </summary>
     public byte[] Data { get; } = data;
 
 
-    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
-
-
     public byte this[int index] {
         get => Data[offset + index];
-        set {
-            Data[offset + index] = value;
-        }
-    }
-
-    public ByteSegment GetNextSegment() {
-        int length = Data.Length - (offset + segmentLength);
-        return GetNextSegment(length);
-    }
-
-    public ByteSegment GetNextSegment(int length) {
-        int startOffset = offset + segmentLength;
-        length = Math.Min(length, actualLength - startOffset);
-        int bytesLength = startOffset + length;
-        return new ByteSegment(Data, startOffset, length, bytesLength);
+        set => Data[offset + index] = value;
     }
 
     public IEnumerator<byte> GetEnumerator() {
-        int length = offset + segmentLength;
-        for (int i = offset; i < length; i++) {
+        var length = offset + segmentLength;
+        for (var i = offset; i < length; i++) {
             yield return Data[i];
         }
     }
@@ -85,8 +72,19 @@ internal class ByteSegment(byte[] data, int offset, int segmentLength, int byteL
         return GetEnumerator();
     }
 
+    public ByteSegment GetNextSegment() {
+        var length = Data.Length - (offset + segmentLength);
+        return GetNextSegment(length);
+    }
+
+    public ByteSegment GetNextSegment(int length) {
+        var startOffset = offset + segmentLength;
+        length = Math.Min(length, actualLength - startOffset);
+        var bytesLength = startOffset + length;
+        return new(Data, startOffset, length, bytesLength);
+    }
+
     public override string ToString() {
         return $"{{{nameof(SegmentLength)}={SegmentLength}, {nameof(Offset)}={Offset}, {nameof(Data)}={Data}}}";
     }
 }
-

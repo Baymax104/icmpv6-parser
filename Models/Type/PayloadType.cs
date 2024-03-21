@@ -1,7 +1,7 @@
 ﻿namespace Models.Type;
-internal enum PayloadType {
+
+public enum PayloadType {
     Packet,
     Bytes,
     None
 }
-

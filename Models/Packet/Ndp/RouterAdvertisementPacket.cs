@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models.Unit;
-using Models.Field;
+﻿using Models.Field;
 using Models.Packet.Ndp.Option;
+using Models.Unit;
 
 namespace Models.Packet.Ndp;
-internal class RouterAdvertisementPacket : NdpPacket {
-    
+
+public class RouterAdvertisementPacket : NdpPacket {
+
+    public RouterAdvertisementPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.RAHeaderLength;
+    }
+
     public byte CurHopLimit {
         get => Header[NdpField.RACurHopLimitPosition];
-        set {
-            Header[NdpField.RACurHopLimitPosition] = value;
-        }
+        set => Header[NdpField.RACurHopLimitPosition] = value;
     }
 
     public bool ManagedAddressConfiguration {
@@ -41,61 +39,55 @@ internal class RouterAdvertisementPacket : NdpPacket {
 
     public ushort RouterLifetime {
         get {
-            byte[] bytes = new byte[NdpField.RARouterLifetimeLength];
-            int start = Header.Offset + NdpField.RARouterLifetimePosition;
+            var bytes = new byte[NdpField.RARouterLifetimeLength];
+            var start = Header.Offset + NdpField.RARouterLifetimePosition;
             Array.Copy(Header.Data, start, bytes, 0, NdpField.RARouterLifetimeLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt16(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Header.Offset + NdpField.RARouterLifetimePosition;
+            var start = Header.Offset + NdpField.RARouterLifetimePosition;
             Array.Copy(bytes, 0, Header.Data, start, NdpField.RARouterLifetimeLength);
         }
     }
 
     public uint ReachableTime {
         get {
-            byte[] bytes = new byte[NdpField.RAReachableTimeLength];
-            int start = Header.Offset + NdpField.RAReachableTimePosition;
+            var bytes = new byte[NdpField.RAReachableTimeLength];
+            var start = Header.Offset + NdpField.RAReachableTimePosition;
             Array.Copy(Header.Data, start, bytes, 0, NdpField.RAReachableTimeLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Header.Offset + NdpField.RARouterLifetimePosition;
+            var start = Header.Offset + NdpField.RARouterLifetimePosition;
             Array.Copy(bytes, 0, Header.Data, start, NdpField.RAReachableTimeLength);
         }
     }
 
     public uint RetransmitTimer {
         get {
-            byte[] bytes = new byte[NdpField.RARetransmitTimerLength];
-            int start = Header.Offset + NdpField.RARetransmitTimerPosition;
+            var bytes = new byte[NdpField.RARetransmitTimerLength];
+            var start = Header.Offset + NdpField.RARetransmitTimerPosition;
             Array.Copy(Header.Data, start, bytes, 0, NdpField.RARetransmitTimerLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Header.Offset + NdpField.RARetransmitTimerPosition;
+            var start = Header.Offset + NdpField.RARetransmitTimerPosition;
             Array.Copy(bytes, 0, Header.Data, start, NdpField.RARetransmitTimerLength);
         }
     }
 
     public override List<NdpOption> Options {
         get => ParseOptions(Header.GetNextSegment());
-        set {
-            WriteOptions(value, NdpField.RAOptionsPosition);
-        }
-    }
-
-    public RouterAdvertisementPacket(ByteSegment data) : base(data) { 
-        Header.SegmentLength = NdpField.RAHeaderLength;
+        set => WriteOptions(value, NdpField.RAOptionsPosition);
     }
 
     public override string ToString() {
@@ -107,9 +99,8 @@ internal class RouterAdvertisementPacket : NdpPacket {
     {nameof(RouterLifetime)} = {RouterLifetime},
     {nameof(ReachableTime)} = {ReachableTime},
     {nameof(RetransmitTimer)} = {RetransmitTimer}
-    {nameof(Options)} = {Options.Count}
+    {nameof(Options)} = {PrintOptions()}
 }}
         ".Trim();
     }
 }
-

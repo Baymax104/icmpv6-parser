@@ -10,13 +10,17 @@ public struct NdpField {
 
     public const int NATargetAddressPosition = 4;
 
+    public const int NAHeaderLength = 20;
+
     #endregion
 
     #region NeighborSolicitation 邻居请求
 
-    public const int NSOptionsAddressPosition = 20;
+    public const int NSOptionsPosition = 20;
 
     public const int NSTargetAddressPosition = 4;
+
+    public const int NSHeaderLength = 20;
 
     #endregion
 
@@ -62,4 +66,3 @@ public struct NdpField {
 
     #endregion
 }
-

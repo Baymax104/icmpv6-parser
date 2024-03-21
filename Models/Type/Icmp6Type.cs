@@ -24,10 +24,6 @@ public enum Icmp6Type : byte {
     [Description("回显应答")]
     EchoReply = 129,
 
-    MulticastListenerQuery = 130,
-    MulticastListenerReport = 131,
-    MulticastListenerDone = 132,
-
     [Description("路由请求")]
     RouterSolicitation = 133,
 
@@ -42,31 +38,6 @@ public enum Icmp6Type : byte {
 
     [Description("重定向")]
     RedirectMessage = 137,
-
-    RouterRenumbering = 138,
-    ICMPNodeInformationQuery = 139,
-    ICMPNodeInformationResponse = 140,
-    InverseNeighborDiscoverySolicitationMessage = 141,
-    InverseNeighborDiscoveryAdvertisementMessage = 142,
-    Version2MulticastListenerReport = 143,
-    HomeAgentAddressDiscoveryRequestMessage = 144,
-    HomeAgentAddressDiscoveryReplyMessage = 145,
-    MobilePrefixSolicitation = 146,
-    MobilePrefixAdvertisement = 147,
-    CertificationPathSolicitationMessage = 148,
-    CertificationPathAdvertisementMessage = 149,
-    ExperimentalMobilityProtocols = 150,
-    MulticastRouterAdvertisement = 151,
-    MulticastRouterSolicitation = 152,
-    MulticastRouterTermination = 153,
-    FmIPv6Messages = 154,
-    RplControlMessage = 155,
-    IlnpV6LocatorUpdateMessage = 156,
-    DuplicateAddressRequest = 157,
-    DuplicateAddressConfirmation = 158,
-    MplControlMessage = 159,
-    ExtendedEchoRequest = 160,
-    ExtendedEchoReply = 161,
 
     [Description("消息报文扩展")]
     ReservedForExpansion2 = byte.MaxValue

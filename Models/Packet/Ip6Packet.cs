@@ -3,12 +3,19 @@ using Models.Field;
 using Models.Type;
 using Models.Unit;
 
-
 namespace Models.Packet;
 
-internal class Ip6Packet : NetPacket {
+public class Ip6Packet : NetPacket {
 
     public readonly IpVersion IpVersion = IpVersion.IPv6;
+
+
+    public Ip6Packet(ByteSegment data) : base(data) {
+        Header.SegmentLength = Ipv6Field.HeaderLength;
+        if (PayloadLength > 0) {
+            Payload = ParsePayload();
+        }
+    }
 
     public IPAddress SourceAddress {
         get {
@@ -16,8 +23,8 @@ internal class Ip6Packet : NetPacket {
             return new(span);
         }
         set {
-            byte[] bytes = value.GetAddressBytes();
-            int start = Header.Offset + Ipv6Field.SourceAddressPosition;
+            var bytes = value.GetAddressBytes();
+            var start = Header.Offset + Ipv6Field.SourceAddressPosition;
             Array.Copy(bytes, 0, Header.Data, start, Ipv6Field.AddressLength);
         }
     }
@@ -28,54 +35,48 @@ internal class Ip6Packet : NetPacket {
             return new(span);
         }
         set {
-            byte[] bytes = value.GetAddressBytes();
-            int start = Header.Offset + Ipv6Field.DestinationAddressPosition;
+            var bytes = value.GetAddressBytes();
+            var start = Header.Offset + Ipv6Field.DestinationAddressPosition;
             Array.Copy(bytes, 0, Header.Data, start, Ipv6Field.AddressLength);
         }
     }
 
     private uint VersionTrafficClassFlowLabel {
         get {
-            byte[] bytes = new byte[Ipv6Field.VersionTrafficClassFlowLabelLength];
-            int start = Header.Offset + Ipv6Field.VersionTrafficClassFlowLabelPosition;
+            var bytes = new byte[Ipv6Field.VersionTrafficClassFlowLabelLength];
+            var start = Header.Offset + Ipv6Field.VersionTrafficClassFlowLabelPosition;
             Array.Copy(Header.Data, start, bytes, 0, Ipv6Field.VersionTrafficClassFlowLabelLength);
             // 注意包内大端序，转换小端序
             Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
         set {
-            byte[] bytes = BitConverter.GetBytes(value);
+            var bytes = BitConverter.GetBytes(value);
             Array.Reverse(bytes);
-            int start = Header.Offset + Ipv6Field.VersionTrafficClassFlowLabelPosition;
+            var start = Header.Offset + Ipv6Field.VersionTrafficClassFlowLabelPosition;
             Array.Copy(bytes, 0, Header.Data, start, Ipv6Field.VersionTrafficClassFlowLabelLength);
         }
     }
 
     public IpVersion Version {
         get => (IpVersion)((VersionTrafficClassFlowLabel >> 28) & 0xF);
-        set {
-            VersionTrafficClassFlowLabel = (uint)((VersionTrafficClassFlowLabel & 0x0FFFFFFFu) | (((uint)value << 28) & 0xF0000000u));
-        }
+        set => VersionTrafficClassFlowLabel = (VersionTrafficClassFlowLabel & 0x0FFFFFFFu) | (((uint)value << 28) & 0xF0000000u);
     }
 
     public uint TrafficClass {
         get => (VersionTrafficClassFlowLabel >> 20) & 0xFF;
-        set {
-            VersionTrafficClassFlowLabel = (VersionTrafficClassFlowLabel & 0xF00FFFFFu) | (value << 20 & 0xFF00000u);
-        }
+        set => VersionTrafficClassFlowLabel = (VersionTrafficClassFlowLabel & 0xF00FFFFFu) | ((value << 20) & 0xFF00000u);
     }
 
     public uint FlowLabel {
         get => VersionTrafficClassFlowLabel & 0x000FFFFF;
-        set {
-            VersionTrafficClassFlowLabel = (VersionTrafficClassFlowLabel & 0xFFF00000u) | (value & 0x000FFFFFu);
-        }
+        set => VersionTrafficClassFlowLabel = (VersionTrafficClassFlowLabel & 0xFFF00000u) | (value & 0x000FFFFFu);
     }
 
     public ushort PayloadLength {
         get {
-            byte[] bytes = new byte[Ipv6Field.PayloadLengthLength];
-            int start = Header.Offset + Ipv6Field.PayloadLengthPosition;
+            var bytes = new byte[Ipv6Field.PayloadLengthLength];
+            var start = Header.Offset + Ipv6Field.PayloadLengthPosition;
             Array.Copy(Header.Data, start, bytes, 0, Ipv6Field.PayloadLengthLength);
             Array.Reverse(bytes);
             return BitConverter.ToUInt16(bytes, 0);
@@ -84,28 +85,16 @@ internal class Ip6Packet : NetPacket {
 
     public ProtocolType NextHeader {
         get => (ProtocolType)Header[Ipv6Field.NextHeaderPosition];
-        set {
-            Header[Ipv6Field.NextHeaderPosition] = (byte)value;
-        }
+        set => Header[Ipv6Field.NextHeaderPosition] = (byte)value;
     }
 
     public int HopLimit {
         get => Header[Ipv6Field.HopLimitPosition];
-        set {
-            Header[Ipv6Field.HopLimitPosition] = (byte)value;
-        }
+        set => Header[Ipv6Field.HopLimitPosition] = (byte)value;
     }
 
-
-    public Ip6Packet(ByteSegment data) : base(data) {
-        Header.SegmentLength = Ipv6Field.HeaderLength;
-        if (PayloadLength > 0) {
-            Payload = ParsePayload();
-        }
-    }
-
-    protected override Payload? ParsePayload() {
-        ByteSegment nextSegment = Header.GetNextSegment();
+    protected override sealed Payload ParsePayload() {
+        var nextSegment = Header.GetNextSegment();
         NetPacket? packet = NextHeader switch {
             ProtocolType.IcmpV6 => new Icmp6Packet(nextSegment),
             _ => null
@@ -127,4 +116,3 @@ internal class Ip6Packet : NetPacket {
 }}".Trim();
     }
 }
-

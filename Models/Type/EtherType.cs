@@ -2,7 +2,7 @@
 
 namespace Models.Type;
 
-internal enum EtherType {
+public enum EtherType {
     [Description("None (0x0)")]
     None = 0,
 
@@ -10,5 +10,5 @@ internal enum EtherType {
     IPv4 = 0x0800,
 
     [Description("IPv6 (0x86DD)")]
-    IPv6 = 0x86dd,
+    IPv6 = 0x86dd
 }

@@ -1,0 +1,76 @@
+﻿using System.Net;
+using Models.Field;
+using Models.Packet.Ndp.Option;
+using Models.Unit;
+
+namespace Models.Packet.Ndp;
+
+public class NeighborAdvertisementPacket : NdpPacket {
+
+    public NeighborAdvertisementPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.NAHeaderLength;
+    }
+
+    public bool Router {
+        get => (Header[NdpField.NAFlagsPosition] & 0x80) != 0;
+        set {
+            if (value) {
+                Header[NdpField.NAFlagsPosition] |= 0x80;
+            } else {
+                Header[NdpField.NAFlagsPosition] &= 0x7F;
+            }
+        }
+    }
+
+    public bool Solicited {
+        get => (Header[NdpField.NAFlagsPosition] & 0x40) != 0;
+        set {
+            if (value) {
+                Header[NdpField.NAFlagsPosition] |= 0x40;
+            } else {
+                Header[NdpField.NAFlagsPosition] &= 0xBF;
+            }
+        }
+    }
+
+    public bool Override {
+        get => (Header[NdpField.NAFlagsPosition] & 0x20) != 0;
+        set {
+            if (value) {
+                Header[NdpField.NAFlagsPosition] |= 0x20;
+            } else {
+                Header[NdpField.NAFlagsPosition] &= 0xDF;
+            }
+        }
+    }
+
+    public IPAddress TargetAddress {
+        get {
+            var start = Header.Offset + NdpField.NATargetAddressPosition;
+            var span = Header.Data.AsSpan(start, Ipv6Field.AddressLength);
+            return new(span);
+        }
+        set {
+            var bytes = value.GetAddressBytes();
+            var start = Header.Offset + NdpField.NATargetAddressPosition;
+            Array.Copy(bytes, 0, Header.Data, start, Ipv6Field.AddressLength);
+        }
+    }
+
+    public override List<NdpOption> Options {
+        get => ParseOptions(Header.GetNextSegment());
+        set => WriteOptions(value, NdpField.NAOptionsPosition);
+    }
+
+    public override string ToString() {
+        return $@"
+{{
+    {nameof(Router)} = {Router},
+    {nameof(Solicited)} = {Solicited},
+    {nameof(Override)} = {Override},
+    {nameof(TargetAddress)} = {TargetAddress},
+    {nameof(Options)} = {PrintOptions()}
+}}
+        ".Trim();
+    }
+}

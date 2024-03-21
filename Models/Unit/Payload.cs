@@ -2,11 +2,22 @@
 using Models.Type;
 
 namespace Models.Unit;
-internal class Payload {
+
+public class Payload {
+
+    private ByteSegment? bytes;
 
     private NetPacket? packet;
 
-    private ByteSegment? bytes;
+    public Payload() { }
+
+    public Payload(NetPacket packet) {
+        this.packet = packet;
+    }
+
+    public Payload(ByteSegment bytes) {
+        this.bytes = bytes;
+    }
 
     public NetPacket? Packet {
         get => packet;
@@ -28,18 +39,8 @@ internal class Payload {
         get => (packet, bytes) switch {
             (_, null) => PayloadType.Packet,
             (null, _) => PayloadType.Bytes,
-            _ => PayloadType.None,
+            _ => PayloadType.None
         };
-    }
-
-    public Payload() { }
-
-    public Payload(NetPacket packet) {
-        this.packet = packet;
-    }
-
-    public Payload(ByteSegment bytes) {
-        this.bytes = bytes;
     }
 
     public override string ToString() {
@@ -50,4 +51,3 @@ internal class Payload {
         };
     }
 }
-

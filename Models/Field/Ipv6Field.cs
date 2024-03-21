@@ -1,73 +1,74 @@
 ﻿namespace Models.Field;
+
 public readonly struct Ipv6Field {
 
     /// <summary>
-    /// 版本(4bit)+流量类型(8bit)+流标签(20bit) = 32bit = 4B
+    ///     版本(4bit)+流量类型(8bit)+流标签(20bit) = 32bit = 4B
     /// </summary>
     public static readonly int VersionTrafficClassFlowLabelLength;
 
     /// <summary>
-    /// 分片扩展头的FragmentOffset偏移
+    ///     分片扩展头的FragmentOffset偏移
     /// </summary>
     public static readonly int FragmentOffsetPosition;
 
     /// <summary>
-    /// PayloadLength长度
+    ///     PayloadLength长度
     /// </summary>
     public static readonly int PayloadLengthLength;
 
     /// <summary>
-    /// NextHeader长度
+    ///     NextHeader长度
     /// </summary>
     public static readonly int NextHeaderLength;
 
     /// <summary>
-    /// HopLimit长度
+    ///     HopLimit长度
     /// </summary>
     public static readonly int HopLimitLength;
 
     /// <summary>
-    /// 地址长度
+    ///     地址长度
     /// </summary>
     public static readonly int AddressLength;
 
     /// <summary>
-    /// 版本+流量类型+流标签偏移
+    ///     版本+流量类型+流标签偏移
     /// </summary>
     public static readonly int VersionTrafficClassFlowLabelPosition;
 
     /// <summary>
-    /// PayloadLength偏移
+    ///     PayloadLength偏移
     /// </summary>
     public static readonly int PayloadLengthPosition;
 
     /// <summary>
-    /// NextHeader偏移
+    ///     NextHeader偏移
     /// </summary>
     public static readonly int NextHeaderPosition;
 
     /// <summary>
-    /// HopLimit偏移
+    ///     HopLimit偏移
     /// </summary>
     public static readonly int HopLimitPosition;
 
     /// <summary>
-    /// 源地址偏移
+    ///     源地址偏移
     /// </summary>
     public static readonly int SourceAddressPosition;
 
     /// <summary>
-    /// 目的地址偏移
+    ///     目的地址偏移
     /// </summary>
     public static readonly int DestinationAddressPosition;
 
     /// <summary>
-    /// 首部长度
+    ///     首部长度
     /// </summary>
     public static readonly int HeaderLength;
 
     /// <summary>
-    /// Teredo端口
+    ///     Teredo端口
     /// </summary>
     public static readonly int TeredoPort;
 

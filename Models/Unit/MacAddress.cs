@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Models.Unit;
 
-internal class MacAddress(byte[] address) : PhysicalAddress(address) {
+public class MacAddress(byte[] address) : PhysicalAddress(address) {
 
     public override string ToString() {
         StringBuilder builder = new(base.ToString().ToLower());
@@ -12,5 +12,4 @@ internal class MacAddress(byte[] address) : PhysicalAddress(address) {
         }
         return builder.ToString();
     }
-
 }
