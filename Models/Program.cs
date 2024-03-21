@@ -1,4 +1,5 @@
 ﻿using Models.Packet;
+using Models.Packet.Icmp6;
 using SharpPcap;
 using SharpPcap.LibPcap;
 
@@ -7,20 +8,17 @@ namespace Models;
 internal static class Program {
 
     private static void Main(string[] args) {
+        Capture();
+    }
 
-        CaptureFileReaderDevice reader = new("capture.pcapng");
-
+    private static void Capture() {
+        CaptureFileReaderDevice reader = new("echo.pcapng");
         reader.OnPacketArrival += OnPacketArrival;
-
         reader.Open();
-
         reader.StartCapture();
         Console.ReadLine();
-
         reader.StopCapture();
-
         reader.Close();
-
     }
 
     private static void OnPacketArrival(object s, PacketCapture capture) {

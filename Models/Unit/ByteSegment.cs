@@ -20,8 +20,6 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
     private int segmentLength = segmentLength;
 
 
-    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
-
     public int SegmentLength {
         get => segmentLength;
         set {
@@ -31,6 +29,7 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
             segmentLength = value;
         }
     }
+
     public int Offset {
         get => offset;
         set {
@@ -40,6 +39,7 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
             offset = value;
         }
     }
+
     public int ActualLength {
         get => actualLength;
         set {
@@ -55,6 +55,15 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
     /// </summary>
     public byte[] Data { get; } = data;
 
+    public byte[] ActualBytes {
+        get {
+            var bytes = new byte[segmentLength];
+            Array.Copy(Data, offset, bytes, 0, segmentLength);
+            return bytes;
+        }
+    }
+
+    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
 
     public byte this[int index] {
         get => Data[offset + index];

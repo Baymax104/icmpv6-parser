@@ -1,9 +1,9 @@
 ﻿using Models.Field;
-using Models.Packet.Ndp;
+using Models.Packet.Icmp6.Ndp;
 using Models.Type;
 using Models.Unit;
 
-namespace Models.Packet;
+namespace Models.Packet.Icmp6;
 
 public class Icmp6Packet : NetPacket {
 
@@ -45,6 +45,8 @@ public class Icmp6Packet : NetPacket {
             Icmp6Type.RouterAdvertisement => new RouterAdvertisementPacket(segment),
             Icmp6Type.NeighborAdvertisement => new NeighborAdvertisementPacket(segment),
             Icmp6Type.NeighborSolicitation => new NeighborSolicitationPacket(segment),
+            Icmp6Type.EchoRequest => new EchoRequestPacket(segment),
+            Icmp6Type.EchoReply => new EchoReplyPacket(segment),
             _ => null
         };
         return packet is not null ? new(packet) : new(segment);

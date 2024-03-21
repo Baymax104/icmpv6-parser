@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Icmpv6;
+namespace Icmpv6.View;
 
 /// <summary>
 ///     Interaction logic for MainWindow.xaml

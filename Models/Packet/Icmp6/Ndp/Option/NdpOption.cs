@@ -2,7 +2,7 @@
 using Models.Type;
 using Models.Unit;
 
-namespace Models.Packet.Ndp.Option;
+namespace Models.Packet.Icmp6.Ndp.Option;
 
 public abstract class NdpOption {
 

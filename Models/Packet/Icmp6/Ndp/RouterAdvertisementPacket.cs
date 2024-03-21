@@ -1,8 +1,8 @@
 ﻿using Models.Field;
-using Models.Packet.Ndp.Option;
+using Models.Packet.Icmp6.Ndp.Option;
 using Models.Unit;
 
-namespace Models.Packet.Ndp;
+namespace Models.Packet.Icmp6.Ndp;
 
 public class RouterAdvertisementPacket : NdpPacket {
 

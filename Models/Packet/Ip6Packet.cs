@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Models.Field;
+using Models.Packet.Icmp6;
 using Models.Type;
 using Models.Unit;
 

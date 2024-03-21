@@ -2,7 +2,7 @@
 using Models.Field;
 using Models.Unit;
 
-namespace Models.Packet.Ndp.Option;
+namespace Models.Packet.Icmp6.Ndp.Option;
 
 internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
 

@@ -5,40 +5,30 @@ public readonly struct EtherField {
     /// <summary>
     ///     目的地址偏移
     /// </summary>
-    public static readonly int DestinationMacPosition;
-
-    /// <summary>
-    ///     首部长度
-    /// </summary>
-    public static readonly int HeaderLength;
+    public const int DestinationMacPosition = 0;
 
     /// <summary>
     ///     MAC地址长度
     /// </summary>
-    public static readonly int MacAddressLength;
+    public const int MacAddressLength = 6;
 
     /// <summary>
     ///     源地址偏移
     /// </summary>
-    public static readonly int SourceMacPosition;
+    public const int SourceMacPosition = 6;
 
     /// <summary>
     ///     类型字段长度
     /// </summary>
-    public static readonly int TypeLength;
+    public const int TypeLength = 2;
 
     /// <summary>
     ///     类型字段偏移
     /// </summary>
-    public static readonly int TypePosition;
+    public const int TypePosition = 12;
 
-
-    static EtherField() {
-        DestinationMacPosition = 0;
-        MacAddressLength = 6;
-        TypeLength = 2;
-        SourceMacPosition = MacAddressLength;
-        TypePosition = MacAddressLength * 2;
-        HeaderLength = TypePosition + TypeLength;
-    }
+    /// <summary>
+    ///     首部长度
+    /// </summary>
+    public const int HeaderLength = 14;
 }

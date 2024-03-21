@@ -3,53 +3,76 @@
 public readonly struct Icmp6Field {
 
     /// <summary>
-    ///     校验和长度
+    ///     消息类型偏移
     /// </summary>
-    public static readonly int ChecksumLength;
-
-    /// <summary>
-    ///     校验和偏移
-    /// </summary>
-    public static readonly int ChecksumPosition;
-
-    /// <summary>
-    ///     Code长度
-    /// </summary>
-    public static readonly int CodeLength;
-
-    /// <summary>
-    ///     Code偏移
-    /// </summary>
-    public static readonly int CodePosition;
-
+    public const int TypePosition = 0;
+    
     /// <summary>
     ///     消息类型长度
     /// </summary>
-    public static readonly int TypeLength;
+    public const int TypeLength = 1;
+    
+    /// <summary>
+    ///     Code偏移
+    /// </summary>
+    public const int CodePosition = 1;
+    
+    /// <summary>
+    ///     Code长度
+    /// </summary>
+    public const int CodeLength = 1;
+    
+    /// <summary>
+    ///     校验和偏移
+    /// </summary>
+    public const int ChecksumPosition = 2;
 
     /// <summary>
-    ///     消息类型偏移
+    ///     校验和长度
     /// </summary>
-    public static readonly int TypePosition;
-
+    public const int ChecksumLength = 2;
+    
     /// <summary>
     ///     消息偏移
     /// </summary>
-    public static readonly int MessagePosition;
+    public const int MessagePosition = 4;
 
     /// <summary>
     ///     首部长度
     /// </summary>
-    public static readonly int HeaderLength;
+    public const int HeaderLength = 4;
 
-    static Icmp6Field() {
-        ChecksumLength = 2;
-        CodeLength = 1;
-        TypeLength = 1;
-        TypePosition = 0;
-        CodePosition = TypePosition + TypeLength;
-        ChecksumPosition = CodePosition + CodeLength;
-        MessagePosition = ChecksumPosition + ChecksumLength;
-        HeaderLength = ChecksumPosition + ChecksumLength;
-    }
+}
+
+public readonly struct EchoField {
+
+    /// <summary>
+    ///     Identifier偏移
+    /// </summary>
+    public const int IdentifierPosition = 0;
+
+    /// <summary>
+    ///     Identifier长度
+    /// </summary>
+    public const int IdentifierLength = 2;
+
+    /// <summary>
+    ///     SequenceNumber偏移
+    /// </summary>
+    public const int SequenceNumberPosition = 2;
+
+    /// <summary>
+    ///     SequenceNumber长度
+    /// </summary>
+    public const int SequenceNumberLength = 2;
+
+    /// <summary>
+    ///     Data偏移
+    /// </summary>
+    public const int DataPosition = 4;
+
+    /// <summary>
+    ///     首部长度
+    /// </summary>
+    public const int HeaderLength = 4;
 }

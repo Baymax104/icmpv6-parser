@@ -1,5 +1,4 @@
 ﻿using Models.Packet;
-using Models.Type;
 
 namespace Models.Unit;
 
@@ -35,18 +34,10 @@ public class Payload {
         }
     }
 
-    public PayloadType Type {
-        get => (packet, bytes) switch {
-            (_, null) => PayloadType.Packet,
-            (null, _) => PayloadType.Bytes,
-            _ => PayloadType.None
-        };
-    }
-
     public override string ToString() {
-        return Type switch {
-            PayloadType.Packet => packet?.ToString() ?? string.Empty,
-            PayloadType.Bytes => bytes?.ToString() ?? string.Empty,
+        return (packet, bytes) switch {
+            (_, null) => packet?.ToString() ?? string.Empty,
+            (null, _) => bytes?.ToString() ?? string.Empty,
             _ => string.Empty
         };
     }

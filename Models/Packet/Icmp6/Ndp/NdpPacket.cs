@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using Models.Field;
-using Models.Packet.Ndp.Option;
+using Models.Packet.Icmp6.Ndp.Option;
 using Models.Type;
 using Models.Unit;
 
-namespace Models.Packet.Ndp;
+namespace Models.Packet.Icmp6.Ndp;
 
 public abstract class NdpPacket(ByteSegment data) : NetPacket(data) {
 
