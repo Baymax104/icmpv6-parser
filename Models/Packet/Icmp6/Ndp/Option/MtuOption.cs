@@ -1,24 +1,13 @@
 ﻿using Models.Field;
-using Models.Unit;
+using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp.Option;
 
 internal class MtuOption(ByteSegment data) : NdpOption(data) {
 
     public uint Mtu {
-        get {
-            var bytes = new byte[MtuOptionField.MtuLength];
-            var start = Payload.Offset + MtuOptionField.MtuPosition;
-            Array.Copy(Payload.Data, start, bytes, 0, MtuOptionField.MtuLength);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt32(bytes, 0);
-        }
-        set {
-            var bytes = BitConverter.GetBytes(value);
-            Array.Reverse(bytes);
-            var start = Payload.Offset + MtuOptionField.MtuPosition;
-            Array.Copy(bytes, 0, Payload.Data, start, MtuOptionField.MtuLength);
-        }
+        get => Header.ToUInt32(MtuOptionField.MtuPosition);
+        set => ByteWriter.WriteTo(Header, value, MtuOptionField.MtuPosition);
     }
 
     public override string ToString() {

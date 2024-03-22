@@ -1,7 +1,7 @@
 ﻿using Models.Field;
 using Models.Packet.Icmp6.Ndp;
 using Models.Type;
-using Models.Unit;
+using Models.Util;
 
 namespace Models.Packet.Icmp6;
 
@@ -23,23 +23,15 @@ public class Icmp6Packet : NetPacket {
     }
 
     public ushort Checksum {
-        get {
-            var bytes = new byte[Icmp6Field.ChecksumLength];
-            var start = Header.Offset + Icmp6Field.ChecksumPosition;
-            Array.Copy(Header.Data, start, bytes, 0, Icmp6Field.ChecksumLength);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt16(bytes, 0);
-        }
-        set {
-            var bytes = BitConverter.GetBytes(value);
-            Array.Reverse(bytes);
-            var start = Header.Offset + Icmp6Field.ChecksumPosition;
-            Array.Copy(bytes, 0, Header.Data, start, Icmp6Field.ChecksumLength);
-        }
+        get => Header.ToUInt16(Icmp6Field.ChecksumPosition);
+        set => ByteWriter.WriteTo(Header, value, Icmp6Field.ChecksumPosition);
     }
 
     protected override sealed Payload ParsePayload() {
         var segment = Header.GetNextSegment();
+        if (segment.SegmentLength <= 0) {
+            return new();
+        }
         NetPacket? packet = Type switch {
             Icmp6Type.RouterSolicitation => new RouterSolicitationPacket(segment),
             Icmp6Type.RouterAdvertisement => new RouterAdvertisementPacket(segment),
@@ -47,6 +39,10 @@ public class Icmp6Packet : NetPacket {
             Icmp6Type.NeighborSolicitation => new NeighborSolicitationPacket(segment),
             Icmp6Type.EchoRequest => new EchoRequestPacket(segment),
             Icmp6Type.EchoReply => new EchoReplyPacket(segment),
+            Icmp6Type.DestinationUnreachable => new DestinationUnreachablePacket(segment),
+            Icmp6Type.PacketTooBig => new PacketTooBigPacket(segment),
+            Icmp6Type.TimeExceeded => new TimeExceededPacket(segment),
+            Icmp6Type.ParameterProblem => new ParameterProblemPacket(segment),
             _ => null
         };
         return packet is not null ? new(packet) : new(segment);

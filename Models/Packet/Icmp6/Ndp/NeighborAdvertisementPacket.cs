@@ -1,15 +1,11 @@
 ﻿using System.Net;
 using Models.Field;
 using Models.Packet.Icmp6.Ndp.Option;
-using Models.Unit;
+using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp;
 
 public class NeighborAdvertisementPacket : NdpPacket {
-
-    public NeighborAdvertisementPacket(ByteSegment data) : base(data) {
-        Header.SegmentLength = NdpField.NAHeaderLength;
-    }
 
     public bool Router {
         get => (Header[NdpField.NAFlagsPosition] & 0x80) != 0;
@@ -45,20 +41,18 @@ public class NeighborAdvertisementPacket : NdpPacket {
     }
 
     public IPAddress TargetAddress {
-        get {
-            var span = Header.AsSpan(NdpField.NATargetAddressPosition, Ipv6Field.AddressLength);
-            return new(span);
-        }
-        set {
-            var bytes = value.GetAddressBytes();
-            var start = Header.Offset + NdpField.NATargetAddressPosition;
-            Array.Copy(bytes, 0, Header.Data, start, Ipv6Field.AddressLength);
-        }
+        get => Header.ToIp6Address(NdpField.NATargetAddressPosition);
+        set => ByteWriter.WriteTo(Header, value, NdpField.NATargetAddressPosition);
     }
 
     public override List<NdpOption> Options {
         get => ParseOptions(Header.GetNextSegment());
         set => WriteOptions(value, NdpField.NAOptionsPosition);
+    }
+
+    public NeighborAdvertisementPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.NAHeaderLength;
+        Payload = null;
     }
 
     public override string ToString() {

@@ -1,4 +1,4 @@
-﻿using Models.Unit;
+﻿using Models.Util;
 using PacketDotNet;
 using SharpPcap;
 
@@ -35,5 +35,16 @@ public abstract class NetPacket(ByteSegment packet) {
             _ => throw new NotSupportedException("Not Supported LinkLayer Type.")
         };
         return packet;
+    }
+
+    public T? Extract<T>() {
+        var packet = this;
+        while (packet is not null) {
+            if (packet is T p) {
+                return p;
+            }
+            packet = packet.PayloadPacket;
+        }
+        return default;
     }
 }

@@ -1,7 +1,7 @@
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace Models.Unit;
+namespace Models.Util;
 
 public class MacAddress(byte[] address) : PhysicalAddress(address) {
 

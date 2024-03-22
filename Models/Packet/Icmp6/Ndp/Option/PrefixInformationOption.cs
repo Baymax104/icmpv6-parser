@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Models.Field;
-using Models.Unit;
+using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp.Option;
 
@@ -34,47 +34,18 @@ internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
     }
 
     public uint ValidLifetime {
-        get {
-            var bytes = new byte[PrefixInformationOptionField.ValidLifetimeLength];
-            var start = Payload.Offset + PrefixInformationOptionField.ValidLifetimePosition;
-            Array.Copy(Payload.Data, start, bytes, 0, PrefixInformationOptionField.ValidLifetimeLength);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt32(bytes, 0);
-        }
-        set {
-            var bytes = BitConverter.GetBytes(value);
-            Array.Reverse(bytes);
-            var start = Payload.Offset + PrefixInformationOptionField.ValidLifetimePosition;
-            Array.Copy(bytes, 0, Payload.Data, start, PrefixInformationOptionField.ValidLifetimeLength);
-        }
+        get => Header.ToUInt32(PrefixInformationOptionField.ValidLifetimePosition);
+        set => ByteWriter.WriteTo(Header, value, PrefixInformationOptionField.ValidLifetimePosition);
     }
 
     public uint PreferredLifetime {
-        get {
-            var bytes = new byte[PrefixInformationOptionField.PreferredLifetimeLength];
-            var start = Payload.Offset + PrefixInformationOptionField.PreferredLifetimePosition;
-            Array.Copy(Payload.Data, start, bytes, 0, PrefixInformationOptionField.PreferredLifetimeLength);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt32(bytes, 0);
-        }
-        set {
-            var bytes = BitConverter.GetBytes(value);
-            Array.Reverse(bytes);
-            var start = Payload.Offset + PrefixInformationOptionField.PreferredLifetimePosition;
-            Array.Copy(bytes, 0, Payload.Data, start, PrefixInformationOptionField.PreferredLifetimeLength);
-        }
+        get => Header.ToUInt32(PrefixInformationOptionField.PreferredLifetimePosition);
+        set => ByteWriter.WriteTo(Header, value, PrefixInformationOptionField.PreferredLifetimePosition);
     }
 
     public IPAddress Prefix {
-        get {
-            var span = Payload.AsSpan(PrefixInformationOptionField.PrefixPosition, Ipv6Field.AddressLength);
-            return new(span);
-        }
-        set {
-            var bytes = value.GetAddressBytes();
-            var start = Payload.Offset + PrefixInformationOptionField.PrefixPosition;
-            Array.Copy(bytes, 0, Payload.Data, start, Ipv6Field.AddressLength);
-        }
+        get => Header.ToIp6Address(PrefixInformationOptionField.PrefixPosition);
+        set => ByteWriter.WriteTo(Header, value, PrefixInformationOptionField.PrefixPosition);
     }
 
     public override string ToString() {

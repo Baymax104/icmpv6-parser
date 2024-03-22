@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Models.Unit;
+namespace Models.Util;
 
 public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLength) : IEnumerable<byte> {
 
@@ -19,6 +19,10 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
     /// </summary>
     private int segmentLength = segmentLength;
 
+    /// <summary>
+    ///     字节数组
+    /// </summary>
+    public byte[] Data { get; } = data;
 
     public int SegmentLength {
         get => segmentLength;
@@ -49,11 +53,6 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
             actualLength = value;
         }
     }
-
-    /// <summary>
-    ///     字节数组
-    /// </summary>
-    public byte[] Data { get; } = data;
 
     public byte[] ActualBytes {
         get {
@@ -94,6 +93,6 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
     }
 
     public override string ToString() {
-        return $"{{{nameof(SegmentLength)}={SegmentLength}, {nameof(Offset)}={Offset}, {nameof(Data)}={Data}}}";
+        return $"{{{nameof(SegmentLength)}={segmentLength}, {nameof(Offset)}={offset}, {nameof(Data)}={Data}}}";
     }
 }

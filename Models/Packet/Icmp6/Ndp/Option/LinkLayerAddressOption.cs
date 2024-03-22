@@ -1,23 +1,12 @@
-﻿using Models.Field;
-using Models.Unit;
+﻿using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp.Option;
 
 internal class LinkLayerAddressOption(ByteSegment data) : NdpOption(data) {
 
     public MacAddress LinkLayerAddress {
-        get {
-            var bytes = new byte[EtherField.MacAddressLength];
-            Array.Copy(Payload.Data, Payload.Offset, bytes, 0, EtherField.MacAddressLength);
-            return new(bytes);
-        }
-        set {
-            var address = value.GetAddressBytes();
-            if (address.Length != EtherField.MacAddressLength) {
-                throw new ArgumentException(nameof(address));
-            }
-            Array.Copy(address, 0, Payload.Data, Payload.Offset, EtherField.MacAddressLength);
-        }
+        get => Payload.ToMacAddress(0);
+        set => ByteWriter.WriteTo(Payload, value, 0);
     }
 
     public override string ToString() {

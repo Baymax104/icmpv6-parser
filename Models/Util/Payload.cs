@@ -1,6 +1,6 @@
 ﻿using Models.Packet;
 
-namespace Models.Unit;
+namespace Models.Util;
 
 public class Payload {
 

@@ -6,22 +6,22 @@ public readonly struct Icmp6Field {
     ///     消息类型偏移
     /// </summary>
     public const int TypePosition = 0;
-    
+
     /// <summary>
     ///     消息类型长度
     /// </summary>
     public const int TypeLength = 1;
-    
+
     /// <summary>
     ///     Code偏移
     /// </summary>
     public const int CodePosition = 1;
-    
+
     /// <summary>
     ///     Code长度
     /// </summary>
     public const int CodeLength = 1;
-    
+
     /// <summary>
     ///     校验和偏移
     /// </summary>
@@ -31,7 +31,7 @@ public readonly struct Icmp6Field {
     ///     校验和长度
     /// </summary>
     public const int ChecksumLength = 2;
-    
+
     /// <summary>
     ///     消息偏移
     /// </summary>
@@ -74,5 +74,9 @@ public readonly struct EchoField {
     /// <summary>
     ///     首部长度
     /// </summary>
+    public const int HeaderLength = 4;
+}
+
+public readonly struct ErrorField {
     public const int HeaderLength = 4;
 }

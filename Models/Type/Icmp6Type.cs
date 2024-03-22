@@ -15,9 +15,6 @@ public enum Icmp6Type : byte {
     [Description("参数错误")]
     ParameterProblem = 4,
 
-    [Description("差错报文扩展")]
-    ReservedForExpansion1 = 127,
-
     [Description("回显请求")]
     EchoRequest = 128,
 
@@ -37,8 +34,5 @@ public enum Icmp6Type : byte {
     NeighborAdvertisement = 136,
 
     [Description("重定向")]
-    RedirectMessage = 137,
-
-    [Description("消息报文扩展")]
-    ReservedForExpansion2 = byte.MaxValue
+    RedirectMessage = 137
 }

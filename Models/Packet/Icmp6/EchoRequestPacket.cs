@@ -1,53 +1,34 @@
 ﻿using Models.Field;
-using Models.Unit;
+using Models.Util;
 
 namespace Models.Packet.Icmp6;
 
 public class EchoRequestPacket : NetPacket {
-
-    public ushort Identifier {
-        get {
-            var bytes = new byte[EchoField.IdentifierLength];
-            var start = Header.Offset + EchoField.IdentifierPosition;
-            Array.Copy(Header.Data, start, bytes, 0, EchoField.IdentifierLength);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt16(bytes, 0);
-        }
-        set {
-            var bytes = BitConverter.GetBytes(value);
-            Array.Reverse(bytes);
-            var start = Header.Offset + EchoField.IdentifierPosition;
-            Array.Copy(bytes, 0, Header.Data, start, EchoField.IdentifierLength);
-        }
-    }
-
-    public ushort SequenceNumber {
-        get {
-            var bytes = new byte[EchoField.SequenceNumberLength];
-            var start = Header.Offset + EchoField.SequenceNumberPosition;
-            Array.Copy(Header.Data, start, bytes, 0, EchoField.SequenceNumberLength);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt16(bytes, 0);
-        }
-        set {
-            var bytes = BitConverter.GetBytes(value);
-            Array.Reverse(bytes);
-            var start = Header.Offset + EchoField.SequenceNumberPosition;
-            Array.Copy(bytes, 0, Header.Data, start, EchoField.SequenceNumberLength);
-        }
-    }
-
-    public byte[] Data {
-        get => PayloadBytes?.ActualBytes ?? Array.Empty<byte>();
-    }
 
     public EchoRequestPacket(ByteSegment header) : base(header) {
         Header.SegmentLength = EchoField.HeaderLength;
         Payload = ParsePayload();
     }
 
-    protected override sealed Payload ParsePayload() => new(Header.GetNextSegment());
-    
+    public ushort Identifier {
+        get => Header.ToUInt16(EchoField.IdentifierPosition);
+        set => ByteWriter.WriteTo(Header, value, EchoField.IdentifierPosition);
+    }
+
+    public ushort SequenceNumber {
+        get => Header.ToUInt16(EchoField.SequenceNumberPosition);
+        set => ByteWriter.WriteTo(Header, value, EchoField.SequenceNumberPosition);
+    }
+
+    public byte[] Data {
+        get => PayloadBytes?.ActualBytes ?? Array.Empty<byte>();
+    }
+
+    protected override sealed Payload ParsePayload() {
+        var segment = Header.GetNextSegment();
+        return segment.SegmentLength > 0 ? new(segment) : new();
+    }
+
     public override string ToString() {
         return $@"
 {{

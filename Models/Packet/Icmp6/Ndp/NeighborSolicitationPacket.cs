@@ -1,15 +1,11 @@
 ﻿using System.Net;
 using Models.Field;
 using Models.Packet.Icmp6.Ndp.Option;
-using Models.Unit;
+using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp;
 
 public class NeighborSolicitationPacket : NdpPacket {
-
-    public NeighborSolicitationPacket(ByteSegment data) : base(data) {
-        Header.SegmentLength = NdpField.NSHeaderLength;
-    }
 
     public override List<NdpOption> Options {
         get => ParseOptions(Header.GetNextSegment());
@@ -17,15 +13,13 @@ public class NeighborSolicitationPacket : NdpPacket {
     }
 
     public IPAddress TargetAddress {
-        get {
-            var span = Header.AsSpan(NdpField.NSTargetAddressPosition, Ipv6Field.AddressLength);
-            return new(span);
-        }
-        set {
-            var bytes = value.GetAddressBytes();
-            var start = Header.Offset + NdpField.NSTargetAddressPosition;
-            Array.Copy(bytes, 0, Header.Data, start, Ipv6Field.AddressLength);
-        }
+        get => Header.ToIp6Address(NdpField.NSTargetAddressPosition);
+        set => ByteWriter.WriteTo(Header, value, NdpField.NSTargetAddressPosition);
+    }
+
+    public NeighborSolicitationPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.NSHeaderLength;
+        Payload = null;
     }
 
     public override string ToString() {
@@ -36,4 +30,5 @@ public class NeighborSolicitationPacket : NdpPacket {
 }}
         ".Trim();
     }
+
 }
