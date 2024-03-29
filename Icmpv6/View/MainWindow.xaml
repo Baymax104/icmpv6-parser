@@ -4,9 +4,166 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:vm="clr-namespace:Icmpv6.ViewModel"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:ic="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:vo="clr-namespace:Icmpv6.VO"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="ICMPv6协议分析器"
+        MinHeight="800"
+        MaxHeight="800"
+        MinWidth="1200"
+        MaxWidth="1200">
+
+    <Window.Resources>
+        <DataTemplate x:Key="DeviceHeaderTemplate" DataType="{x:Type vo:InfoView}">
+            <TextBlock Text="{Binding Path=Device.Name}"></TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PacketHeaderTemplate" DataType="{x:Type vo:InfoView}">
+            <TextBlock Text="{Binding Path=Packet}" />
+        </DataTemplate>
+        <vm:InfoTemplateSelector
+            x:Key="InfoTemplateSelector"
+            DeviceTemplate="{StaticResource DeviceHeaderTemplate}"
+            PacketTemplate="{StaticResource PacketHeaderTemplate}" />
+
+    </Window.Resources>
+
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Grid.Row="0"
+            BorderThickness="0, 0, 0, 2"
+            BorderBrush="{StaticResource PrimaryBrush}">
+            <hc:SimplePanel
+                Height="25"
+                Background="{StaticResource SecondaryRegionBrush}">
+
+            </hc:SimplePanel>
+        </Border>
+
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="300" Width="300" MaxWidth="400" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition
+                    Height="200"
+                    MinHeight="35"
+                    MaxHeight="500" />
+            </Grid.RowDefinitions>
+
+            <Grid
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.RowSpan="3">
+                <Grid.DataContext>
+                    <vm:DeviceViewModel />
+                </Grid.DataContext>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <hc:SimplePanel Grid.Row="0" Background="{StaticResource SecondaryRegionBrush}">
+                    <hc:SimpleText Text="设备列表" FontWeight="Bold" Margin="7" />
+                </hc:SimplePanel>
+
+                <ListBox
+                    Grid.Row="1"
+                    ItemsSource="{Binding Devices}"
+                    VerticalAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel
+                                Orientation="Vertical"
+                                HorizontalAlignment="Stretch"
+                                Margin="0, 5">
+                                <TextBlock
+                                    Text="{Binding Name}"
+                                    FontWeight="Bold"
+                                    Margin="0, 5" />
+                                <TextBlock
+                                    Text="{Binding Ip4Address}" />
+                                <TextBlock
+                                    Text="{Binding Ip6Address}"
+                                    Margin="0, 5" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+            </Grid>
+
+            <hc:SimplePanel
+                Grid.Row="0"
+                Grid.Column="2">
+            </hc:SimplePanel>
+
+
+            <hc:TabControl
+                Grid.Row="2"
+                Grid.Column="2"
+                x:Name="InfoPanel"
+                IsTabFillEnabled="False"
+                ShowCloseButton="True"
+                IsDraggable="True"
+                IsAnimationEnabled="True"
+                ShowScrollButton="True"
+                IsScrollable="True"
+                ItemsSource="{Binding Infos}"
+                SelectedIndex="{Binding Selected}"
+                ItemTemplateSelector="{StaticResource InfoTemplateSelector}">
+                <TabControl.DataContext>
+                    <vm:InfoViewModel />
+                </TabControl.DataContext>
+
+
+            </hc:TabControl>
+
+            <GridSplitter
+                Grid.Column="1"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Stretch"
+                Width="3"
+                Background="{StaticResource SecondaryRegionBrush}" />
+
+            <GridSplitter
+                Grid.Row="1"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Height="3"
+                Background="{StaticResource SecondaryRegionBrush}" />
+
+        </Grid>
+
+        <Border
+            Grid.Row="2"
+            BorderThickness="0, 2, 0, 0"
+            BorderBrush="{StaticResource PrimaryBrush}">
+
+            <hc:SimplePanel
+                Height="25"
+                Background="{StaticResource SecondaryRegionBrush}">
+
+            </hc:SimplePanel>
+        </Border>
     </Grid>
 </Window>
