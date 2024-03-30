@@ -10,7 +10,7 @@ public class InfoView {
 
     private DeviceView? device;
     public DeviceView Device {
-        get => device ?? new DeviceView("", "", "", "");
+        get => device ?? new DeviceView();
         set {
             packet = null;
             device = value;

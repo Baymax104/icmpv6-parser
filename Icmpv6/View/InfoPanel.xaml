@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="Icmpv6.View.InfoPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Icmpv6.View"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:viewModel="clr-namespace:Icmpv6.ViewModel"
+             xmlns:vo="clr-namespace:Icmpv6.VO"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="900">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DeviceHeaderTemplate" DataType="{x:Type vo:InfoView}">
+            <TextBlock Text="{Binding Path=Device.Name}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="PacketHeaderTemplate" DataType="{x:Type vo:InfoView}">
+            <TextBlock Text="{Binding Path=Packet}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="DeviceContentTemplate" DataType="{x:Type vo:InfoView}">
+            <local:InfoDevicePanel View="{Binding Device}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="PacketContentTemplate" DataType="{x:Type vo:InfoView}">
+            <TextBlock Text="{Binding Path=Packet}" />
+        </DataTemplate>
+
+        <viewModel:InfoTemplateSelector
+            x:Key="InfoHeaderTemplateSelector"
+            DeviceTemplate="{StaticResource DeviceHeaderTemplate}"
+            PacketTemplate="{StaticResource PacketHeaderTemplate}" />
+        <viewModel:InfoTemplateSelector
+            x:Key="InfoContentTemplateSelector"
+            DeviceTemplate="{StaticResource DeviceContentTemplate}"
+            PacketTemplate="{StaticResource PacketContentTemplate}" />
+
+    </UserControl.Resources>
+
+    <hc:TabControl
+        IsTabFillEnabled="False"
+        ShowCloseButton="True"
+        IsDraggable="True"
+        IsAnimationEnabled="True"
+        ShowScrollButton="True"
+        IsScrollable="True"
+        ItemsSource="{Binding Infos}"
+        SelectedIndex="{Binding Selected}"
+        ItemTemplateSelector="{StaticResource InfoHeaderTemplateSelector}"
+        ContentTemplateSelector="{StaticResource InfoContentTemplateSelector}">
+        <TabControl.DataContext>
+            <viewModel:InfoViewModel />
+        </TabControl.DataContext>
+    </hc:TabControl>
+</UserControl>

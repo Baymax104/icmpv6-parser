@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="Icmpv6.View.InfoDevicePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:local="clr-namespace:Icmpv6.View"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="900"
+             d:DataContext="{d:DesignInstance local:InfoDevicePanel}">
+    <hc:ScrollViewer IsInertiaEnabled="True" hc:ScrollViewerAttach.AutoHide="True">
+        <StackPanel Orientation="Vertical">
+            <Expander Header="设备信息" IsExpanded="True">
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    RowHeight="20"
+                    ColumnHeaderHeight="20"
+                    ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                    ItemsSource="{Binding View.Attributes}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Header="设备属性"
+                            Width="*"
+                            CanUserResize="False"
+                            CanUserSort="False"
+                            CanUserReorder="False"
+                            IsReadOnly="True"
+                            Binding="{Binding Property}" />
+                        <DataGridTextColumn
+                            Header="属性值"
+                            Width="*"
+                            CanUserResize="False"
+                            CanUserSort="False"
+                            CanUserReorder="False"
+                            IsReadOnly="True"
+                            Binding="{Binding Value}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+            <Expander Header="设备地址" IsExpanded="True">
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    RowHeight="20"
+                    ColumnHeaderHeight="20"
+                    ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                    ItemsSource="{Binding View.Addresses}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Header="网络地址"
+                            Width="*"
+                            Binding="{Binding Address}" />
+                        <DataGridTextColumn
+                            Header="类型"
+                            Width="*"
+                            Binding="{Binding Type}" />
+                        <DataGridTextColumn
+                            Header="子网掩码"
+                            Width="*"
+                            Binding="{Binding Netmask}" />
+                        <DataGridTextColumn
+                            Header="广播地址"
+                            Width="*"
+                            Binding="{Binding Broadcast}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+        </StackPanel>
+    </hc:ScrollViewer>
+
+
+</UserControl>

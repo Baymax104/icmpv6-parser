@@ -9,7 +9,11 @@ namespace Models;
 internal static class Program {
 
     private static void Main() {
-        Read();
+        var list = LibPcapLiveDeviceList.Instance;
+        foreach (var d in list) {
+            Console.WriteLine(d);
+        }
+        // Read();
         // Write();
     }
 
