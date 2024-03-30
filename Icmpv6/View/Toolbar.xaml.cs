@@ -7,4 +7,3 @@ public partial class Toolbar : UserControl {
         InitializeComponent();
     }
 }
-

@@ -9,11 +9,11 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Border
         BorderThickness="0, 2, 0, 0"
-            BorderBrush="{StaticResource PrimaryBrush}">
-            <hc:SimplePanel
-                Height="25"
-                Background="{StaticResource SecondaryRegionBrush}">
+        BorderBrush="{StaticResource PrimaryBrush}">
+        <hc:SimplePanel
+            Height="25"
+            Background="{StaticResource SecondaryRegionBrush}">
 
-            </hc:SimplePanel>
-        </Border>
+        </hc:SimplePanel>
+    </Border>
 </UserControl>

@@ -7,9 +7,9 @@ public class DeviceView {
 
     public record AttributeItem(string Property, string Value);
 
-    public string Name { get; init; } = "";
+    public string Name { get; set; } = "";
 
-    public string Description { get; init; } = "";
+    public string Description { get; set; } = "";
 
     public string MacAddress { get; set; } = "";
 

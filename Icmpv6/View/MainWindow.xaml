@@ -23,7 +23,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <local:Toolbar Grid.Row="0"/>
+        <local:Toolbar Grid.Row="0" />
 
 
         <Grid Grid.Row="1">
@@ -45,7 +45,7 @@
             <local:DeviceListPanel
                 Grid.Row="0"
                 Grid.Column="0"
-                Grid.RowSpan="3"/>
+                Grid.RowSpan="3" />
 
             <hc:SimplePanel
                 Grid.Row="0"
@@ -53,9 +53,9 @@
             </hc:SimplePanel>
 
 
-            <local:InfoPanel 
-                Grid.Row="2" 
-                Grid.Column="2"/>
+            <local:InfoPanel
+                Grid.Row="2"
+                Grid.Column="2" />
 
             <GridSplitter
                 Grid.Column="1"
@@ -76,6 +76,6 @@
 
         </Grid>
 
-        <local:Statusbar Grid.Row="2"/>
+        <local:Statusbar Grid.Row="2" />
     </Grid>
 </Window>

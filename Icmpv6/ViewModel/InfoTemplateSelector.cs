@@ -7,6 +7,7 @@ namespace Icmpv6.ViewModel;
 public class InfoTemplateSelector : DataTemplateSelector {
 
     public DataTemplate DeviceTemplate { get; set; } = new();
+
     public DataTemplate PacketTemplate { get; set; } = new();
 
     public override DataTemplate? SelectTemplate(object? obj, DependencyObject container) {

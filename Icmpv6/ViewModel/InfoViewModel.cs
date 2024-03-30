@@ -21,6 +21,6 @@ public partial class InfoViewModel : ObservableObject {
     private int selected;
 
     public InfoViewModel() {
-        
+
     }
 }

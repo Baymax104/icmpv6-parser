@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using Icmpv6.Repo;
+using Icmpv6.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Icmpv6;
 
@@ -6,4 +9,21 @@ namespace Icmpv6;
 ///     Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application {
+
+    public new static App Current {
+        get => (App)Application.Current;
+    }
+
+    public IServiceProvider Services { get; } = ConfigureServices();
+
+    private static IServiceProvider ConfigureServices() {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<Repository>();
+        services.AddTransient<DeviceViewModel>();
+        services.AddTransient<InfoViewModel>();
+
+        return services.BuildServiceProvider();
+    }
+
 }

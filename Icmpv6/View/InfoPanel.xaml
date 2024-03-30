@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Icmpv6.View"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:viewModel="clr-namespace:Icmpv6.ViewModel"
+             xmlns:vm="clr-namespace:Icmpv6.ViewModel"
              xmlns:vo="clr-namespace:Icmpv6.VO"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="900">
+
     <UserControl.Resources>
         <DataTemplate x:Key="DeviceHeaderTemplate" DataType="{x:Type vo:InfoView}">
             <TextBlock Text="{Binding Path=Device.Name}" />
@@ -26,11 +27,11 @@
             <TextBlock Text="{Binding Path=Packet}" />
         </DataTemplate>
 
-        <viewModel:InfoTemplateSelector
+        <vm:InfoTemplateSelector
             x:Key="InfoHeaderTemplateSelector"
             DeviceTemplate="{StaticResource DeviceHeaderTemplate}"
             PacketTemplate="{StaticResource PacketHeaderTemplate}" />
-        <viewModel:InfoTemplateSelector
+        <vm:InfoTemplateSelector
             x:Key="InfoContentTemplateSelector"
             DeviceTemplate="{StaticResource DeviceContentTemplate}"
             PacketTemplate="{StaticResource PacketContentTemplate}" />
@@ -44,12 +45,9 @@
         IsAnimationEnabled="True"
         ShowScrollButton="True"
         IsScrollable="True"
+        d:DataContext="{d:DesignInstance vm:InfoViewModel}"
         ItemsSource="{Binding Infos}"
         SelectedIndex="{Binding Selected}"
         ItemTemplateSelector="{StaticResource InfoHeaderTemplateSelector}"
-        ContentTemplateSelector="{StaticResource InfoContentTemplateSelector}">
-        <TabControl.DataContext>
-            <viewModel:InfoViewModel />
-        </TabControl.DataContext>
-    </hc:TabControl>
+        ContentTemplateSelector="{StaticResource InfoContentTemplateSelector}" />
 </UserControl>
