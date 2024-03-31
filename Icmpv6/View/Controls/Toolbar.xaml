@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Icmpv6.View.Controls.Toolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Icmpv6.View.Controls"
+             xmlns:ic="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             d:DesignHeight="30" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="5, 0" />
+            <Setter Property="Padding" Value="5, 0" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border
+        BorderThickness="0, 0, 0, 2"
+        BorderBrush="{StaticResource PrimaryBrush}"
+        Background="{StaticResource SecondaryRegionBrush}">
+
+        <StackPanel
+            x:Name="Root"
+            d:DataContext="{d:DesignInstance local:Toolbar}"
+            Orientation="Horizontal">
+            <Button
+                Foreground="{StaticResource PrimaryBrush}"
+                Style="{StaticResource IconButton}"
+                Command="{Binding CaptureCommand }">
+                <ic:PackIconUnicons Kind="Capture" />
+            </Button>
+            <Button
+                Foreground="{StaticResource DarkDangerBrush}"
+                Style="{StaticResource IconButton}"
+                Command="{Binding StopCommand}">
+                <ic:PackIconTypicons Kind="MediaStop" />
+            </Button>
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                Command="{Binding PreviousCommand}">
+                <ic:PackIconUnicons Kind="ArrowLeft" />
+            </Button>
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                Command="{Binding NextCommand}">
+                <ic:PackIconUnicons Kind="ArrowRight" />
+            </Button>
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                Command="{Binding TopCommand}">
+                <ic:PackIconUnicons Kind="ArrowUp" />
+            </Button>
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                Command="{Binding BottomCommand}">
+                <ic:PackIconUnicons Kind="ArrowDown" />
+            </Button>
+        </StackPanel>
+    </Border>
+</UserControl>

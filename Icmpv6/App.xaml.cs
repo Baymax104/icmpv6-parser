@@ -17,13 +17,11 @@ public partial class App : Application {
     public IServiceProvider Services { get; } = ConfigureServices();
 
     private static IServiceProvider ConfigureServices() {
-        var services = new ServiceCollection();
-
-        services.AddSingleton<Repository>();
-        services.AddTransient<DeviceViewModel>();
-        services.AddTransient<InfoViewModel>();
+        var services = new ServiceCollection()
+            .AddSingleton<Repository>()
+            .AddSingleton<DeviceListViewModel>()
+            .AddSingleton<InfoViewModel>();
 
         return services.BuildServiceProvider();
     }
-
 }

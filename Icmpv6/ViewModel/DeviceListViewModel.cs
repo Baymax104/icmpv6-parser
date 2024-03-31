@@ -1,14 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Icmpv6.Repo;
-using Icmpv6.View;
 using Icmpv6.VO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Icmpv6.ViewModel;
 
-public partial class DeviceViewModel : ObservableObject {
+public partial class DeviceListViewModel : ObservableRecipient {
 
     private readonly Repository repo = App.Current.Services.GetService<Repository>() ??
                                        throw new NullReferenceException("Repository is null");
@@ -16,8 +17,21 @@ public partial class DeviceViewModel : ObservableObject {
     [ObservableProperty]
     private ObservableCollection<DeviceView> devices = [];
 
-    public DeviceViewModel() {
+    [ObservableProperty]
+    private DeviceView? selectedItem;
+
+    public DeviceListViewModel() {
+        IsActive = true;
         var devs = repo.GetAllDevices();
         devs.ForEach(d => devices.Add(d.ToView()));
+    }
+
+    [RelayCommand]
+    private void ItemDoubleClick(DeviceView item) {
+        Messenger.Send(new ValueChangedMessage<DeviceView>(item));
+    }
+
+    private void Capture() {
+
     }
 }

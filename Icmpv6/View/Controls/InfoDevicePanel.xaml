@@ -1,22 +1,29 @@
-﻿<UserControl x:Class="Icmpv6.View.InfoDevicePanel"
+﻿<UserControl x:Class="Icmpv6.View.Controls.InfoDevicePanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:local="clr-namespace:Icmpv6.View"
+             xmlns:local="clr-namespace:Icmpv6.View.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="900"
-             d:DataContext="{d:DesignInstance local:InfoDevicePanel}">
-    <hc:ScrollViewer IsInertiaEnabled="True" hc:ScrollViewerAttach.AutoHide="True">
-        <StackPanel Orientation="Vertical">
+             d:DesignHeight="200" d:DesignWidth="900">
+
+    <hc:ScrollViewer
+        x:Name="ScrollViewer"
+        IsInertiaEnabled="True"
+        hc:ScrollViewerAttach.AutoHide="True">
+        <StackPanel
+            x:Name="Root"
+            d:DataContext="{d:DesignInstance local:InfoDevicePanel}"
+            Orientation="Vertical">
             <Expander Header="设备信息" IsExpanded="True">
                 <DataGrid
+                    x:Name="InfoGrid"
                     AutoGenerateColumns="False"
-                    RowHeight="20"
-                    ColumnHeaderHeight="20"
+                    RowHeight="30"
+                    ColumnHeaderHeight="30"
                     ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                    ItemsSource="{Binding View.Attributes}">
+                    ItemsSource="{Binding Value.Attributes}">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Header="设备属性"
@@ -39,27 +46,36 @@
             </Expander>
             <Expander Header="设备地址" IsExpanded="True">
                 <DataGrid
+                    x:Name="AddressGrid"
                     AutoGenerateColumns="False"
-                    RowHeight="20"
-                    ColumnHeaderHeight="20"
+                    RowHeight="30"
+                    ColumnHeaderHeight="30"
                     ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                    ItemsSource="{Binding View.Addresses}">
+                    ItemsSource="{Binding Value.Addresses}">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Header="网络地址"
                             Width="*"
+                            MinWidth="100"
+                            IsReadOnly="True"
                             Binding="{Binding Address}" />
                         <DataGridTextColumn
                             Header="类型"
-                            Width="*"
+                            Width="0.3*"
+                            MinWidth="100"
+                            IsReadOnly="True"
                             Binding="{Binding Type}" />
                         <DataGridTextColumn
                             Header="子网掩码"
                             Width="*"
+                            MinWidth="100"
+                            IsReadOnly="True"
                             Binding="{Binding Netmask}" />
                         <DataGridTextColumn
                             Header="广播地址"
                             Width="*"
+                            MinWidth="100"
+                            IsReadOnly="True"
                             Binding="{Binding Broadcast}" />
                     </DataGrid.Columns>
                 </DataGrid>

@@ -1,5 +1,4 @@
-﻿using System.Windows.Documents;
-using SharpPcap.LibPcap;
+﻿using SharpPcap.LibPcap;
 
 namespace Icmpv6.Repo;
 

@@ -23,7 +23,6 @@ public static class DeviceViewExtensions {
             var netmask = a.Netmask;
             var broadcast = a.Broadaddr;
 
-
             // 设置MAC
             if (address.type == Sockaddr.AddressTypes.HARDWARE) {
                 view.MacAddress = new MacAddress(address.hardwareAddress).ToString();

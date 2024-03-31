@@ -1,6 +1,6 @@
 ﻿namespace Icmpv6.VO;
 
-public class InfoView {
+public record InfoView {
 
     public enum InfoViewType {
         Device,
@@ -9,35 +9,8 @@ public class InfoView {
     }
 
     private DeviceView? device;
-    public DeviceView Device {
-        get => device ?? new DeviceView();
-        set {
-            packet = null;
-            device = value;
-        }
-    }
 
     private string? packet;
-    public string Packet {
-        get => packet ?? "";
-        set {
-            device = null;
-            packet = value;
-        }
-    }
-
-    public InfoViewType Type {
-        get {
-            if (device != null) {
-                return InfoViewType.Device;
-            } else if (packet != null) {
-                return InfoViewType.Packet;
-            } else {
-                return InfoViewType.None;
-            }
-        }
-    }
-
 
     public InfoView() {
     }
@@ -48,5 +21,30 @@ public class InfoView {
 
     public InfoView(string packet) {
         this.packet = packet;
+    }
+
+
+    public DeviceView Device {
+        get => device ?? new DeviceView();
+        set {
+            packet = null;
+            device = value;
+        }
+    }
+
+    public string Packet {
+        get => packet ?? "";
+    }
+
+    public InfoViewType Type {
+        get {
+            if (device != null) {
+                return InfoViewType.Device;
+            }
+            if (packet != null) {
+                return InfoViewType.Packet;
+            }
+            return InfoViewType.None;
+        }
     }
 }

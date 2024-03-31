@@ -1,0 +1,25 @@
+﻿using System.Windows;
+using System.Windows.Controls;
+using Icmpv6.VO;
+
+namespace Icmpv6.View.Controls;
+
+public partial class Statusbar : UserControl {
+
+    public static readonly DependencyProperty SelectedDeviceProperty =
+        DependencyProperty.Register(
+            nameof(SelectedDevice),
+            typeof(DeviceView),
+            typeof(Statusbar),
+            new(default(DeviceView)));
+
+    public Statusbar() {
+        InitializeComponent();
+        Root.DataContext = this;
+    }
+
+    public DeviceView SelectedDevice {
+        get => (DeviceView)GetValue(SelectedDeviceProperty);
+        set => SetValue(SelectedDeviceProperty, value);
+    }
+}

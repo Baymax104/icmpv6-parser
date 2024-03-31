@@ -1,6 +1,6 @@
 ﻿namespace Icmpv6.VO;
 
-public class AddressView {
+public record AddressView {
     public string Address { get; set; } = "";
 
     public string Netmask { get; set; } = "";

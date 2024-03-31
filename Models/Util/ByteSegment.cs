@@ -19,6 +19,8 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
     /// </summary>
     private int segmentLength = segmentLength;
 
+    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
+
     /// <summary>
     ///     字节数组
     /// </summary>
@@ -61,8 +63,6 @@ public class ByteSegment(byte[] data, int offset, int segmentLength, int byteLen
             return bytes;
         }
     }
-
-    public ByteSegment(byte[] data) : this(data, 0, 0, data.Length) { }
 
     public byte this[int index] {
         get => Data[offset + index];

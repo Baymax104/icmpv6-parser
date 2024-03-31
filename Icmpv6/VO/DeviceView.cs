@@ -1,11 +1,13 @@
-﻿using System.Net;
-using SharpPcap.LibPcap;
+﻿namespace Icmpv6.VO;
 
-namespace Icmpv6.VO;
+public record DeviceView {
 
-public class DeviceView {
+    public DeviceView() {
+    }
 
-    public record AttributeItem(string Property, string Value);
+    public DeviceView(string name) {
+        Name = name;
+    }
 
     public string Name { get; set; } = "";
 
@@ -31,10 +33,5 @@ public class DeviceView {
         }
     }
 
-    public DeviceView() {
-    }
-
-    public DeviceView(string name) {
-        Name = name;
-    }
+    public record AttributeItem(string Property, string Value);
 }

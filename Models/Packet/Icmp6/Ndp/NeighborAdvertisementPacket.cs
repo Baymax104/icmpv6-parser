@@ -7,6 +7,11 @@ namespace Models.Packet.Icmp6.Ndp;
 
 public class NeighborAdvertisementPacket : NdpPacket {
 
+    public NeighborAdvertisementPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.NAHeaderLength;
+        Payload = null;
+    }
+
     public bool Router {
         get => (Header[NdpField.NAFlagsPosition] & 0x80) != 0;
         set {
@@ -48,11 +53,6 @@ public class NeighborAdvertisementPacket : NdpPacket {
     public override List<NdpOption> Options {
         get => ParseOptions(Header.GetNextSegment());
         set => WriteOptions(value, NdpField.NAOptionsPosition);
-    }
-
-    public NeighborAdvertisementPacket(ByteSegment data) : base(data) {
-        Header.SegmentLength = NdpField.NAHeaderLength;
-        Payload = null;
     }
 
     public override string ToString() {

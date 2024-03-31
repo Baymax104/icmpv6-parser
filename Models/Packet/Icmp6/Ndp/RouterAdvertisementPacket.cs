@@ -6,6 +6,11 @@ namespace Models.Packet.Icmp6.Ndp;
 
 public class RouterAdvertisementPacket : NdpPacket {
 
+    public RouterAdvertisementPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.RAHeaderLength;
+        Payload = null;
+    }
+
     public byte CurHopLimit {
         get => Header[NdpField.RACurHopLimitPosition];
         set => Header[NdpField.RACurHopLimitPosition] = value;
@@ -51,11 +56,6 @@ public class RouterAdvertisementPacket : NdpPacket {
     public override List<NdpOption> Options {
         get => ParseOptions(Header.GetNextSegment());
         set => WriteOptions(value, NdpField.RAOptionsPosition);
-    }
-
-    public RouterAdvertisementPacket(ByteSegment data) : base(data) {
-        Header.SegmentLength = NdpField.RAHeaderLength;
-        Payload = null;
     }
 
     public override string ToString() {

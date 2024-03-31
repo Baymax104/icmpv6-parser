@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Icmpv6.View.Controls.Statusbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Icmpv6.View.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="25" d:DesignWidth="800">
+    <Border
+        BorderThickness="0, 2, 0, 0"
+        BorderBrush="{StaticResource PrimaryBrush}"
+        Background="{StaticResource SecondaryRegionBrush}">
+        <DockPanel
+            x:Name="Root"
+            d:DataContext="{d:DesignInstance local:Statusbar}"
+            LastChildFill="False">
+            <TextBlock
+                DockPanel.Dock="Left"
+                VerticalAlignment="Center"
+                Margin="10, 0, 0, 0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="当前选择：{0}（{1}）">
+                        <Binding Path="SelectedDevice.Name" />
+                        <Binding Path="SelectedDevice.Description" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock
+                DockPanel.Dock="Right"
+                Text="当前捕获"
+                VerticalAlignment="Center"
+                Margin="0, 0, 10, 0" />
+        </DockPanel>
+    </Border>
+</UserControl>

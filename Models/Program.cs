@@ -1,5 +1,4 @@
 ﻿using Models.Packet;
-using Models.Packet.Icmp6;
 using Models.Packet.Icmp6.Ndp;
 using SharpPcap;
 using SharpPcap.LibPcap;
@@ -10,9 +9,7 @@ internal static class Program {
 
     private static void Main() {
         var list = LibPcapLiveDeviceList.Instance;
-        foreach (var d in list) {
-            Console.WriteLine(d);
-        }
+        foreach (var d in list) Console.WriteLine(d);
         // Read();
         // Write();
     }

@@ -7,6 +7,11 @@ namespace Models.Packet.Icmp6.Ndp;
 
 public class NeighborSolicitationPacket : NdpPacket {
 
+    public NeighborSolicitationPacket(ByteSegment data) : base(data) {
+        Header.SegmentLength = NdpField.NSHeaderLength;
+        Payload = null;
+    }
+
     public override List<NdpOption> Options {
         get => ParseOptions(Header.GetNextSegment());
         set => WriteOptions(value, NdpField.NSOptionsPosition);
@@ -17,11 +22,6 @@ public class NeighborSolicitationPacket : NdpPacket {
         set => ByteWriter.WriteTo(Header, value, NdpField.NSTargetAddressPosition);
     }
 
-    public NeighborSolicitationPacket(ByteSegment data) : base(data) {
-        Header.SegmentLength = NdpField.NSHeaderLength;
-        Payload = null;
-    }
-
     public override string ToString() {
         return $@"
 {{
@@ -30,5 +30,4 @@ public class NeighborSolicitationPacket : NdpPacket {
 }}
         ".Trim();
     }
-
 }
