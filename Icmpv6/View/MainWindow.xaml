@@ -81,7 +81,8 @@
             <controls:Statusbar
                 Grid.Row="2"
                 Height="25"
-                SelectedDevice="{Binding ElementName=DeviceListPanel, Path=ViewModel.SelectedItem}" />
+                SelectedDevice="{Binding ElementName=DeviceListPanel, Path=ViewModel.SelectedItem}"
+                CurrentStatistics="{Binding ElementName=DeviceListPanel, Path=ViewModel.Statistics}" />
 
         </Grid>
 

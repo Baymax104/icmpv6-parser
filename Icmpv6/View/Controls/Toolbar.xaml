@@ -7,7 +7,7 @@
              xmlns:ic="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d"
-             d:DesignHeight="40" d:DesignWidth="800">
+             d:DesignWidth="800">
 
     <UserControl.Resources>
         <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
@@ -70,7 +70,6 @@
                 <ic:PackIconUnicons Kind="ArrowDown" Width="15" Height="15" />
             </Button>
             <Separator Margin="10, 0" />
-            <hc:LoadingCircle IsRunning="{Binding IsRunning}" />
         </ToolBar>
     </Border>
 </UserControl>

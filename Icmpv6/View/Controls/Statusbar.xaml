@@ -27,9 +27,26 @@
             </TextBlock>
             <TextBlock
                 DockPanel.Dock="Right"
-                Text="当前捕获"
                 VerticalAlignment="Center"
-                Margin="0, 0, 10, 0" />
+                Margin="0, 0, 10, 0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="当前已丢失：{0}（{1}%）">
+                        <Binding Path="CurrentStatistics.DroppedPackets" />
+                        <Binding Path="CurrentStatistics.DroppedProportion" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock
+                DockPanel.Dock="Right"
+                VerticalAlignment="Center"
+                Margin="0, 0, 10, 0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="当前已捕获：{0}（{1}%）">
+                        <Binding Path="CurrentStatistics.CapturedPackets" />
+                        <Binding Path="CurrentStatistics.CapturedProportion" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </DockPanel>
     </Border>
 </UserControl>

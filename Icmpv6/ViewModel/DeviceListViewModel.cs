@@ -22,6 +22,9 @@ public partial class DeviceListViewModel : ObservableRecipient {
     [ObservableProperty]
     private DeviceView? selectedItem;
 
+    [ObservableProperty]
+    private StatisticsView statistics = new();
+
     public DeviceListViewModel() {
         IsActive = true;
         var devs = repo.GetAllDevices();
@@ -40,8 +43,11 @@ public partial class DeviceListViewModel : ObservableRecipient {
             return;
         }
         var device = SelectedItem.Instance;
+        device.Open(DeviceModes.Promiscuous);
+        device.Filter = "ip6";
         try {
             while (true) {
+                Statistics = GetStatisticsView(device);
                 var packet = await repo.Capture(device, token);
                 if (packet != null) {
                     var message = new ValueChangedMessage<RawCapture>(packet);
@@ -53,5 +59,18 @@ public partial class DeviceListViewModel : ObservableRecipient {
         } finally {
             device.Close();
         }
+    }
+
+    private StatisticsView GetStatisticsView(ICaptureDevice device) {
+        var captured = device.Statistics.ReceivedPackets;
+        var dropped = device.Statistics.DroppedPackets;
+        var capturedProportion = (uint)(captured * 1.0 / (captured + dropped) * 100);
+        var droppedProportion = (uint)(dropped * 1.0 / (captured + dropped) * 100);
+        return new() {
+            CapturedPackets = captured,
+            DroppedPackets = dropped,
+            CapturedProportion = capturedProportion,
+            DroppedProportion = droppedProportion
+        };
     }
 }

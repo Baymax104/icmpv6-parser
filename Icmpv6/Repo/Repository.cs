@@ -10,8 +10,6 @@ public class Repository {
     }
 
     public Task<RawCapture?> Capture(LibPcapLiveDevice device, CancellationToken token) {
-        device.Open(DeviceModes.Promiscuous);
-        device.Filter = "ip6";
         return Task.Run(
             () => {
                 var status = device.GetNextPacket(out var packetCapture);
