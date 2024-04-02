@@ -9,7 +9,7 @@
     <Border
         BorderThickness="0, 2, 0, 0"
         BorderBrush="{StaticResource PrimaryBrush}"
-        Background="{StaticResource SecondaryRegionBrush}">
+        Background="{StaticResource Gray1}">
         <DockPanel
             x:Name="Root"
             d:DataContext="{d:DesignInstance local:Statusbar}"

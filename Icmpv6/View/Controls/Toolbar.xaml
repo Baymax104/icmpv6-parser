@@ -5,63 +5,72 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Icmpv6.View.Controls"
              xmlns:ic="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d"
-             d:DesignHeight="30" d:DesignWidth="800">
+             d:DesignHeight="40" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <Style x:Key="IconButton" TargetType="Button">
+        <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Margin" Value="5, 0" />
-            <Setter Property="Padding" Value="5, 0" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Cursor" Value="Hand" />
         </Style>
     </UserControl.Resources>
 
     <Border
         BorderThickness="0, 0, 0, 2"
-        BorderBrush="{StaticResource PrimaryBrush}"
-        Background="{StaticResource SecondaryRegionBrush}">
-
-        <StackPanel
+        BorderBrush="{StaticResource PrimaryBrush}">
+        <ToolBar
             x:Name="Root"
-            d:DataContext="{d:DesignInstance local:Toolbar}"
-            Orientation="Horizontal">
+            d:DataContext="{d:DesignInstance local:Toolbar}">
+
             <Button
                 Foreground="{StaticResource PrimaryBrush}"
                 Style="{StaticResource IconButton}"
-                Command="{Binding CaptureCommand }">
-                <ic:PackIconUnicons Kind="Capture" />
+                Command="{Binding StartCaptureCommand }"
+                ToolTip="开始捕获">
+                <ic:PackIconUnicons Kind="Capture" Width="15" Height="15" />
             </Button>
             <Button
                 Foreground="{StaticResource DarkDangerBrush}"
                 Style="{StaticResource IconButton}"
-                Command="{Binding StopCommand}">
-                <ic:PackIconTypicons Kind="MediaStop" />
+                Command="{Binding StopCaptureCommand}"
+                ToolTip="停止捕获">
+                <ic:PackIconTypicons Kind="MediaStop" Width="15" Height="15" />
+            </Button>
+            <Separator Margin="10, 0" />
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                Command="{Binding PreviousCommand}"
+                ToolTip="选择上一个数据包">
+                <ic:PackIconUnicons Kind="ArrowLeft" Width="15" Height="15" />
             </Button>
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding PreviousCommand}">
-                <ic:PackIconUnicons Kind="ArrowLeft" />
+                Command="{Binding NextCommand}"
+                ToolTip="选择下一个数据包">
+                <ic:PackIconUnicons Kind="ArrowRight" Width="15" Height="15" />
             </Button>
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding NextCommand}">
-                <ic:PackIconUnicons Kind="ArrowRight" />
+                Command="{Binding TopCommand}"
+                ToolTip="选择第一个数据包">
+                <ic:PackIconUnicons Kind="ArrowUp" Width="15" Height="15" />
             </Button>
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding TopCommand}">
-                <ic:PackIconUnicons Kind="ArrowUp" />
+                Command="{Binding BottomCommand}"
+                ToolTip="选择最后一个数据包">
+                <ic:PackIconUnicons Kind="ArrowDown" Width="15" Height="15" />
             </Button>
-            <Button
-                Style="{StaticResource IconButton}"
-                Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding BottomCommand}">
-                <ic:PackIconUnicons Kind="ArrowDown" />
-            </Button>
-        </StackPanel>
+            <Separator Margin="10, 0" />
+            <hc:LoadingCircle IsRunning="{Binding IsRunning}" />
+        </ToolBar>
     </Border>
 </UserControl>

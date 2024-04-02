@@ -6,7 +6,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:local="clr-namespace:Icmpv6.View.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="900">
+             d:DesignHeight="250" d:DesignWidth="900">
 
     <hc:ScrollViewer
         x:Name="ScrollViewer"
@@ -15,7 +15,8 @@
         <StackPanel
             x:Name="Root"
             d:DataContext="{d:DesignInstance local:InfoDevicePanel}"
-            Orientation="Vertical">
+            Orientation="Vertical"
+            Background="{StaticResource Gray2}">
             <Expander Header="设备信息" IsExpanded="True">
                 <DataGrid
                     x:Name="InfoGrid"

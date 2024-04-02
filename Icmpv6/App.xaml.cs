@@ -19,8 +19,9 @@ public partial class App : Application {
     private static IServiceProvider ConfigureServices() {
         var services = new ServiceCollection()
             .AddSingleton<Repository>()
-            .AddSingleton<DeviceListViewModel>()
-            .AddSingleton<InfoViewModel>();
+            .AddTransient<CaptureListViewModel>()
+            .AddTransient<DeviceListViewModel>()
+            .AddTransient<InfoViewModel>();
 
         return services.BuildServiceProvider();
     }

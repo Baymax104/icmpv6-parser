@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:Icmpv6.View"
-        xmlns:vm="clr-namespace:Icmpv6.ViewModel"
         xmlns:controls="clr-namespace:Icmpv6.View.Controls"
         mc:Ignorable="d"
         Title="ICMPv6协议分析器"
@@ -14,71 +13,81 @@
         MinWidth="1200"
         MaxWidth="1200">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <hc:SimplePanel>
 
-        <controls:Toolbar
-            Grid.Row="0"
-            Height="30"
-            x:Name="Toolbar" />
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="300" Width="300" MaxWidth="400" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition
-                    Height="200"
-                    MinHeight="35"
-                    MaxHeight="500" />
             </Grid.RowDefinitions>
 
-            <local:DeviceListPanel
+            <controls:Toolbar
                 Grid.Row="0"
-                Grid.Column="0"
-                Grid.RowSpan="3" />
+                StartCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand}"
+                StopCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCancelCommand}"
+                IsRunning="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand.IsRunning}" />
 
-            <hc:SimplePanel
-                Grid.Row="0"
-                Grid.Column="2" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="300" Width="300" MaxWidth="400" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <local:InfoPanel
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition
+                        Height="250"
+                        MinHeight="35"
+                        MaxHeight="500" />
+                </Grid.RowDefinitions>
+
+                <local:DeviceListPanel
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.RowSpan="3"
+                    x:Name="DeviceListPanel" />
+
+                <local:CaptureListPanel
+                    Grid.Row="0"
+                    Grid.Column="2" />
+
+                <local:InfoPanel
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    x:Name="InfoPanel" />
+
+                <GridSplitter
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.RowSpan="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    Width="3"
+                    Background="{StaticResource Gray1}" />
+
+                <GridSplitter
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Height="3"
+                    Background="{StaticResource Gray1}" />
+
+            </Grid>
+
+            <controls:Statusbar
                 Grid.Row="2"
-                Grid.Column="2" />
-
-            <GridSplitter
-                Grid.Column="1"
-                Grid.Row="0"
-                Grid.RowSpan="3"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Stretch"
-                Width="3"
-                Background="{StaticResource SecondaryRegionBrush}" />
-
-            <GridSplitter
-                Grid.Row="1"
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Stretch"
-                Height="3"
-                Background="{StaticResource SecondaryRegionBrush}" />
+                Height="25"
+                SelectedDevice="{Binding ElementName=DeviceListPanel, Path=ViewModel.SelectedItem}" />
 
         </Grid>
 
-        <controls:Statusbar
-            Grid.Row="2"
-            Height="25"
-            x:Name="Statusbar"
-            d:DataContext="{d:DesignInstance vm:DeviceListViewModel}"
-            SelectedDevice="{Binding SelectedItem}" />
-    </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right">
+            <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0,40,10,40" />
+        </ScrollViewer>
+    </hc:SimplePanel>
+
 </Window>

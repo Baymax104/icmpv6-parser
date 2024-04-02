@@ -6,17 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Icmpv6.View;
 
-public partial class InfoPanel : UserControl {
+public partial class CaptureListPanel : UserControl {
 
     public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(
             nameof(ViewModel),
-            typeof(InfoViewModel),
-            typeof(InfoPanel));
+            typeof(CaptureListViewModel),
+            typeof(CaptureListPanel));
 
-    public InfoPanel() {
+    public CaptureListPanel() {
         InitializeComponent();
-        var viewModel = App.Current.Services.GetService<InfoViewModel>();
+        var viewModel = App.Current.Services.GetService<CaptureListViewModel>();
         Root.DataContext = viewModel;
         var binding = new Binding {
             Source = viewModel,
@@ -25,7 +25,7 @@ public partial class InfoPanel : UserControl {
         BindingOperations.SetBinding(this, ViewModelProperty, binding);
     }
 
-    public InfoViewModel ViewModel {
-        get => (InfoViewModel)GetValue(ViewModelProperty);
+    public CaptureListViewModel ViewModel {
+        get => (CaptureListViewModel)GetValue(ViewModelProperty);
     }
 }

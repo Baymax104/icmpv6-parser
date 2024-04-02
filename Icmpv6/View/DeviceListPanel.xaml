@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <hc:SimplePanel Grid.Row="0" Background="{StaticResource SecondaryRegionBrush}">
+        <hc:SimplePanel Grid.Row="0" Background="{StaticResource Gray1}">
             <hc:SimpleText Text="设备列表" FontWeight="Bold" Margin="7" />
         </hc:SimplePanel>
 
@@ -28,7 +28,7 @@
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="MouseDoubleClick">
                     <hc:InvokeCommandAction
-                        Command="{Binding ItemDoubleClickCommand}"
+                        Command="{Binding ItemShowCommand}"
                         CommandParameter="{Binding ElementName=DeviceList, Path=SelectedItem}" />
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
@@ -37,7 +37,8 @@
                     <StackPanel
                         Orientation="Vertical"
                         HorizontalAlignment="Stretch"
-                        Margin="0, 5">
+                        Margin="0, 5"
+                        Cursor="Hand">
                         <TextBlock
                             Text="{Binding Name}"
                             FontWeight="Bold"

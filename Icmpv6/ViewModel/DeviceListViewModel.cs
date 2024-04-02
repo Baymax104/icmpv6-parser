@@ -3,9 +3,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using HandyControl.Controls;
 using Icmpv6.Repo;
 using Icmpv6.VO;
 using Microsoft.Extensions.DependencyInjection;
+using SharpPcap;
 
 namespace Icmpv6.ViewModel;
 
@@ -23,15 +25,33 @@ public partial class DeviceListViewModel : ObservableRecipient {
     public DeviceListViewModel() {
         IsActive = true;
         var devs = repo.GetAllDevices();
-        devs.ForEach(d => devices.Add(d.ToView()));
+        devs.ForEach(d => devices.Add(new(d)));
     }
 
     [RelayCommand]
-    private void ItemDoubleClick(DeviceView item) {
+    private void ItemShow(DeviceView item) {
         Messenger.Send(new ValueChangedMessage<DeviceView>(item));
     }
 
-    private void Capture() {
-
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task CaptureAsync(CancellationToken token) {
+        if (SelectedItem == null || SelectedItem.Instance == null) {
+            Growl.Warning("当前未选择设备");
+            return;
+        }
+        var device = SelectedItem.Instance;
+        try {
+            while (true) {
+                var packet = await repo.Capture(device, token);
+                if (packet != null) {
+                    var message = new ValueChangedMessage<RawCapture>(packet);
+                    Messenger.Send(message);
+                }
+            }
+        } catch (OperationCanceledException) {
+            // Ignored
+        } finally {
+            device.Close();
+        }
     }
 }

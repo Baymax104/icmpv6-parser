@@ -6,15 +6,15 @@ namespace Icmpv6.View.Controls;
 
 public partial class Toolbar : UserControl {
 
-    public static readonly DependencyProperty CaptureCommandProperty =
+    public static readonly DependencyProperty StartCaptureCommandProperty =
         DependencyProperty.Register(
-            nameof(CaptureCommand),
+            nameof(StartCaptureCommand),
             typeof(ICommand),
             typeof(Toolbar));
 
-    public static readonly DependencyProperty StopCommandProperty =
+    public static readonly DependencyProperty StopCaptureCommandProperty =
         DependencyProperty.Register(
-            nameof(StopCommand),
+            nameof(StopCaptureCommand),
             typeof(ICommand),
             typeof(Toolbar));
 
@@ -42,19 +42,25 @@ public partial class Toolbar : UserControl {
             typeof(ICommand),
             typeof(Toolbar));
 
+    public static readonly DependencyProperty IsRunningProperty =
+        DependencyProperty.Register(
+            nameof(IsRunning),
+            typeof(bool),
+            typeof(Toolbar));
+
     public Toolbar() {
         InitializeComponent();
         Root.DataContext = this;
     }
 
-    public ICommand CaptureCommand {
-        get => (ICommand)GetValue(CaptureCommandProperty);
-        set => SetValue(CaptureCommandProperty, value);
+    public ICommand StartCaptureCommand {
+        get => (ICommand)GetValue(StartCaptureCommandProperty);
+        set => SetValue(StartCaptureCommandProperty, value);
     }
 
-    public ICommand StopCommand {
-        get => (ICommand)GetValue(StopCommandProperty);
-        set => SetValue(StopCommandProperty, value);
+    public ICommand StopCaptureCommand {
+        get => (ICommand)GetValue(StopCaptureCommandProperty);
+        set => SetValue(StopCaptureCommandProperty, value);
     }
 
     public ICommand PreviousCommand {
@@ -75,5 +81,10 @@ public partial class Toolbar : UserControl {
     public ICommand BottomCommand {
         get => (ICommand)GetValue(BottomCommandProperty);
         set => SetValue(BottomCommandProperty, value);
+    }
+
+    public bool IsRunning {
+        get => (bool)GetValue(IsRunningProperty);
+        set => SetValue(IsRunningProperty, value);
     }
 }
