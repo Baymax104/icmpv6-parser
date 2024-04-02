@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using Icmpv6.VO;
 
 namespace Icmpv6.View.Controls;

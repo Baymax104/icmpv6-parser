@@ -26,7 +26,13 @@
                 Grid.Row="0"
                 StartCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand}"
                 StopCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCancelCommand}"
-                IsRunning="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand.IsRunning}" />
+                IsRunning="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand.IsRunning}"
+                SelectPreviousCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectPreviousCommand}"
+                SelectNextCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectNextCommand}"
+                SelectFirstCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectFirstCommand}"
+                SelectLastCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectLastCommand}"
+                SaveFileCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SaveFileCommand}"
+                OpenFileCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.OpenFileCommand}" />
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -52,7 +58,8 @@
 
                 <local:CaptureListPanel
                     Grid.Row="0"
-                    Grid.Column="2" />
+                    Grid.Column="2"
+                    x:Name="CaptureListPanel" />
 
                 <local:InfoPanel
                     Grid.Row="2"

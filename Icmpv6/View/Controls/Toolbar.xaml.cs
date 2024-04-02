@@ -18,27 +18,27 @@ public partial class Toolbar : UserControl {
             typeof(ICommand),
             typeof(Toolbar));
 
-    public static readonly DependencyProperty PreviousCommandProperty =
+    public static readonly DependencyProperty SelectPreviousCommandProperty =
         DependencyProperty.Register(
-            nameof(PreviousCommand),
+            nameof(SelectPreviousCommand),
             typeof(ICommand),
             typeof(Toolbar));
 
-    public static readonly DependencyProperty NextCommandProperty =
+    public static readonly DependencyProperty SelectNextCommandProperty =
         DependencyProperty.Register(
-            nameof(NextCommand),
+            nameof(SelectNextCommand),
             typeof(ICommand),
             typeof(Toolbar));
 
-    public static readonly DependencyProperty TopCommandProperty =
+    public static readonly DependencyProperty SelectFirstCommandProperty =
         DependencyProperty.Register(
-            nameof(TopCommand),
+            nameof(SelectFirstCommand),
             typeof(ICommand),
             typeof(Toolbar));
 
-    public static readonly DependencyProperty BottomCommandProperty =
+    public static readonly DependencyProperty SelectLastCommandProperty =
         DependencyProperty.Register(
-            nameof(BottomCommand),
+            nameof(SelectLastCommand),
             typeof(ICommand),
             typeof(Toolbar));
 
@@ -46,6 +46,18 @@ public partial class Toolbar : UserControl {
         DependencyProperty.Register(
             nameof(IsRunning),
             typeof(bool),
+            typeof(Toolbar));
+
+    public static readonly DependencyProperty SaveFileCommandProperty =
+        DependencyProperty.Register(
+            nameof(SaveFileCommand),
+            typeof(ICommand),
+            typeof(Toolbar));
+
+    public static readonly DependencyProperty OpenFileCommandProperty =
+        DependencyProperty.Register(
+            nameof(OpenFileCommand),
+            typeof(ICommand),
             typeof(Toolbar));
 
     public Toolbar() {
@@ -63,28 +75,38 @@ public partial class Toolbar : UserControl {
         set => SetValue(StopCaptureCommandProperty, value);
     }
 
-    public ICommand PreviousCommand {
-        get => (ICommand)GetValue(PreviousCommandProperty);
-        set => SetValue(PreviousCommandProperty, value);
+    public ICommand SelectPreviousCommand {
+        get => (ICommand)GetValue(SelectPreviousCommandProperty);
+        set => SetValue(SelectPreviousCommandProperty, value);
     }
 
-    public ICommand NextCommand {
-        get => (ICommand)GetValue(NextCommandProperty);
-        set => SetValue(NextCommandProperty, value);
+    public ICommand SelectNextCommand {
+        get => (ICommand)GetValue(SelectNextCommandProperty);
+        set => SetValue(SelectNextCommandProperty, value);
     }
 
-    public ICommand TopCommand {
-        get => (ICommand)GetValue(TopCommandProperty);
-        set => SetValue(TopCommandProperty, value);
+    public ICommand SelectFirstCommand {
+        get => (ICommand)GetValue(SelectFirstCommandProperty);
+        set => SetValue(SelectFirstCommandProperty, value);
     }
 
-    public ICommand BottomCommand {
-        get => (ICommand)GetValue(BottomCommandProperty);
-        set => SetValue(BottomCommandProperty, value);
+    public ICommand SelectLastCommand {
+        get => (ICommand)GetValue(SelectLastCommandProperty);
+        set => SetValue(SelectLastCommandProperty, value);
     }
 
     public bool IsRunning {
         get => (bool)GetValue(IsRunningProperty);
         set => SetValue(IsRunningProperty, value);
+    }
+
+    public ICommand SaveFileCommand {
+        get => (ICommand)GetValue(SaveFileCommandProperty);
+        set => SetValue(SaveFileCommandProperty, value);
+    }
+
+    public ICommand OpenFileCommand {
+        get => (ICommand)GetValue(OpenFileCommandProperty);
+        set => SetValue(OpenFileCommandProperty, value);
     }
 }

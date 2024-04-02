@@ -5,13 +5,13 @@ namespace Icmpv6.VO;
 
 public record CaptureView {
 
-    private RawCapture? instance;
+    public RawCapture? Instance { get; set; }
 
     public CaptureView() {
     }
 
     public CaptureView(RawCapture instance) {
-        this.instance = instance;
+        Instance = instance;
         Length = instance.PacketLength;
         Timestamp = instance.Timeval.Date.ToShortTimeString();
         var packet = NetPacket.ParsePacket(instance);

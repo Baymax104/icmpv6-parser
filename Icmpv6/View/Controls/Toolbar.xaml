@@ -17,6 +17,7 @@
             <Setter Property="Padding" Value="5" />
             <Setter Property="Cursor" Value="Hand" />
         </Style>
+        <local:VisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
 
     <Border
@@ -40,36 +41,62 @@
                 ToolTip="停止捕获">
                 <ic:PackIconTypicons Kind="MediaStop" Width="15" Height="15" />
             </Button>
-            <Separator Margin="10, 0" />
+            <Separator Margin="10, 0" Width="2" />
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding PreviousCommand}"
+                Command="{Binding SelectPreviousCommand}"
                 ToolTip="选择上一个数据包">
                 <ic:PackIconUnicons Kind="ArrowLeft" Width="15" Height="15" />
             </Button>
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding NextCommand}"
+                Command="{Binding SelectNextCommand}"
                 ToolTip="选择下一个数据包">
                 <ic:PackIconUnicons Kind="ArrowRight" Width="15" Height="15" />
             </Button>
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding TopCommand}"
+                Command="{Binding SelectFirstCommand}"
                 ToolTip="选择第一个数据包">
                 <ic:PackIconUnicons Kind="ArrowUp" Width="15" Height="15" />
             </Button>
             <Button
                 Style="{StaticResource IconButton}"
                 Foreground="{StaticResource PrimaryBrush}"
-                Command="{Binding BottomCommand}"
+                Command="{Binding SelectLastCommand}"
                 ToolTip="选择最后一个数据包">
                 <ic:PackIconUnicons Kind="ArrowDown" Width="15" Height="15" />
             </Button>
-            <Separator Margin="10, 0" />
+            <Separator Margin="10, 0" Width="2" />
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                ToolTip="保存文件"
+                Command="{Binding SaveFileCommand}">
+                <ic:PackIconMaterial Kind="ContentSave" />
+            </Button>
+            <Button
+                Style="{StaticResource IconButton}"
+                Foreground="{StaticResource PrimaryBrush}"
+                ToolTip="打开文件"
+                Command="{Binding OpenFileCommand}">
+                <ic:PackIconMaterial Kind="File" />
+            </Button>
+            <Separator Margin="10, 0" Width="2"
+                       Visibility="{Binding IsRunning, Converter={StaticResource VisibilityConverter}}" />
+            <hc:SimpleText
+                Text="正在捕获"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Visibility="{Binding IsRunning, Converter={StaticResource VisibilityConverter}}" />
+            <hc:LoadingLine
+                Width="100"
+                Margin="10, 0, 0, 0"
+                Visibility="{Binding IsRunning, Converter={StaticResource VisibilityConverter}}"
+                IsRunning="{Binding IsRunning}" />
         </ToolBar>
     </Border>
 </UserControl>

@@ -15,9 +15,11 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <hc:SimplePanel Grid.Row="0" Background="{StaticResource Gray1}">
-            <hc:SimpleText Text="设备列表" FontWeight="Bold" Margin="7" />
-        </hc:SimplePanel>
+        <Border Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource Gray2}">
+            <hc:SimplePanel Background="{StaticResource Gray1}">
+                <hc:SimpleText Text="设备列表" FontWeight="Bold" Margin="7" />
+            </hc:SimplePanel>
+        </Border>
 
         <ListBox
             Grid.Row="1"

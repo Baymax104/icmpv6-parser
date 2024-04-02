@@ -15,12 +15,15 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <hc:SimplePanel Grid.Row="0" Background="{StaticResource Gray1}">
-            <hc:SimpleText Text="捕获数据包列表" Margin="7" FontWeight="Bold" />
-        </hc:SimplePanel>
+        <Border Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource Gray2}">
+            <hc:SimplePanel Background="{StaticResource Gray1}">
+                <hc:SimpleText Text="捕获数据包列表" Margin="7" FontWeight="Bold" />
+            </hc:SimplePanel>
+        </Border>
 
         <DataGrid
             Grid.Row="1"
+            SelectedIndex="{Binding SelectedIndex}"
             AutoGenerateColumns="False"
             CanUserReorderColumns="False"
             Style="{DynamicResource DataGrid.Small}"
