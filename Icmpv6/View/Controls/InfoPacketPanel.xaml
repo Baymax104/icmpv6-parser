@@ -14,7 +14,7 @@
         <ItemsControl
             x:Name="Root"
             d:DataContext="{d:DesignInstance local:InfoPacketPanel}"
-            Background="{StaticResource Gray2}"
+            Background="{StaticResource Gray3}"
             ItemsSource="{Binding Value.Packets}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

@@ -48,7 +48,7 @@
         IsAnimationEnabled="True"
         ShowScrollButton="True"
         IsScrollable="True"
-        Background="{StaticResource Gray2}"
+        Background="{StaticResource Gray3}"
         d:DataContext="{d:DesignInstance vm:InfoViewModel}"
         ItemsSource="{Binding Infos}"
         ItemTemplateSelector="{StaticResource InfoHeaderTemplateSelector}"

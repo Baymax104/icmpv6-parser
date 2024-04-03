@@ -9,16 +9,6 @@
              mc:Ignorable="d"
              d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Margin" Value="5, 0" />
-            <Setter Property="Padding" Value="5" />
-            <Setter Property="Cursor" Value="Hand" />
-        </Style>
-    </UserControl.Resources>
-
     <Border
         BorderThickness="0, 0, 0, 2"
         BorderBrush="{StaticResource PrimaryBrush}">
@@ -28,42 +18,42 @@
 
             <Button
                 Foreground="{StaticResource PrimaryBrush}"
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Command="{Binding StartCaptureCommand }"
                 ToolTip="开始捕获">
                 <ic:PackIconUnicons Kind="Capture" Width="15" Height="15" />
             </Button>
             <Button
                 Foreground="{StaticResource DarkDangerBrush}"
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Command="{Binding StopCaptureCommand}"
                 ToolTip="停止捕获">
                 <ic:PackIconTypicons Kind="MediaStop" Width="15" Height="15" />
             </Button>
             <Separator Margin="10, 0" Width="2" />
             <Button
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Foreground="{StaticResource PrimaryBrush}"
                 Command="{Binding SelectPreviousCommand}"
                 ToolTip="选择上一个数据包">
                 <ic:PackIconUnicons Kind="ArrowLeft" Width="15" Height="15" />
             </Button>
             <Button
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Foreground="{StaticResource PrimaryBrush}"
                 Command="{Binding SelectNextCommand}"
                 ToolTip="选择下一个数据包">
                 <ic:PackIconUnicons Kind="ArrowRight" Width="15" Height="15" />
             </Button>
             <Button
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Foreground="{StaticResource PrimaryBrush}"
                 Command="{Binding SelectFirstCommand}"
                 ToolTip="选择第一个数据包">
                 <ic:PackIconUnicons Kind="ArrowUp" Width="15" Height="15" />
             </Button>
             <Button
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Foreground="{StaticResource PrimaryBrush}"
                 Command="{Binding SelectLastCommand}"
                 ToolTip="选择最后一个数据包">
@@ -71,14 +61,14 @@
             </Button>
             <Separator Margin="10, 0" Width="2" />
             <Button
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Foreground="{StaticResource PrimaryBrush}"
                 ToolTip="保存文件"
                 Command="{Binding SaveFileCommand}">
                 <ic:PackIconMaterial Kind="ContentSave" />
             </Button>
             <Button
-                Style="{StaticResource IconButton}"
+                Style="{StaticResource ToolbarButton}"
                 Foreground="{StaticResource PrimaryBrush}"
                 ToolTip="打开文件"
                 Command="{Binding OpenFileCommand}">

@@ -73,7 +73,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Stretch"
                     Width="3"
-                    Background="{StaticResource Gray1}" />
+                    Style="{StaticResource GridSplitterHover}" />
 
                 <GridSplitter
                     Grid.Row="1"
@@ -81,7 +81,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Stretch"
                     Height="3"
-                    Background="{StaticResource Gray1}" />
+                    Style="{StaticResource GridSplitterHover}" />
 
             </Grid>
 

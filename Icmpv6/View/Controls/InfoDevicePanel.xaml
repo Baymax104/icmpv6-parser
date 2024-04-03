@@ -16,7 +16,7 @@
             x:Name="Root"
             d:DataContext="{d:DesignInstance local:InfoDevicePanel}"
             Orientation="Vertical"
-            Background="{StaticResource Gray2}">
+            Background="{StaticResource Gray3}">
             <Expander Header="设备信息" IsExpanded="True">
                 <DataGrid
                     x:Name="InfoGrid"

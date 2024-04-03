@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource Gray2}">
+        <Border Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource Gray3}">
             <hc:SimplePanel Background="{StaticResource Gray1}">
                 <hc:SimpleText Text="设备列表" FontWeight="Bold" Margin="7" />
             </hc:SimplePanel>
