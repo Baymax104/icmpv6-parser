@@ -10,7 +10,7 @@ public record DeviceView {
     }
 
     public DeviceView(LibPcapLiveDevice instance) {
-        Instance = instance;
+        this.instance = instance;
         var inter = instance.Interface;
         Name = !string.IsNullOrEmpty(inter.FriendlyName) ? inter.FriendlyName : inter.Name;
         Description = !string.IsNullOrEmpty(inter.Description) ? inter.Description : "无";
@@ -58,7 +58,19 @@ public record DeviceView {
 
     public List<AddressView> Addresses { get; set; } = [];
 
-    public LibPcapLiveDevice? Instance { get; init; }
+    private readonly LibPcapLiveDevice? instance;
+    public LibPcapLiveDevice Instance {
+        get {
+            if (instance == null) {
+                throw new NotSupportedException("Instance is null.");
+            }
+            return instance;
+        }
+    }
+
+    public bool HasInstance {
+        get => instance != null;
+    }
 
     public List<AttributeItem> Attributes {
         get {

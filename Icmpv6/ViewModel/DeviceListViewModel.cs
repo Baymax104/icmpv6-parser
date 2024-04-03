@@ -38,7 +38,7 @@ public partial class DeviceListViewModel : ObservableRecipient {
 
     [RelayCommand(IncludeCancelCommand = true)]
     private async Task CaptureAsync(CancellationToken token) {
-        if (SelectedItem == null || SelectedItem.Instance == null) {
+        if (SelectedItem == null || !SelectedItem.HasInstance) {
             Growl.Warning("当前未选择设备");
             return;
         }
@@ -48,7 +48,7 @@ public partial class DeviceListViewModel : ObservableRecipient {
         try {
             while (true) {
                 Statistics = GetStatisticsView(device);
-                var packet = await repo.Capture(device, token);
+                var packet = await repo.CaptureAsync(device, token);
                 if (packet != null) {
                     var message = new ValueChangedMessage<RawCapture>(packet);
                     Messenger.Send(message);

@@ -23,12 +23,20 @@
 
         <DataGrid
             Grid.Row="1"
+            x:Name="CaptureList"
             SelectedIndex="{Binding SelectedIndex}"
             AutoGenerateColumns="False"
             CanUserReorderColumns="False"
             Style="{DynamicResource DataGrid.Small}"
             ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
             ItemsSource="{Binding Captures}">
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="MouseDoubleClick">
+                    <hc:InvokeCommandAction
+                        Command="{Binding ItemShowCommand}"
+                        CommandParameter="{Binding ElementName=CaptureList, Path=SelectedItem}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Header="No."

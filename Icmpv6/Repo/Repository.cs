@@ -9,11 +9,29 @@ public class Repository {
         return LibPcapLiveDeviceList.Instance.ToList();
     }
 
-    public Task<RawCapture?> Capture(LibPcapLiveDevice device, CancellationToken token) {
+    public Task<RawCapture?> CaptureAsync(LibPcapLiveDevice device, CancellationToken token) {
         return Task.Run(
             () => {
                 var status = device.GetNextPacket(out var packetCapture);
                 return status is GetPacketStatus.PacketRead ? packetCapture.GetPacket() : null;
             }, token);
+    }
+
+    public void SaveFile(string Filename, IEnumerable<RawCapture> rawCaptures) {
+        using var writer = new CaptureFileWriterDevice(Filename);
+        writer.Open();
+        foreach (var item in rawCaptures) {
+            writer.Write(item);
+        }
+    }
+
+    public IEnumerable<RawCapture> OpenFile(string Filename) {
+        using var reader = new CaptureFileReaderDevice(Filename);
+        reader.Open();
+        var result = new List<RawCapture>();
+        while (reader.GetNextPacket(out var packetCapture) == GetPacketStatus.PacketRead) {
+            result.Add(packetCapture.GetPacket());
+        }
+        return result;
     }
 }
