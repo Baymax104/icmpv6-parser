@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using HandyControl.Controls;
 using Icmpv6.Repo;
 using Icmpv6.VO;
+using Icmpv6.VO.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using SharpPcap;
 
@@ -33,7 +33,7 @@ public partial class DeviceListViewModel : ObservableRecipient {
 
     [RelayCommand]
     private void ItemShow(DeviceView item) {
-        Messenger.Send(new ValueChangedMessage<DeviceView>(item));
+        Messenger.Send(new ShowDeviceMessage(item));
     }
 
     [RelayCommand(IncludeCancelCommand = true)]
@@ -50,8 +50,7 @@ public partial class DeviceListViewModel : ObservableRecipient {
                 Statistics = GetStatisticsView(device);
                 var packet = await repo.CaptureAsync(device, token);
                 if (packet != null) {
-                    var message = new ValueChangedMessage<RawCapture>(packet);
-                    Messenger.Send(message);
+                    Messenger.Send(new PacketCaptureMessage(packet));
                 }
             }
         } catch (OperationCanceledException) {

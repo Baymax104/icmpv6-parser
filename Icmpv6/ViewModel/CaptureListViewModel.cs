@@ -3,18 +3,19 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using HandyControl.Data;
 using Icmpv6.Repo;
 using Icmpv6.VO;
+using Icmpv6.VO.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
-using SharpPcap;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Icmpv6.ViewModel;
 
-public partial class CaptureListViewModel : ObservableRecipient, IRecipient<ValueChangedMessage<RawCapture>> {
+public partial class CaptureListViewModel : 
+    ObservableRecipient, 
+    IRecipient<PacketCaptureMessage> {
 
     private readonly Repository repo = App.Current.Services.GetService<Repository>() ??
                                        throw new NullReferenceException("Repository is null.");
@@ -29,7 +30,7 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
         IsActive = true;
     }
 
-    public void Receive(ValueChangedMessage<RawCapture> message) {
+    public void Receive(PacketCaptureMessage message) {
         var view = new CaptureView(message.Value) { Id = Captures.Count + 1 };
         Captures.Add(view);
     }
@@ -87,6 +88,7 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
         if (result != null && result.Value) {
             var rawCaptures = await Task.Run(() => repo.OpenFile(dialog.FileName));
             Captures.Clear();
+            Messenger.Send(new ResetMessage());
             foreach (var rawCapture in rawCaptures) {
                 var view = new CaptureView(rawCapture) { Id = Captures.Count + 1 };
                 Captures.Add(view);
@@ -124,6 +126,6 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
 
     [RelayCommand]
     private void ItemShow(CaptureView item) {
-        Messenger.Send(new ValueChangedMessage<CaptureView>(item));
+        Messenger.Send(new ShowCaptureMessage(item));
     }
 }

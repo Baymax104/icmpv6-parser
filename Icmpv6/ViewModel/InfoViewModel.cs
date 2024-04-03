@@ -1,16 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using Icmpv6.VO;
+using Icmpv6.VO.Messages;
 using Models.Packet;
 
 namespace Icmpv6.ViewModel;
 
 public partial class InfoViewModel : 
     ObservableRecipient, 
-    IRecipient<ValueChangedMessage<DeviceView>>,
-    IRecipient<ValueChangedMessage<CaptureView>> {
+    IRecipient<ShowDeviceMessage>,
+    IRecipient<ShowCaptureMessage>,
+    IRecipient<ResetMessage> {
 
     [ObservableProperty]
     private ObservableCollection<InfoView> infos = [];
@@ -25,7 +26,7 @@ public partial class InfoViewModel :
         IsActive = true;
     }
 
-    public void Receive(ValueChangedMessage<DeviceView> message) {
+    public void Receive(ShowDeviceMessage message) {
         foreach (var info in Infos) {
             if (info.Type == InfoView.InfoType.Device && info.Device == message.Value) {
                 SelectedItem = info;
@@ -37,7 +38,7 @@ public partial class InfoViewModel :
         SelectedIndex = Infos.Count - 1;
     }
 
-    public void Receive(ValueChangedMessage<CaptureView> message) {
+    public void Receive(ShowCaptureMessage message) {
         foreach (var info in Infos) {
             if (info.Type == InfoView.InfoType.Packet && info.Packet.Id == message.Value.Id) {
                 SelectedItem = info;
@@ -52,5 +53,9 @@ public partial class InfoViewModel :
         var infoView = new InfoView(new PacketView(packet) { Id = capture.Id });
         Infos.Add(infoView);
         SelectedIndex = Infos.Count - 1;
+    }
+
+    public void Receive(ResetMessage message) {
+        Infos.Clear();
     }
 }
