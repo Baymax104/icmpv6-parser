@@ -106,7 +106,7 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
                 };
                 var result = MessageBox.Show(info);
                 if (result != MessageBoxResult.OK) {
-                    return false;
+                    return true;
                 }
                 var dialog = new SaveFileDialog {
                     FileName = "capture.pcapng",

@@ -1,51 +1,65 @@
 ﻿using System.Net;
 using Models.Field;
+using Models.Type;
 using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp.Option;
 
-internal class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
+public class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
 
+    public NdpOptionType Type {
+        get => (NdpOptionType)Header[NdpOptionField.TypePosition];
+        set => Header[NdpOptionField.TypePosition] = (byte)value;
+    }
+
+    /// <summary>
+    ///     包括Type和Length的整个选项的长度，以8B为单位
+    /// </summary>
+    public int Length {
+        get => Header[NdpOptionField.LengthPosition];
+        set => Header[NdpOptionField.LengthPosition] = (byte)value;
+    }
+    
     public byte PrefixLength {
-        get => Payload[PrefixInformationOptionField.PrefixLengthPosition];
-        set => Payload[PrefixInformationOptionField.PrefixLengthPosition] = value;
+        get => PayloadBytes[PrefixInformationOptionField.PrefixLengthPosition];
+        set => PayloadBytes[PrefixInformationOptionField.PrefixLengthPosition] = value;
     }
 
     public bool OnLink {
-        get => (Payload[PrefixInformationOptionField.LAPosition] & 0x80) != 0;
+        get => (PayloadBytes[PrefixInformationOptionField.LAPosition] & 0x80) != 0;
         set {
             if (value) {
-                Payload[PrefixInformationOptionField.LAPosition] |= 0x80;
+                PayloadBytes[PrefixInformationOptionField.LAPosition] |= 0x80;
             } else {
-                Payload[PrefixInformationOptionField.LAPosition] &= 0x7F;
+                PayloadBytes[PrefixInformationOptionField.LAPosition] &= 0x7F;
             }
         }
     }
 
     public bool AutonomousAddressConfiguration {
-        get => (Payload[PrefixInformationOptionField.LAPosition] & 0x40) != 0;
+        get => (PayloadBytes[PrefixInformationOptionField.LAPosition] & 0x40) != 0;
         set {
             if (value) {
-                Payload[PrefixInformationOptionField.LAPosition] |= 0x40;
+                PayloadBytes[PrefixInformationOptionField.LAPosition] |= 0x40;
             } else {
-                Payload[PrefixInformationOptionField.LAPosition] &= 0xBF;
+                PayloadBytes[PrefixInformationOptionField.LAPosition] &= 0xBF;
             }
         }
     }
 
     public uint ValidLifetime {
-        get => Header.ToUInt32(PrefixInformationOptionField.ValidLifetimePosition);
-        set => ByteWriter.WriteTo(Header, value, PrefixInformationOptionField.ValidLifetimePosition);
+        get => PayloadBytes.ToUInt32(PrefixInformationOptionField.ValidLifetimePosition);
+        set => ByteWriter.WriteTo(PayloadBytes, value, PrefixInformationOptionField.ValidLifetimePosition);
     }
 
     public uint PreferredLifetime {
-        get => Header.ToUInt32(PrefixInformationOptionField.PreferredLifetimePosition);
-        set => ByteWriter.WriteTo(Header, value, PrefixInformationOptionField.PreferredLifetimePosition);
+        get => PayloadBytes.ToUInt32(PrefixInformationOptionField.PreferredLifetimePosition);
+        set => ByteWriter.WriteTo(PayloadBytes, value, PrefixInformationOptionField.PreferredLifetimePosition);
     }
 
     public IPAddress Prefix {
-        get => Header.ToIp6Address(PrefixInformationOptionField.PrefixPosition);
-        set => ByteWriter.WriteTo(Header, value, PrefixInformationOptionField.PrefixPosition);
+        get => PayloadBytes.ToIp6Address(PrefixInformationOptionField.PrefixPosition);
+        set => ByteWriter.WriteTo(PayloadBytes, value, PrefixInformationOptionField.PrefixPosition);
     }
 
     public override string ToString() {

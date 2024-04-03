@@ -1,32 +1,21 @@
 ﻿using Models.Field;
-using Models.Type;
 using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp.Option;
 
-public abstract class NdpOption {
+public abstract class NdpOption : NetPacket {
 
-    protected NdpOption(ByteSegment header) {
-        Header = header;
+    protected NdpOption(ByteSegment header) : base(header) {
         Header.SegmentLength = NdpOptionField.HeaderLength;
-        Payload = Header.GetNextSegment();
+        Payload = ParsePayload();
     }
 
-    protected ByteSegment Header { get; }
-
-    protected ByteSegment Payload { get; }
-
-    public NdpOptionType Type {
-        get => (NdpOptionType)Header[NdpOptionField.TypePosition];
-        set => Header[NdpOptionField.TypePosition] = (byte)value;
+    protected new ByteSegment PayloadBytes {
+        get => Payload?.Bytes ?? throw new NullReferenceException("PayloadBytes is null.");
     }
 
-    /// <summary>
-    ///     包括Type和Length的整个选项的长度，以8B为单位
-    /// </summary>
-    public int Length {
-        get => Header[NdpOptionField.LengthPosition];
-        set => Header[NdpOptionField.LengthPosition] = (byte)value;
+    protected override sealed Payload ParsePayload() {
+        return new(Header.GetNextSegment());
     }
 
     /// <summary>
@@ -34,7 +23,8 @@ public abstract class NdpOption {
     /// </summary>
     public byte[] ActualBytes {
         get {
-            var bytesLength = Length * 8;
+            int length = Header[NdpOptionField.LengthPosition];
+            var bytesLength = length * 8;
             var bytes = new byte[bytesLength];
             Array.Copy(Header.Data, Header.Offset, bytes, 0, bytesLength);
             return bytes;

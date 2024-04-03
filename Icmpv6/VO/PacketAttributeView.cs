@@ -3,14 +3,15 @@ using System.Reflection;
 using Models.Packet;
 using Models.Packet.Icmp6;
 using Models.Packet.Icmp6.Ndp;
+using Models.Packet.Icmp6.Ndp.Option;
 
 namespace Icmpv6.VO;
 
 public record PacketAttributeView : IEnumerable<AttributeItem> {
 
-    public List<AttributeItem> Attributes { get; init; }
+    public List<AttributeItem> Attributes { get; }
 
-    public NetPacket Instance { get; init; }
+    public NetPacket Instance { get; }
 
     public string PacketName {
         get {
@@ -29,6 +30,10 @@ public record PacketAttributeView : IEnumerable<AttributeItem> {
                 ParameterProblemPacket => "Parameter Problem",
                 TimeExceededPacket => "Time Exceeded",
                 UdpPacket => "User Datagram Protocol (UDP)",
+                LinkLayerAddressOption => "Link Layer Address Option",
+                PrefixInformationOption => "Prefix Information Option",
+                MtuOption => "MTU Option",
+                RedirectedHeaderOption => "Redirected Header Option",
                 _ => "Unknown"
             };
         }
@@ -40,6 +45,10 @@ public record PacketAttributeView : IEnumerable<AttributeItem> {
         var type = instance.GetType();
         var properties = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
         foreach (var property in properties) {
+            // 跳过集合类型
+            if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType)) {
+                continue;
+            }
             var name = property.Name;
             var value = property.GetValue(instance)?.ToString() ?? string.Empty;
             Attributes.Add(new(name, value));

@@ -1,10 +1,11 @@
 ﻿using Models.Packet;
+using NdpPacket = Models.Packet.Icmp6.Ndp.NdpPacket;
 
 namespace Icmpv6.VO;
 
 public record PacketView {
     
-    public IEnumerable<PacketAttributeView> Packets { get; init; }
+    public List<PacketAttributeView> Packets { get; }
     
     public NetPacket Instance { get; init; }
     
@@ -12,7 +13,16 @@ public record PacketView {
 
     public PacketView(NetPacket instance) {
         Instance = instance;
+        Packets = [];
         var packets = NetPacket.ExtractAll(instance);
-        Packets = packets.Select(p => new PacketAttributeView(p));
+        foreach (var packet in packets) {
+            Packets.Add(new(packet));
+            if (packet is NdpPacket ndpPacket) {
+                var options = ndpPacket.Options;
+                foreach (var option in options) {
+                    Packets.Add(new(option));
+                }
+            }
+        }
     }
 }
