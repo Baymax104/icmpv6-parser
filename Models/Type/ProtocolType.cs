@@ -14,7 +14,7 @@ public enum ProtocolType : byte {
     IPv6FragmentHeader = 44,
     IPSecEncapsulatingSecurityPayload = 50,
     IPSecAuthenticationHeader = 51,
-    IcmpV6 = 58,
+    ICMPv6 = 58,
     IPv6NoNextHeader = 59,
     IPv6DestinationOptions = 60
 }

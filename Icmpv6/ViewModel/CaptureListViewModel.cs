@@ -16,8 +16,8 @@ namespace Icmpv6.ViewModel;
 
 public partial class CaptureListViewModel : ObservableRecipient, IRecipient<ValueChangedMessage<RawCapture>> {
 
-    private Repository repo = App.Current.Services.GetService<Repository>() ??
-                              throw new NullReferenceException("Repository is null.");
+    private readonly Repository repo = App.Current.Services.GetService<Repository>() ??
+                                       throw new NullReferenceException("Repository is null.");
 
     [ObservableProperty]
     private ObservableCollection<CaptureView> captures = [];
@@ -30,7 +30,7 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
     }
 
     public void Receive(ValueChangedMessage<RawCapture> message) {
-        var view = new CaptureView(message.Value) { Index = Captures.Count + 1 };
+        var view = new CaptureView(message.Value) { Id = Captures.Count + 1 };
         Captures.Add(view);
     }
 
@@ -88,7 +88,7 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
             var rawCaptures = await Task.Run(() => repo.OpenFile(dialog.FileName));
             Captures.Clear();
             foreach (var rawCapture in rawCaptures) {
-                var view = new CaptureView(rawCapture) { Index = Captures.Count + 1 };
+                var view = new CaptureView(rawCapture) { Id = Captures.Count + 1 };
                 Captures.Add(view);
             }
         }
@@ -124,6 +124,6 @@ public partial class CaptureListViewModel : ObservableRecipient, IRecipient<Valu
 
     [RelayCommand]
     private void ItemShow(CaptureView item) {
-        MessageBox.Show(item.Length.ToString());
+        Messenger.Send(new ValueChangedMessage<CaptureView>(item));
     }
 }

@@ -2,7 +2,7 @@
 
 public record InfoView {
 
-    public enum InfoViewType {
+    public enum InfoType {
         Device,
         Packet,
         None
@@ -10,7 +10,7 @@ public record InfoView {
 
     private DeviceView? device;
 
-    private string? packet;
+    private PacketView? packet;
 
     public InfoView() {
     }
@@ -19,32 +19,40 @@ public record InfoView {
         this.device = device;
     }
 
-    public InfoView(string packet) {
+    public InfoView(PacketView packet) {
         this.packet = packet;
     }
 
 
     public DeviceView Device {
-        get => device ?? new DeviceView();
+        get => device ?? throw new NotSupportedException("Device instance is null.");
         set {
             packet = null;
             device = value;
         }
     }
 
-    public string Packet {
-        get => packet ?? "";
+    public PacketView Packet {
+        get => packet ?? throw new NotSupportedException("Packet instance is null.");
+        set {
+            device = null;
+            packet = value;
+        }
     }
 
-    public InfoViewType Type {
+    public InfoType Type {
         get {
             if (device != null) {
-                return InfoViewType.Device;
+                return InfoType.Device;
             }
             if (packet != null) {
-                return InfoViewType.Packet;
+                return InfoType.Packet;
             }
-            return InfoViewType.None;
+            return InfoType.None;
         }
+    }
+
+    public override string ToString() {
+        return $"InfoView({nameof(Device)}={device}, {nameof(Packet)}={packet})";
     }
 }

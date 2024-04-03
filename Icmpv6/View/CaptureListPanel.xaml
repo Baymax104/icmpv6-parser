@@ -42,7 +42,7 @@
                     Header="No."
                     Width="*"
                     IsReadOnly="True"
-                    Binding="{Binding Index}" />
+                    Binding="{Binding Id}" />
                 <DataGridTextColumn
                     Header="Time"
                     Width="*"

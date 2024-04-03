@@ -4,11 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Icmpv6.View.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="900">
-    <Grid
-        x:Name="Root"
-        d:DataContext="{d:DesignInstance local:InfoPacketPanel}">
-        <TextBlock />
-    </Grid>
+    <hc:ScrollViewer
+        x:Name="ScrollViewer"
+        IsInertiaEnabled="True"
+        hc:ScrollViewerAttach.AutoHide="True">
+        <ItemsControl
+            x:Name="Root"
+            d:DataContext="{d:DesignInstance local:InfoPacketPanel}"
+            Background="{StaticResource Gray2}"
+            ItemsSource="{Binding Value.Packets}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Expander 
+                        Header="{Binding PacketName}"
+                        IsExpanded="True">
+                        <DataGrid
+                            x:Name="InfoGrid"
+                            AutoGenerateColumns="False"
+                            Style="{StaticResource DataGrid.Small}"
+                            ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                            ItemsSource="{Binding Attributes}"
+                            PreviewMouseWheel="DataGridPreviewMouseWheel">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Header="数据包属性"
+                                    Width="*"
+                                    CanUserResize="False"
+                                    CanUserSort="False"
+                                    CanUserReorder="False"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Property}" />
+                                <DataGridTextColumn
+                                    Header="属性值"
+                                    Width="*"
+                                    CanUserResize="False"
+                                    CanUserSort="False"
+                                    CanUserReorder="False"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Value}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Expander>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </hc:ScrollViewer>
 </UserControl>

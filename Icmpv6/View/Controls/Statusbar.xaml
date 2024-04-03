@@ -30,7 +30,7 @@
                 VerticalAlignment="Center"
                 Margin="0, 0, 10, 0">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="当前已丢失：{0}（{1}%）">
+                    <MultiBinding StringFormat="本轮已丢失：{0}（{1}%）">
                         <Binding Path="CurrentStatistics.DroppedPackets" />
                         <Binding Path="CurrentStatistics.DroppedProportion" />
                     </MultiBinding>
@@ -41,7 +41,7 @@
                 VerticalAlignment="Center"
                 Margin="0, 0, 10, 0">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="当前已捕获：{0}（{1}%）">
+                    <MultiBinding StringFormat="本轮已捕获：{0}（{1}%）">
                         <Binding Path="CurrentStatistics.CapturedPackets" />
                         <Binding Path="CurrentStatistics.CapturedProportion" />
                     </MultiBinding>

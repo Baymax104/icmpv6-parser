@@ -32,7 +32,7 @@ public record CaptureView {
         Destination = ip6Packet?.DestinationAddress.ToString() ?? "";
     }
 
-    public int Index { get; set; } = 0;
+    public int Id { get; init; }
 
     public string Timestamp { get; set; } = "";
 

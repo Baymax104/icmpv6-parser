@@ -44,7 +44,7 @@ public partial class DeviceListViewModel : ObservableRecipient {
         }
         var device = SelectedItem.Instance;
         device.Open(DeviceModes.Promiscuous);
-        device.Filter = "ip6";
+        device.Filter = "icmp6";
         try {
             while (true) {
                 Statistics = GetStatisticsView(device);

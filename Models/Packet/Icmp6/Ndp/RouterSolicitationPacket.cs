@@ -4,7 +4,7 @@ using Models.Util;
 
 namespace Models.Packet.Icmp6.Ndp;
 
-internal class RouterSolicitationPacket : NdpPacket {
+public class RouterSolicitationPacket : NdpPacket {
 
     public RouterSolicitationPacket(ByteSegment data) : base(data) {
         Header.SegmentLength = NdpField.RSHeaderLength;

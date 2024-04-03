@@ -86,5 +86,4 @@ public record DeviceView {
         }
     }
 
-    public record AttributeItem(string Property, string Value);
 }

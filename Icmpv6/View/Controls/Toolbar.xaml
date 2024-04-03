@@ -17,7 +17,6 @@
             <Setter Property="Padding" Value="5" />
             <Setter Property="Cursor" Value="Hand" />
         </Style>
-        <local:VisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
 
     <Border
@@ -86,16 +85,16 @@
                 <ic:PackIconMaterial Kind="File" />
             </Button>
             <Separator Margin="10, 0" Width="2"
-                       Visibility="{Binding IsRunning, Converter={StaticResource VisibilityConverter}}" />
+                       Visibility="{Binding IsRunning, Converter={StaticResource Boolean2VisibilityConverter}}" />
             <hc:SimpleText
                 Text="正在捕获"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
-                Visibility="{Binding IsRunning, Converter={StaticResource VisibilityConverter}}" />
+                Visibility="{Binding IsRunning, Converter={StaticResource Boolean2VisibilityConverter}}" />
             <hc:LoadingLine
                 Width="100"
                 Margin="10, 0, 0, 0"
-                Visibility="{Binding IsRunning, Converter={StaticResource VisibilityConverter}}"
+                Visibility="{Binding IsRunning, Converter={StaticResource Boolean2VisibilityConverter}}"
                 IsRunning="{Binding IsRunning}" />
         </ToolBar>
     </Border>

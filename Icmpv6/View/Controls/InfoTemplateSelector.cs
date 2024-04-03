@@ -13,8 +13,8 @@ public class InfoTemplateSelector : DataTemplateSelector {
     public override DataTemplate? SelectTemplate(object? obj, DependencyObject container) {
         if (obj is InfoView item) {
             var template = item.Type switch {
-                InfoView.InfoViewType.Device => DeviceTemplate,
-                InfoView.InfoViewType.Packet => PacketTemplate,
+                InfoView.InfoType.Device => DeviceTemplate,
+                InfoView.InfoType.Packet => PacketTemplate,
                 _ => null
             };
             if (template is not null) {

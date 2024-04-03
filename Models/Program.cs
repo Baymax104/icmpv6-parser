@@ -1,4 +1,5 @@
-﻿using Models.Packet;
+﻿using System.Reflection;
+using Models.Packet;
 using Models.Packet.Icmp6.Ndp;
 using SharpPcap;
 using SharpPcap.LibPcap;
@@ -8,43 +9,29 @@ namespace Models;
 internal static class Program {
 
     private static void Main() {
-        var list = LibPcapLiveDeviceList.Instance;
-        foreach (var d in list) Console.WriteLine(d);
-        // Read();
+        // var list = LibPcapLiveDeviceList.Instance;
+        // foreach (var d in list) Console.WriteLine(d);
+        Read();
         // Write();
     }
 
     private static void Read() {
-        CaptureFileReaderDevice reader = new("time_exceeded.pcapng");
+        CaptureFileReaderDevice reader = new("echo.pcapng");
         reader.OnPacketArrival += (sender, capture) => {
             var packet = NetPacket.ParsePacket(capture.GetPacket());
-            var neighbor = packet.Extract<NeighborAdvertisementPacket>();
-            Console.WriteLine(neighbor);
-            // if (packet is not EtherPacket ethernet) {
-            //     return;
-            // }
-            // Console.WriteLine("\n----------Ethernet----------");
-            // Console.WriteLine(ethernet);
-            // if (ethernet.PayloadPacket is not Ip6Packet ipv6) {
-            //     return;
-            // }
-            // Console.WriteLine("----------IPv6----------");
-            // Console.WriteLine(ipv6);
-            // // ipv6.PayloadLength = 20;
-            // // Console.WriteLine(ipv6);
-            // if (ipv6.PayloadPacket is not Icmp6Packet icmp6) {
-            //     return;
-            // }
-            // Console.WriteLine("----------ICMPv6----------");
-            // Console.WriteLine(icmp6);
-            // Console.WriteLine($"----------{icmp6.PayloadPacket?.GetType().Name}----------");
-            // Console.WriteLine(icmp6.PayloadPacket);
-            // Console.WriteLine(icmp6.PayloadPacket?.PayloadPacket);
-            // Console.WriteLine(icmp6.PayloadPacket?.PayloadPacket?.PayloadPacket);
+            var list = NetPacket.ExtractAll(packet);
+            foreach (var p in list) {
+                var type = p.GetType();
+                var properties = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                foreach (var property in properties) {
+                    Console.WriteLine($"{property.Name} -- {property.GetValue(p)}");
+                }
+            }
+
         };
         reader.Open();
         reader.StartCapture();
-        Console.ReadLine();
+        Console.ReadKey();
         reader.StopCapture();
         reader.Close();
     }
