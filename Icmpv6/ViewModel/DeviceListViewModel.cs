@@ -23,6 +23,10 @@ public partial class DeviceListViewModel : ObservableRecipient {
     private DeviceView? selectedItem;
 
     [ObservableProperty]
+    [NotifyPropertyChangedRecipients]
+    private DeviceView? currentCaptureDevice;
+
+    [ObservableProperty]
     private StatisticsView statistics = new();
 
     public DeviceListViewModel() {
@@ -42,7 +46,8 @@ public partial class DeviceListViewModel : ObservableRecipient {
             Growl.Warning("当前未选择设备");
             return;
         }
-        var device = SelectedItem.Instance;
+        CurrentCaptureDevice = SelectedItem;
+        var device = CurrentCaptureDevice.Instance;
         device.Open(DeviceModes.Promiscuous);
         device.Filter = "icmp6";
         try {
@@ -57,6 +62,7 @@ public partial class DeviceListViewModel : ObservableRecipient {
             // Ignored
         } finally {
             device.Close();
+            CurrentCaptureDevice = null;
         }
     }
 

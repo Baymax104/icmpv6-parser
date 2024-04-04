@@ -7,6 +7,7 @@
              xmlns:vo="clr-namespace:Icmpv6.VO"
              xmlns:vm="clr-namespace:Icmpv6.ViewModel"
              xmlns:controls="clr-namespace:Icmpv6.View.Controls"
+             xmlns:util="clr-namespace:Icmpv6.Util"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="900">
 
@@ -27,11 +28,11 @@
             <controls:InfoPacketPanel Value="{Binding Packet}"/>
         </DataTemplate>
 
-        <controls:InfoTemplateSelector
+        <util:InfoTemplateSelector
             x:Key="InfoHeaderTemplateSelector"
             DeviceTemplate="{StaticResource DeviceHeaderTemplate}"
             PacketTemplate="{StaticResource PacketHeaderTemplate}" />
-        <controls:InfoTemplateSelector
+        <util:InfoTemplateSelector
             x:Key="InfoContentTemplateSelector"
             DeviceTemplate="{StaticResource DeviceContentTemplate}"
             PacketTemplate="{StaticResource PacketContentTemplate}" />

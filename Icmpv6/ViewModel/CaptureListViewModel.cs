@@ -3,6 +3,8 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using HandyControl.Controls;
 using HandyControl.Data;
 using Icmpv6.Repo;
 using Icmpv6.VO;
@@ -15,7 +17,8 @@ namespace Icmpv6.ViewModel;
 
 public partial class CaptureListViewModel : 
     ObservableRecipient, 
-    IRecipient<PacketCaptureMessage> {
+    IRecipient<PacketCaptureMessage>,
+    IRecipient<PropertyChangedMessage<DeviceView?>> {
 
     private readonly Repository repo = App.Current.Services.GetService<Repository>() ??
                                        throw new NullReferenceException("Repository is null.");
@@ -25,6 +28,12 @@ public partial class CaptureListViewModel :
 
     [ObservableProperty]
     private int selectedIndex = -1;
+
+    [ObservableProperty]
+    private bool isCapturing;
+
+    [ObservableProperty]
+    private string captureDeviceName = "数据包捕获列表";
 
     public CaptureListViewModel() {
         IsActive = true;
@@ -73,19 +82,32 @@ public partial class CaptureListViewModel :
         if (result != null && result.Value) {
             var rawCaptures = Captures.Select(v => v.Instance);
             await Task.Run(() => repo.SaveFile(dialog.FileName, rawCaptures));
+            Growl.Success("保存成功");
         }
     }
 
     [RelayCommand]
     private async Task OpenFile() {
         if (Captures.Count > 0) {
-            if (!await SaveBeforeOpenFile()) {
-                return;
+            var info = new MessageBoxInfo() {
+                Message = "打开文件会覆盖捕获列表，是否保存当前捕获列表？",
+                Caption = "ICMPv6协议分析器",
+                Button = MessageBoxButton.OKCancel,
+                IconKey = ResourceToken.WarningGeometry,
+                IconBrushKey = ResourceToken.WarningBrush
+            };
+            if (MessageBox.Show(info) == MessageBoxResult.OK) {
+                if (await SaveBeforeOpenFile()) {
+                    Growl.Success("保存成功，正在打开文件...");
+                } else {
+                    Growl.Info("保存操作取消，正在打开文件...");
+                }
+                await Task.Delay(500);
             }
         }
         var dialog = new OpenFileDialog() { Filter = "Capture Files (*.pcapng, *.pcap)|*.pcapng;*.pcap" };
-        var result = dialog.ShowDialog();
-        if (result != null && result.Value) {
+        var openResult = dialog.ShowDialog();
+        if (openResult != null && openResult.Value) {
             var rawCaptures = await Task.Run(() => repo.OpenFile(dialog.FileName));
             Captures.Clear();
             Messenger.Send(new ResetMessage());
@@ -93,23 +115,13 @@ public partial class CaptureListViewModel :
                 var view = new CaptureView(rawCapture) { Id = Captures.Count + 1 };
                 Captures.Add(view);
             }
+            Growl.Success("打开文件成功");
         }
     }
 
     private Task<bool> SaveBeforeOpenFile() {
         return Task.Run(
             () => {
-                var info = new MessageBoxInfo() {
-                    Message = "打开文件会覆盖捕获列表，是否保存当前捕获列表？",
-                    Caption = "ICMPv6协议分析器",
-                    Button = MessageBoxButton.OKCancel,
-                    IconKey = ResourceToken.WarningGeometry,
-                    IconBrushKey = ResourceToken.WarningBrush
-                };
-                var result = MessageBox.Show(info);
-                if (result != MessageBoxResult.OK) {
-                    return true;
-                }
                 var dialog = new SaveFileDialog {
                     FileName = "capture.pcapng",
                     Filter = "Capture Files (*.pcapng, *.pcap)|*.pcapng;*.pcap",
@@ -127,5 +139,11 @@ public partial class CaptureListViewModel :
     [RelayCommand]
     private void ItemShow(CaptureView item) {
         Messenger.Send(new ShowCaptureMessage(item));
+    }
+
+    public void Receive(PropertyChangedMessage<DeviceView?> message) {
+        var device = message.NewValue;
+        IsCapturing = device != null;
+        CaptureDeviceName = device != null ? $"{device.Name} 正在捕获中" : "数据包捕获列表";
     }
 }

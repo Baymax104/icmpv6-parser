@@ -26,7 +26,6 @@
                 Grid.Row="0"
                 StartCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand}"
                 StopCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCancelCommand}"
-                IsRunning="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand.IsRunning}"
                 SelectPreviousCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectPreviousCommand}"
                 SelectNextCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectNextCommand}"
                 SelectFirstCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectFirstCommand}"

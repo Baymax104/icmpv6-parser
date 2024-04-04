@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Icmpv6.VO;
 
-namespace Icmpv6.View.Controls;
+namespace Icmpv6.Util;
 
 public class InfoTemplateSelector : DataTemplateSelector {
 

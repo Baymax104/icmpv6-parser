@@ -42,12 +42,6 @@ public partial class Toolbar : UserControl {
             typeof(ICommand),
             typeof(Toolbar));
 
-    public static readonly DependencyProperty IsRunningProperty =
-        DependencyProperty.Register(
-            nameof(IsRunning),
-            typeof(bool),
-            typeof(Toolbar));
-
     public static readonly DependencyProperty SaveFileCommandProperty =
         DependencyProperty.Register(
             nameof(SaveFileCommand),
@@ -93,11 +87,6 @@ public partial class Toolbar : UserControl {
     public ICommand SelectLastCommand {
         get => (ICommand)GetValue(SelectLastCommandProperty);
         set => SetValue(SelectLastCommandProperty, value);
-    }
-
-    public bool IsRunning {
-        get => (bool)GetValue(IsRunningProperty);
-        set => SetValue(IsRunningProperty, value);
     }
 
     public ICommand SaveFileCommand {

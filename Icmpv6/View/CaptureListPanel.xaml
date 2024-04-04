@@ -16,9 +16,18 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource Gray3}">
-            <hc:SimplePanel Background="{StaticResource Gray1}">
-                <hc:SimpleText Text="捕获数据包列表" Margin="7" FontWeight="Bold" />
-            </hc:SimplePanel>
+            <StackPanel 
+                Orientation="Horizontal"
+                Background="{StaticResource Gray1}">
+                <hc:SimpleText 
+                    Text="{Binding CaptureDeviceName}" 
+                    Margin="7" 
+                    FontWeight="Bold" />
+                <hc:LoadingLine 
+                    Width="100" 
+                    IsRunning="{Binding IsCapturing}"
+                    Visibility="{Binding IsCapturing, Converter={StaticResource Boolean2VisibilityConverter}}"/>
+            </StackPanel>
         </Border>
 
         <DataGrid
