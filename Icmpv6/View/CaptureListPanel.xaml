@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:vm="clr-namespace:Icmpv6.ViewModel"
+             xmlns:controls="clr-namespace:Icmpv6.View.Controls"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900">
     <Grid
@@ -16,64 +17,71 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource Gray3}">
-            <StackPanel 
+            <StackPanel
                 Orientation="Horizontal"
                 Background="{StaticResource Gray1}">
-                <hc:SimpleText 
-                    Text="{Binding CaptureDeviceName}" 
-                    Margin="7" 
+                <hc:SimpleText
+                    Text="{Binding CaptureDeviceName}"
+                    Margin="7"
                     FontWeight="Bold" />
-                <hc:LoadingLine 
-                    Width="100" 
+                <hc:LoadingLine
+                    Width="100"
                     IsRunning="{Binding IsCapturing}"
-                    Visibility="{Binding IsCapturing, Converter={StaticResource Boolean2VisibilityConverter}}"/>
+                    Visibility="{Binding IsCapturing, Converter={StaticResource Boolean2VisibilityConverter}}" />
             </StackPanel>
         </Border>
 
-        <DataGrid
-            Grid.Row="1"
-            x:Name="CaptureList"
-            SelectedIndex="{Binding SelectedIndex}"
-            AutoGenerateColumns="False"
-            CanUserReorderColumns="False"
-            Style="{DynamicResource DataGrid.Small}"
-            ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-            ItemsSource="{Binding Captures}"
-            Background="{StaticResource Gray2}">
-            <hc:Interaction.Triggers>
-                <hc:EventTrigger EventName="MouseDoubleClick">
-                    <hc:InvokeCommandAction
-                        Command="{Binding ItemShowCommand}"
-                        CommandParameter="{Binding ElementName=CaptureList, Path=SelectedItem}" />
-                </hc:EventTrigger>
-            </hc:Interaction.Triggers>
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Header="No."
-                    Width="*"
-                    IsReadOnly="True"
-                    Binding="{Binding Id}" />
-                <DataGridTextColumn
-                    Header="Time"
-                    Width="*"
-                    IsReadOnly="True"
-                    Binding="{Binding Timestamp}" />
-                <DataGridTextColumn
-                    Header="Source"
-                    Width="*"
-                    IsReadOnly="True"
-                    Binding="{Binding Source}" />
-                <DataGridTextColumn
-                    Header="Destination"
-                    Width="*"
-                    IsReadOnly="True"
-                    Binding="{Binding Destination}" />
-                <DataGridTextColumn
-                    Header="Length"
-                    Width="*"
-                    IsReadOnly="True"
-                    Binding="{Binding Length}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <hc:SimplePanel Grid.Row="1">
+            <DataGrid
+                x:Name="CaptureList"
+                SelectedIndex="{Binding SelectedIndex}"
+                AutoGenerateColumns="False"
+                CanUserReorderColumns="False"
+                Style="{DynamicResource DataGrid.Small}"
+                ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                ItemsSource="{Binding Captures}"
+                Background="{StaticResource Gray2}">
+                <hc:Interaction.Triggers>
+                    <hc:EventTrigger EventName="MouseDoubleClick">
+                        <hc:InvokeCommandAction
+                            Command="{Binding ItemShowCommand}"
+                            CommandParameter="{Binding ElementName=CaptureList, Path=SelectedItem}" />
+                    </hc:EventTrigger>
+                </hc:Interaction.Triggers>
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Header="No."
+                        Width="*"
+                        IsReadOnly="True"
+                        Binding="{Binding Id}" />
+                    <DataGridTextColumn
+                        Header="Time"
+                        Width="*"
+                        IsReadOnly="True"
+                        Binding="{Binding Timestamp}" />
+                    <DataGridTextColumn
+                        Header="Source"
+                        Width="*"
+                        IsReadOnly="True"
+                        Binding="{Binding Source}" />
+                    <DataGridTextColumn
+                        Header="Destination"
+                        Width="*"
+                        IsReadOnly="True"
+                        Binding="{Binding Destination}" />
+                    <DataGridTextColumn
+                        Header="Length"
+                        Width="*"
+                        IsReadOnly="True"
+                        Binding="{Binding Length}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <controls:LoadMaskPanel
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                IsLoading="{Binding IsCaptureLoading}"/>
+        </hc:SimplePanel>
+
     </Grid>
 </UserControl>

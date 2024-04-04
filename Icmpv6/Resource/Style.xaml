@@ -17,4 +17,24 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="FadeInHalfStyle" TargetType="FrameworkElement">
+        <Style.Triggers>
+            <Trigger Property="IsVisible" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity"
+                                Duration="0:0:0.5"
+                                BeginTime="0:0:0"
+                                From="0"
+                                To="0.5" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

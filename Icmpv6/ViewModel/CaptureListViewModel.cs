@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -35,8 +36,12 @@ public partial class CaptureListViewModel :
     [ObservableProperty]
     private string captureDeviceName = "数据包捕获列表";
 
+    [ObservableProperty]
+    private bool isCaptureLoading;
+
     public CaptureListViewModel() {
         IsActive = true;
+        Captures.CollectionChanged += OnCaptureCollectionChanged;
     }
 
     public void Receive(PacketCaptureMessage message) {
@@ -44,6 +49,14 @@ public partial class CaptureListViewModel :
         Captures.Add(view);
     }
 
+    partial void OnIsCapturingChanged(bool value) {
+        IsCaptureLoading = value && Captures.Count == 0;
+    }
+
+    private void OnCaptureCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args) {
+        IsCaptureLoading = IsCapturing && Captures.Count == 0;
+    }
+    
     [RelayCommand]
     private void SelectPrevious() {
         if (SelectedIndex > 0) {
