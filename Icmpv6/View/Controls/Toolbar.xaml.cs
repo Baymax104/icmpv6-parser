@@ -53,6 +53,12 @@ public partial class Toolbar : UserControl {
             nameof(OpenFileCommand),
             typeof(ICommand),
             typeof(Toolbar));
+    
+    public static readonly DependencyProperty ClearCaptureCommandProperty =
+        DependencyProperty.Register(
+            nameof(ClearCaptureCommand),
+            typeof(ICommand),
+            typeof(Toolbar));
 
     public Toolbar() {
         InitializeComponent();
@@ -97,5 +103,10 @@ public partial class Toolbar : UserControl {
     public ICommand OpenFileCommand {
         get => (ICommand)GetValue(OpenFileCommandProperty);
         set => SetValue(OpenFileCommandProperty, value);
+    }
+
+    public ICommand ClearCaptureCommand {
+        get => (ICommand)GetValue(ClearCaptureCommandProperty);
+        set => SetValue(ClearCaptureCommandProperty, value);
     }
 }

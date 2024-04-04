@@ -31,7 +31,8 @@
                 SelectFirstCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectFirstCommand}"
                 SelectLastCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectLastCommand}"
                 SaveFileCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SaveFileCommand}"
-                OpenFileCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.OpenFileCommand}" />
+                OpenFileCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.OpenFileCommand}"
+                ClearCaptureCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.ClearCaptureCommand}"/>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>

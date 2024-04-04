@@ -73,6 +73,14 @@
                 Command="{Binding OpenFileCommand}">
                 <ic:PackIconMaterial Kind="File" />
             </Button>
+            <Separator Margin="10, 0" Width="2" />
+            <Button
+                Style="{StaticResource ToolbarButton}"
+                Foreground="{StaticResource DarkDangerBrush}"
+                ToolTip="清空捕获"
+                Command="{Binding ClearCaptureCommand}">
+                <ic:PackIconFontAwesome Kind="TrashSolid" />
+            </Button>
         </ToolBar>
     </Border>
 </UserControl>

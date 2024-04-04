@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -31,6 +30,10 @@ public partial class CaptureListViewModel :
     private int selectedIndex = -1;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ClearCaptureCommand))]
+    private bool hasCaptures;
+
+    [ObservableProperty]
     private bool isCapturing;
 
     [ObservableProperty]
@@ -41,7 +44,7 @@ public partial class CaptureListViewModel :
 
     public CaptureListViewModel() {
         IsActive = true;
-        Captures.CollectionChanged += OnCaptureCollectionChanged;
+        Captures.CollectionChanged += (_, _) => HasCaptures = Captures.Count != 0;
     }
 
     public void Receive(PacketCaptureMessage message) {
@@ -50,13 +53,13 @@ public partial class CaptureListViewModel :
     }
 
     partial void OnIsCapturingChanged(bool value) {
-        IsCaptureLoading = value && Captures.Count == 0;
+        IsCaptureLoading = value && !HasCaptures;
     }
 
-    private void OnCaptureCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args) {
-        IsCaptureLoading = IsCapturing && Captures.Count == 0;
+    partial void OnHasCapturesChanged(bool value) {
+        IsCaptureLoading = !value && IsCapturing;
     }
-    
+
     [RelayCommand]
     private void SelectPrevious() {
         if (SelectedIndex > 0) {
@@ -158,5 +161,19 @@ public partial class CaptureListViewModel :
         var device = message.NewValue;
         IsCapturing = device != null;
         CaptureDeviceName = device != null ? $"{device.Name} 正在捕获中" : "数据包捕获列表";
+    }
+
+    [RelayCommand(CanExecute = nameof(HasCaptures))]
+    private void ClearCapture() {
+        var info = new MessageBoxInfo() {
+            Message = "确认清空当前捕获数据包吗？",
+            Caption = "ICMPv6协议分析器",
+            Button = MessageBoxButton.OKCancel,
+            IconKey = ResourceToken.WarningGeometry,
+            IconBrushKey = ResourceToken.WarningBrush
+        };
+        if (MessageBox.Show(info) == MessageBoxResult.OK) {
+            Captures.Clear();
+        }
     }
 }
