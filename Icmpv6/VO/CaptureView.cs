@@ -25,11 +25,12 @@ public record CaptureView {
     public CaptureView(RawCapture instance) {
         this.instance = instance;
         Length = instance.PacketLength;
-        Timestamp = instance.Timeval.Date.ToShortTimeString();
+        Timestamp = instance.Timeval.Date.ToLongTimeString();
         var packet = NetPacket.ParsePacket(instance);
         var ip6Packet = packet.Extract<Ip6Packet>();
         Source = ip6Packet?.SourceAddress.ToString() ?? "";
         Destination = ip6Packet?.DestinationAddress.ToString() ?? "";
+        Protocol = ip6Packet?.NextHeader.ToString() ?? "";
     }
 
     public int Id { get; init; }
@@ -41,4 +42,6 @@ public record CaptureView {
     public string Destination { get; set; } = "";
 
     public int Length { get; set; }
+
+    public string Protocol { get; set; } = "";
 }

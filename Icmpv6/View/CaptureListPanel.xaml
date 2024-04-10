@@ -51,36 +51,50 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Header="No."
-                        Width="*"
+                        Width="0.3*"
+                        MinWidth="50"
                         IsReadOnly="True"
                         Binding="{Binding Id}" />
                     <DataGridTextColumn
                         Header="Time"
-                        Width="*"
+                        Width="0.5*"
+                        MinWidth="50"
                         IsReadOnly="True"
                         Binding="{Binding Timestamp}" />
                     <DataGridTextColumn
+                        Header="Length"
+                        Width="0.5*"
+                        MinWidth="50"
+                        IsReadOnly="True"
+                        Binding="{Binding Length}" />
+                    <DataGridTextColumn
+                        Header="Protocol"
+                        Width="0.5*"
+                        MinWidth="50"
+                        IsReadOnly="True"
+                        CanUserSort="False"
+                        Binding="{Binding Protocol}" />
+                    <DataGridTextColumn
                         Header="Source"
                         Width="*"
+                        MinWidth="50"
                         IsReadOnly="True"
+                        CanUserSort="False"
                         Binding="{Binding Source}" />
                     <DataGridTextColumn
                         Header="Destination"
                         Width="*"
+                        MinWidth="50"
                         IsReadOnly="True"
+                        CanUserSort="False"
                         Binding="{Binding Destination}" />
-                    <DataGridTextColumn
-                        Header="Length"
-                        Width="*"
-                        IsReadOnly="True"
-                        Binding="{Binding Length}" />
                 </DataGrid.Columns>
             </DataGrid>
-            
+
             <controls:LoadMaskPanel
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch"
-                IsLoading="{Binding IsCaptureLoading}"/>
+                IsLoading="{Binding IsCaptureLoading}" />
         </hc:SimplePanel>
 
     </Grid>

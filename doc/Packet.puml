@@ -1,0 +1,17 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+hide empty member
+skinparam dpi 200
+
+left to right direction
+
+class EthernetPacket {
+    + DestinationMacAddress
+    + SourceMacAddress
+    + Type
+}
+
+
+
+@enduml

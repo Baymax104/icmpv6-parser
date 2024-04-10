@@ -1,0 +1,90 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+hide empty member
+skinparam dpi 300
+skinparam linetype ortho
+'skinparam linetype polyline
+'left to right direction
+
+abstract class NetPacket {
+    # header
+    # payload
+    # parsePayload()
+}
+
+class Ethernet extends NetPacket {
+    + source
+    + destination
+    + type
+}
+class IPv6 extends NetPacket {
+    + source
+    + destination
+    + version
+    + trafficClass
+    + flowLabel
+    + payloadLength
+    + nextHeader
+    + hopLimit
+}
+class ICMPv6 extends NetPacket {
+    + type
+    + code
+    + checksum
+}
+abstract class NDP extends NetPacket {
+    # options
+    # parseOptions()
+    
+}
+class 回显应答 extends NetPacket {
+    + identifier
+    + sequenceNumber
+    + data
+}
+class 回显请求 extends NetPacket {
+    + identifier
+    + sequenceNumber
+    + data
+}
+class 目的不可达 extends NetPacket
+class 超时 extends NetPacket
+class 参数错误 extends NetPacket
+class 包太大 extends NetPacket
+
+'NetPacket .[hidden] Ethernet
+Ethernet o- IPv6
+IPv6 o- ICMPv6
+ICMPv6 o-- 回显应答
+ICMPv6 o-- 回显请求
+ICMPv6 o-- 目的不可达
+ICMPv6 o-- 超时
+ICMPv6 o-- 参数错误
+ICMPv6 o-- 包太大
+ICMPv6 o-- NDP
+
+class 邻居请求 extends NDP {
+    + targetAddress
+}
+
+class 邻居通告 extends NDP {
+    + router
+    + solicited
+    + override
+    + targetAddress
+}
+
+class 路由请求 extends NDP
+
+class 路由通告 extends NDP {
+    + curHopLimit
+    + managedAddressConfiguration
+    + otherConfiguration
+    + routerLifetime
+    + reachableTime
+    + retransmitTimer
+}
+
+
+@enduml
