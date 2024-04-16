@@ -173,6 +173,7 @@ public partial class CaptureListViewModel :
             IconBrushKey = ResourceToken.WarningBrush
         };
         if (MessageBox.Show(info) == MessageBoxResult.OK) {
+            Messenger.Send(new ResetMessage());
             Captures.Clear();
         }
     }

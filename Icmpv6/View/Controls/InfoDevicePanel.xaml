@@ -59,23 +59,27 @@
                             Width="*"
                             MinWidth="100"
                             IsReadOnly="True"
+                            CanUserSort="False"
                             Binding="{Binding Address}" />
                         <DataGridTextColumn
                             Header="类型"
                             Width="0.3*"
                             MinWidth="100"
+                            CanUserSort="False"
                             IsReadOnly="True"
                             Binding="{Binding Type}" />
                         <DataGridTextColumn
                             Header="子网掩码"
                             Width="*"
                             MinWidth="100"
+                            CanUserSort="False"
                             IsReadOnly="True"
                             Binding="{Binding Netmask}" />
                         <DataGridTextColumn
                             Header="广播地址"
                             Width="*"
                             MinWidth="100"
+                            CanUserSort="False"
                             IsReadOnly="True"
                             Binding="{Binding Broadcast}" />
                     </DataGrid.Columns>

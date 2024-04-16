@@ -13,12 +13,12 @@ abstract class NetPacket {
     # parsePayload()
 }
 
-class Ethernet extends NetPacket {
+class EtherPacket extends NetPacket {
     + source
     + destination
     + type
 }
-class IPv6 extends NetPacket {
+class Ip6Packet extends NetPacket {
     + source
     + destination
     + version
@@ -28,56 +28,62 @@ class IPv6 extends NetPacket {
     + nextHeader
     + hopLimit
 }
-class ICMPv6 extends NetPacket {
+class UdpPacket extends NetPacket {
+    + SourcePort
+    + DestinationPort
+    + Length
+    + Checksum
+}
+class Icmp6Packet extends NetPacket {
     + type
     + code
     + checksum
 }
-abstract class NDP extends NetPacket {
+abstract class NdpPacket extends NetPacket {
     # options
     # parseOptions()
-    
+    # WriteOptions()
 }
-class 回显应答 extends NetPacket {
+class EchoReplyPacket extends NetPacket {
     + identifier
     + sequenceNumber
     + data
 }
-class 回显请求 extends NetPacket {
+class EchoRequestPacket extends NetPacket {
     + identifier
     + sequenceNumber
     + data
 }
-class 目的不可达 extends NetPacket
-class 超时 extends NetPacket
-class 参数错误 extends NetPacket
-class 包太大 extends NetPacket
+class DestinationUnreachablePacket extends NetPacket
+class TimeExceededPacket extends NetPacket
+class ParameterProblemPacket extends NetPacket
+class PacketTooBigPacket extends NetPacket
 
-'NetPacket .[hidden] Ethernet
-Ethernet o- IPv6
-IPv6 o- ICMPv6
-ICMPv6 o-- 回显应答
-ICMPv6 o-- 回显请求
-ICMPv6 o-- 目的不可达
-ICMPv6 o-- 超时
-ICMPv6 o-- 参数错误
-ICMPv6 o-- 包太大
-ICMPv6 o-- NDP
+EtherPacket o-- Ip6Packet
+Ip6Packet o-- Icmp6Packet
+Ip6Packet o-- UdpPacket
+Icmp6Packet o-- EchoReplyPacket
+Icmp6Packet o-- EchoRequestPacket
+Icmp6Packet o-- DestinationUnreachablePacket
+Icmp6Packet o-- TimeExceededPacket
+Icmp6Packet o-- ParameterProblemPacket
+Icmp6Packet o-- PacketTooBigPacket
+Icmp6Packet o-- NdpPacket
 
-class 邻居请求 extends NDP {
+class NeighborSolicitationPacket extends NdpPacket {
     + targetAddress
 }
 
-class 邻居通告 extends NDP {
+class NeighborAdvertisementPacket extends NdpPacket {
     + router
     + solicited
     + override
     + targetAddress
 }
 
-class 路由请求 extends NDP
+class RouterSolicitationPacket extends NdpPacket
 
-class 路由通告 extends NDP {
+class RouterAdvertisementPacket extends NdpPacket {
     + curHopLimit
     + managedAddressConfiguration
     + otherConfiguration

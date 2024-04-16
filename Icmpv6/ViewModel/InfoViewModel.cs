@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using HandyControl.Controls;
 using Icmpv6.VO;
 using Icmpv6.VO.Messages;
 using Models.Packet;
@@ -39,14 +40,14 @@ public partial class InfoViewModel :
     }
 
     public void Receive(ShowCaptureMessage message) {
+        if (!message.Value.HasInstance) {
+            return;
+        }
         foreach (var info in Infos) {
             if (info.Type == InfoView.InfoType.Packet && info.Packet.Id == message.Value.Id) {
                 SelectedItem = info;
                 return;
             }
-        }
-        if (!message.Value.HasInstance) {
-            return;
         }
         var capture = message.Value;
         var packet = NetPacket.ParsePacket(capture.Instance);
@@ -56,6 +57,11 @@ public partial class InfoViewModel :
     }
 
     public void Receive(ResetMessage message) {
-        Infos.Clear();
+        for (var i = Infos.Count - 1; i >= 0; i--) {
+            if (Infos[i].Type == InfoView.InfoType.Packet) {
+                Infos.RemoveAt(i);
+            }
+        }
+        Growl.Success("清空成功");
     }
 }
