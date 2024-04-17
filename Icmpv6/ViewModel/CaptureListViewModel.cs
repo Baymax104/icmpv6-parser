@@ -11,13 +11,13 @@ using Icmpv6.VO;
 using Icmpv6.VO.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using SharpPcap;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Icmpv6.ViewModel;
 
 public partial class CaptureListViewModel : 
     ObservableRecipient, 
-    IRecipient<PacketCaptureMessage>,
     IRecipient<PropertyChangedMessage<DeviceView?>> {
 
     private readonly Repository repo = App.Current.Services.GetService<Repository>() ??
@@ -27,7 +27,16 @@ public partial class CaptureListViewModel :
     private ObservableCollection<CaptureView> captures = [];
 
     [ObservableProperty]
-    private int selectedIndex = -1;
+    private int selectedCaptureIndex = -1;
+
+    [ObservableProperty]
+    private DeviceView? selectedDevice;
+
+    [ObservableProperty]
+    private DeviceView? currentCaptureDevice;
+    
+    [ObservableProperty]
+    private StatisticsView statistics = new();
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ClearCaptureCommand))]
@@ -47,46 +56,118 @@ public partial class CaptureListViewModel :
         Captures.CollectionChanged += (_, _) => HasCaptures = Captures.Count != 0;
     }
 
-    public void Receive(PacketCaptureMessage message) {
-        var view = new CaptureView(message.Value) { Id = Captures.Count + 1 };
-        Captures.Add(view);
+    public void Receive(PropertyChangedMessage<DeviceView?> message) {
+        SelectedDevice = message.NewValue;
     }
 
-    partial void OnIsCapturingChanged(bool value) {
-        IsCaptureLoading = value && !HasCaptures;
+    partial void OnCurrentCaptureDeviceChanged(DeviceView? value) {
+        IsCapturing = value != null;
+        IsCaptureLoading = IsCapturing && !HasCaptures;
+        CaptureDeviceName = value != null ? $"{value.Name} 正在捕获中" : "数据包捕获列表";
     }
 
     partial void OnHasCapturesChanged(bool value) {
         IsCaptureLoading = !value && IsCapturing;
     }
+    
+    [RelayCommand]
+    private void ItemShow(CaptureView item) {
+        Messenger.Send(new ShowCaptureMessage(item));
+    }
+
+    #region 数据包捕获命令
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task CaptureAsync(CancellationToken token) {
+        if (SelectedDevice == null || !SelectedDevice.HasInstance) {
+            Growl.Warning("当前未选择设备");
+            return;
+        }
+        CurrentCaptureDevice = SelectedDevice;
+        var device = CurrentCaptureDevice.Instance;
+        device.Open(DeviceModes.Promiscuous);
+        device.Filter = "icmp6";
+        try {
+            while (true) {
+                Statistics = GetStatisticsView(device);
+                var packet = await repo.CaptureAsync(device, token);
+                if (packet != null) {
+                    var view = new CaptureView(packet) { Id = Captures.Count + 1 };
+                    Captures.Add(view);
+                }
+            }
+        } catch (OperationCanceledException) {
+            // Ignored
+        } finally {
+            device.Close();
+            CurrentCaptureDevice = null;
+        }
+    }
+
+    private StatisticsView GetStatisticsView(ICaptureDevice device) {
+        var captured = device.Statistics.ReceivedPackets;
+        var dropped = device.Statistics.DroppedPackets;
+        var capturedProportion = (uint)(captured * 1.0 / (captured + dropped) * 100);
+        var droppedProportion = (uint)(dropped * 1.0 / (captured + dropped) * 100);
+        return new() {
+            CapturedPackets = captured,
+            DroppedPackets = dropped,
+            CapturedProportion = capturedProportion,
+            DroppedProportion = droppedProportion
+        };
+    }
+
+    [RelayCommand(CanExecute = nameof(HasCaptures))]
+    private void ClearCapture() {
+        var info = new MessageBoxInfo() {
+            Message = "确认清空当前捕获数据包吗？",
+            Caption = "ICMPv6协议分析器",
+            Button = MessageBoxButton.OKCancel,
+            IconKey = ResourceToken.WarningGeometry,
+            IconBrushKey = ResourceToken.WarningBrush
+        };
+        if (MessageBox.Show(info) == MessageBoxResult.OK) {
+            Messenger.Send(new ResetMessage());
+            Captures.Clear();
+            Statistics = new();
+        }
+    }
+
+    #endregion
+
+    #region 选择数据包命令
 
     [RelayCommand]
     private void SelectPrevious() {
-        if (SelectedIndex > 0) {
-            SelectedIndex--;
+        if (SelectedCaptureIndex > 0) {
+            SelectedCaptureIndex--;
         }
     }
 
     [RelayCommand]
     private void SelectNext() {
-        if (SelectedIndex < Captures.Count - 1) {
-            SelectedIndex++;
+        if (SelectedCaptureIndex < Captures.Count - 1) {
+            SelectedCaptureIndex++;
         }
     }
 
     [RelayCommand]
     private void SelectFirst() {
         if (Captures.Count > 0) {
-            SelectedIndex = 0;
+            SelectedCaptureIndex = 0;
         } else {
-            SelectedIndex = -1;
+            SelectedCaptureIndex = -1;
         }
     }
 
     [RelayCommand]
     private void SelectLast() {
-        SelectedIndex = Captures.Count - 1;
+        SelectedCaptureIndex = Captures.Count - 1;
     }
+
+    #endregion
+
+    #region 文件操作命令
 
     [RelayCommand]
     private async Task SaveFile() {
@@ -152,29 +233,5 @@ public partial class CaptureListViewModel :
             });
     }
 
-    [RelayCommand]
-    private void ItemShow(CaptureView item) {
-        Messenger.Send(new ShowCaptureMessage(item));
-    }
-
-    public void Receive(PropertyChangedMessage<DeviceView?> message) {
-        var device = message.NewValue;
-        IsCapturing = device != null;
-        CaptureDeviceName = device != null ? $"{device.Name} 正在捕获中" : "数据包捕获列表";
-    }
-
-    [RelayCommand(CanExecute = nameof(HasCaptures))]
-    private void ClearCapture() {
-        var info = new MessageBoxInfo() {
-            Message = "确认清空当前捕获数据包吗？",
-            Caption = "ICMPv6协议分析器",
-            Button = MessageBoxButton.OKCancel,
-            IconKey = ResourceToken.WarningGeometry,
-            IconBrushKey = ResourceToken.WarningBrush
-        };
-        if (MessageBox.Show(info) == MessageBoxResult.OK) {
-            Messenger.Send(new ResetMessage());
-            Captures.Clear();
-        }
-    }
+    #endregion
 }

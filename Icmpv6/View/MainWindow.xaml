@@ -24,8 +24,8 @@
 
             <controls:Toolbar
                 Grid.Row="0"
-                StartCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCommand}"
-                StopCaptureCommand="{Binding ElementName=DeviceListPanel, Path=ViewModel.CaptureCancelCommand}"
+                StartCaptureCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.CaptureCommand}"
+                StopCaptureCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.CaptureCancelCommand}"
                 SelectPreviousCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectPreviousCommand}"
                 SelectNextCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectNextCommand}"
                 SelectFirstCommand="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectFirstCommand}"
@@ -47,7 +47,7 @@
                     <RowDefinition
                         Height="250"
                         MinHeight="35"
-                        MaxHeight="500" />
+                        MaxHeight="600" />
                 </Grid.RowDefinitions>
 
                 <local:DeviceListPanel
@@ -88,8 +88,8 @@
             <controls:Statusbar
                 Grid.Row="2"
                 Height="25"
-                SelectedDevice="{Binding ElementName=DeviceListPanel, Path=ViewModel.SelectedItem}"
-                CurrentStatistics="{Binding ElementName=DeviceListPanel, Path=ViewModel.Statistics}" />
+                SelectedDevice="{Binding ElementName=CaptureListPanel, Path=ViewModel.SelectedDevice}"
+                CurrentStatistics="{Binding ElementName=CaptureListPanel, Path=ViewModel.Statistics}" />
 
         </Grid>
 

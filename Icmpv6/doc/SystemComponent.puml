@@ -1,6 +1,8 @@
 ﻿@startuml
 'https://plantuml.com/component-diagram
 
+skinparam dpi 300
+
 package View {
     component 设备列表视图 as DeviceListView
     component 捕获列表视图 as CaptureListView
