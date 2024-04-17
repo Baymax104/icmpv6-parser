@@ -1,0 +1,34 @@
+﻿@startuml
+'https://plantuml.com/component-diagram
+
+package View {
+    component 设备列表视图 as DeviceListView
+    component 捕获列表视图 as CaptureListView
+    component 实体展示视图 as InfoView
+}
+
+package ViewModel {
+    component 设备列表模型 as DeviceListViewModel
+    component 捕获列表模型 as CaptureListViewModel
+    component 实体列表模型 as InfoViewModel
+}
+
+package Model {
+    component 数据包解析 as PacketParse
+    component Repository
+}
+
+DeviceListView --> DeviceListViewModel
+CaptureListView --> CaptureListViewModel
+InfoView --> InfoViewModel
+
+CaptureListViewModel -> DeviceListViewModel
+InfoViewModel -> DeviceListViewModel
+InfoViewModel -> CaptureListViewModel
+
+InfoViewModel--> PacketParse
+InfoViewModel --> Repository
+DeviceListViewModel --> Repository
+
+
+@enduml

@@ -14,7 +14,7 @@ public record PacketView {
     public PacketView(NetPacket instance) {
         Instance = instance;
         Packets = [];
-        var packets = NetPacket.ExtractAll(instance);
+        var packets = NetPacket.FlatExtract(instance);
         foreach (var packet in packets) {
             Packets.Add(new(packet));
             if (packet is NdpPacket ndpPacket) {

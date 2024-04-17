@@ -1,7 +1,7 @@
 ﻿@startuml
 'https://plantuml.com/class-diagram
 
-hide empty member
+'hide empty member
 skinparam dpi 300
 skinparam linetype ortho
 'skinparam linetype polyline
@@ -11,6 +11,7 @@ abstract class NetPacket {
     # header
     # payload
     # parsePayload()
+    + parsePacket()
 }
 
 class EtherPacket extends NetPacket {

@@ -1,0 +1,52 @@
+﻿@startuml
+'https://plantuml.com/use-case-diagram
+
+skinparam dpi 200
+left to right direction
+
+actor 用户 as User
+actor 文件系统 as File
+
+package ICMPv6协议分析系统 {
+    
+    package 设备管理模块 {
+        usecase 设备管理 as device
+        usecase 查看设备列表
+        usecase 获取设备列表
+        usecase 启动捕获
+    }
+    
+    package 捕获管理模块 {
+        usecase 捕获管理 as capture
+        usecase 查看捕获列表
+        usecase 读取数据包文件
+        usecase 保存数据包文件
+    }
+    
+    package 实体展示模块 {
+        usecase 查看实体信息
+        usecase 查看设备详细信息
+        usecase 查看数据包
+        usecase 数据包解析
+    }
+}
+
+User --> device
+User --> capture
+File --> capture
+
+device ..> 查看设备列表 :<include>
+device ..> 查看实体信息 :<include>
+device ..> 启动捕获 :<include>
+查看设备列表 ..> 获取设备列表 :<include>
+
+capture ..> 查看捕获列表 :<include>
+capture ..> 查看实体信息 :<include>
+capture ..> 读取数据包文件 :<include>
+capture ..> 保存数据包文件 :<include>
+查看数据包 .right.> 数据包解析 :<include>
+
+查看设备详细信息 -up-|> 查看实体信息
+查看数据包 -up-|> 查看实体信息
+
+@enduml

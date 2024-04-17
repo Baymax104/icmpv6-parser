@@ -19,7 +19,7 @@ internal static class Program {
         CaptureFileReaderDevice reader = new("echo.pcapng");
         reader.OnPacketArrival += (sender, capture) => {
             var packet = NetPacket.ParsePacket(capture.GetPacket());
-            var list = NetPacket.ExtractAll(packet);
+            var list = NetPacket.FlatExtract(packet);
             foreach (var p in list) {
                 var type = p.GetType();
                 var properties = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);

@@ -1,0 +1,18 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+title 查看设备列表时序图
+
+actor 用户 as User
+entity Repository
+entity 设备列表模型 as DeviceListViewModel
+entity 设备列表视图 as DeviceListView
+
+User --> Repository: 启动应用
+Repository --> DeviceListViewModel: 获取设备列表
+DeviceListViewModel --> DeviceListView: 更新设备列表
+DeviceListView --> User: 返回设备列表
+
+@enduml

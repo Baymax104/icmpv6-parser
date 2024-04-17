@@ -37,7 +37,7 @@ public abstract class NetPacket(ByteSegment packet) {
         return packet;
     }
 
-    public static IEnumerable<NetPacket> ExtractAll(NetPacket? packet) {
+    public static IEnumerable<NetPacket> FlatExtract(NetPacket? packet) {
         var packets = new List<NetPacket>();
         while (packet != null) {
             packets.Add(packet);
