@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Reflection;
 using Models.Packet;
 using Models.Packet.Icmp6;
@@ -51,6 +52,12 @@ public record PacketAttributeView : IEnumerable<AttributeItem> {
             }
             var name = property.Name;
             var value = property.GetValue(instance)?.ToString() ?? string.Empty;
+            if (property.PropertyType.IsEnum && !string.IsNullOrEmpty(value)) {
+                var field = property.PropertyType.GetField(value);
+                if (field?.GetCustomAttribute(typeof(DescriptionAttribute)) is DescriptionAttribute attribute) {
+                    value = attribute.Description;
+                }
+            }
             Attributes.Add(new(name, value));
         }
     }

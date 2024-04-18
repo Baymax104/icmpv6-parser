@@ -18,7 +18,7 @@ public class MtuOption(ByteSegment data) : NdpOption(data) {
         get => Header[NdpOptionField.LengthPosition];
         set => Header[NdpOptionField.LengthPosition] = (byte)value;
     }
-    
+
     public uint Mtu {
         get => PayloadBytes.ToUInt32(MtuOptionField.MtuPosition);
         set => ByteWriter.WriteTo(PayloadBytes, value, MtuOptionField.MtuPosition);

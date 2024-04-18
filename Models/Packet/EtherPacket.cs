@@ -12,19 +12,19 @@ public class EtherPacket : NetPacket {
     }
 
     /// <summary>
-    ///     源MAC地址
+    ///     目的MAC地址
     /// </summary>
-    public MacAddress SourceMacAddress {
-        get => Header.ToMacAddress(EtherField.SourceMacPosition);
-        set => ByteWriter.WriteTo(Header, value, EtherField.SourceMacPosition);
+    public MacAddress Destination {
+        get => Header.ToMacAddress(EtherField.DestinationMacPosition);
+        set => ByteWriter.WriteTo(Header, value, EtherField.DestinationMacPosition);
     }
 
     /// <summary>
-    ///     目的MAC地址
+    ///     源MAC地址
     /// </summary>
-    public MacAddress DestinationMacAddress {
-        get => Header.ToMacAddress(EtherField.DestinationMacPosition);
-        set => ByteWriter.WriteTo(Header, value, EtherField.DestinationMacPosition);
+    public MacAddress Source {
+        get => Header.ToMacAddress(EtherField.SourceMacPosition);
+        set => ByteWriter.WriteTo(Header, value, EtherField.SourceMacPosition);
     }
 
     public EtherType Type {
@@ -48,8 +48,8 @@ public class EtherPacket : NetPacket {
     public override string ToString() {
         return $@"
 {{
-    {nameof(DestinationMacAddress)} = {DestinationMacAddress},
-    {nameof(SourceMacAddress)} = {SourceMacAddress},
+    {nameof(Destination)} = {Destination},
+    {nameof(Source)} = {Source},
     {nameof(Type)} = {Type}
 }}
         ".Trim();

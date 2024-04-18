@@ -16,8 +16,9 @@ using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Icmpv6.ViewModel;
 
-public partial class CaptureListViewModel : 
-    ObservableRecipient, 
+public partial class CaptureListViewModel :
+    ObservableRecipient,
+    IRecipient<ResetMessage>,
     IRecipient<PropertyChangedMessage<DeviceView?>> {
 
     private readonly Repository repo = App.Current.Services.GetService<Repository>() ??
@@ -34,7 +35,7 @@ public partial class CaptureListViewModel :
 
     [ObservableProperty]
     private DeviceView? currentCaptureDevice;
-    
+
     [ObservableProperty]
     private StatisticsView statistics = new();
 
@@ -60,6 +61,11 @@ public partial class CaptureListViewModel :
         SelectedDevice = message.NewValue;
     }
 
+    public void Receive(ResetMessage message) {
+        Captures.Clear();
+        Statistics = new();
+    }
+
     partial void OnCurrentCaptureDeviceChanged(DeviceView? value) {
         IsCapturing = value != null;
         IsCaptureLoading = IsCapturing && !HasCaptures;
@@ -69,7 +75,7 @@ public partial class CaptureListViewModel :
     partial void OnHasCapturesChanged(bool value) {
         IsCaptureLoading = !value && IsCapturing;
     }
-    
+
     [RelayCommand]
     private void ItemShow(CaptureView item) {
         Messenger.Send(new ShowCaptureMessage(item));
@@ -83,6 +89,23 @@ public partial class CaptureListViewModel :
             Growl.Warning("当前未选择设备");
             return;
         }
+        if (Captures.Count > 0) {
+            var info = new MessageBoxInfo() {
+                Message = "开始捕获会覆盖捕获列表，是否保存当前捕获列表？",
+                Caption = "ICMPv6协议分析器",
+                Button = MessageBoxButton.OKCancel,
+                IconKey = ResourceToken.WarningGeometry,
+                IconBrushKey = ResourceToken.WarningBrush
+            };
+            if (MessageBox.Show(info) == MessageBoxResult.OK) {
+                if (await SaveBefore()) {
+                    Growl.Success("保存成功，开始捕获...");
+                } else {
+                    Growl.Info("保存操作取消，开始捕获...");
+                }
+            }
+        }
+        Messenger.Send(new ResetMessage());
         CurrentCaptureDevice = SelectedDevice;
         var device = CurrentCaptureDevice.Instance;
         device.Open(DeviceModes.Promiscuous);
@@ -128,8 +151,7 @@ public partial class CaptureListViewModel :
         };
         if (MessageBox.Show(info) == MessageBoxResult.OK) {
             Messenger.Send(new ResetMessage());
-            Captures.Clear();
-            Statistics = new();
+            Growl.Success("清空成功");
         }
     }
 
@@ -194,7 +216,7 @@ public partial class CaptureListViewModel :
                 IconBrushKey = ResourceToken.WarningBrush
             };
             if (MessageBox.Show(info) == MessageBoxResult.OK) {
-                if (await SaveBeforeOpenFile()) {
+                if (await SaveBefore()) {
                     Growl.Success("保存成功，正在打开文件...");
                 } else {
                     Growl.Info("保存操作取消，正在打开文件...");
@@ -206,7 +228,6 @@ public partial class CaptureListViewModel :
         var openResult = dialog.ShowDialog();
         if (openResult != null && openResult.Value) {
             var rawCaptures = await Task.Run(() => repo.OpenFile(dialog.FileName));
-            Captures.Clear();
             Messenger.Send(new ResetMessage());
             foreach (var rawCapture in rawCaptures) {
                 var view = new CaptureView(rawCapture) { Id = Captures.Count + 1 };
@@ -216,7 +237,7 @@ public partial class CaptureListViewModel :
         }
     }
 
-    private Task<bool> SaveBeforeOpenFile() {
+    private Task<bool> SaveBefore() {
         return Task.Run(
             () => {
                 var dialog = new SaveFileDialog {

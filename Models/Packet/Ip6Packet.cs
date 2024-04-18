@@ -15,16 +15,6 @@ public class Ip6Packet : NetPacket {
         }
     }
 
-    public IPAddress SourceAddress {
-        get => Header.ToIp6Address(Ipv6Field.SourceAddressPosition);
-        set => ByteWriter.WriteTo(Header, value, Ipv6Field.SourceAddressPosition);
-    }
-
-    public IPAddress DestinationAddress {
-        get => Header.ToIp6Address(Ipv6Field.DestinationAddressPosition);
-        set => ByteWriter.WriteTo(Header, value, Ipv6Field.DestinationAddressPosition);
-    }
-
     private uint VersionTrafficClassFlowLabel {
         get => Header.ToUInt32(Ipv6Field.VersionTrafficClassFlowLabelPosition);
         set => ByteWriter.WriteTo(Header, value, Ipv6Field.VersionTrafficClassFlowLabelPosition);
@@ -60,13 +50,23 @@ public class Ip6Packet : NetPacket {
         set => Header[Ipv6Field.HopLimitPosition] = (byte)value;
     }
 
+    public IPAddress SourceAddress {
+        get => Header.ToIp6Address(Ipv6Field.SourceAddressPosition);
+        set => ByteWriter.WriteTo(Header, value, Ipv6Field.SourceAddressPosition);
+    }
+
+    public IPAddress DestinationAddress {
+        get => Header.ToIp6Address(Ipv6Field.DestinationAddressPosition);
+        set => ByteWriter.WriteTo(Header, value, Ipv6Field.DestinationAddressPosition);
+    }
+
     protected override sealed Payload ParsePayload() {
         var nextSegment = Header.GetNextSegment();
         if (nextSegment.SegmentLength <= 0) {
             return new();
         }
         NetPacket? packet = NextHeader switch {
-            ProtocolType.ICMPv6 => new Icmp6Packet(nextSegment),
+            ProtocolType.Icmpv6 => new Icmp6Packet(nextSegment),
             ProtocolType.Udp => new UdpPacket(nextSegment),
             _ => null
         };

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 namespace Icmpv6.View.Controls;
 
 public partial class LoadMaskPanel : UserControl {
-    
+
     public static readonly DependencyProperty IsLoadingProperty =
         DependencyProperty.Register(
             nameof(IsLoading),
@@ -15,10 +15,9 @@ public partial class LoadMaskPanel : UserControl {
         get => (bool)GetValue(IsLoadingProperty);
         set => SetValue(IsLoadingProperty, value);
     }
-    
+
     public LoadMaskPanel() {
         InitializeComponent();
         Root.DataContext = this;
     }
 }
-

@@ -34,7 +34,7 @@
         <hc:SimplePanel Grid.Row="1">
             <DataGrid
                 x:Name="CaptureList"
-                SelectedIndex="{Binding SelectedIndex}"
+                SelectedIndex="{Binding SelectedCaptureIndex}"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
                 Style="{DynamicResource DataGrid.Small}"

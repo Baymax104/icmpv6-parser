@@ -18,7 +18,7 @@ public class RedirectedHeaderOption(ByteSegment data) : NdpOption(data) {
         get => Header[NdpOptionField.LengthPosition];
         set => Header[NdpOptionField.LengthPosition] = (byte)value;
     }
-    
+
     public byte[] IpHeaderData {
         get {
             var start = PayloadBytes.Offset + RedirectedHeaderOptionField.IpHeaderDataPosition;

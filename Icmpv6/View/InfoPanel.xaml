@@ -25,7 +25,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="PacketContentTemplate" DataType="{x:Type vo:InfoView}">
-            <controls:InfoPacketPanel Value="{Binding Packet}"/>
+            <controls:InfoPacketPanel Value="{Binding Packet}" />
         </DataTemplate>
 
         <util:InfoTemplateSelector

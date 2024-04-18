@@ -19,7 +19,7 @@ public class PrefixInformationOption(ByteSegment data) : NdpOption(data) {
         get => Header[NdpOptionField.LengthPosition];
         set => Header[NdpOptionField.LengthPosition] = (byte)value;
     }
-    
+
     public byte PrefixLength {
         get => PayloadBytes[PrefixInformationOptionField.PrefixLengthPosition];
         set => PayloadBytes[PrefixInformationOptionField.PrefixLengthPosition] = value;

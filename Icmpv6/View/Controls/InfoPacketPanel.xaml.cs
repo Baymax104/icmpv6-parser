@@ -16,7 +16,7 @@ public partial class InfoPacketPanel : UserControl {
     public InfoPacketPanel() {
         InitializeComponent();
         Root.DataContext = this;
-        
+
         // 处理DataGrid滚动
         ScrollViewer.PreviewMouseWheel += (sender, args) => {
             args.Handled = true;

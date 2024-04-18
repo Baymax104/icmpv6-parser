@@ -53,7 +53,7 @@ public partial class Toolbar : UserControl {
             nameof(OpenFileCommand),
             typeof(ICommand),
             typeof(Toolbar));
-    
+
     public static readonly DependencyProperty ClearCaptureCommandProperty =
         DependencyProperty.Register(
             nameof(ClearCaptureCommand),

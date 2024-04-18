@@ -9,6 +9,6 @@ public enum EtherType {
     [Description("IPv4 (0x0800)")]
     IPv4 = 0x0800,
 
-    [Description("IPv6 (0x86DD)")]
+    [Description("IPv6 (0x86dd)")]
     IPv6 = 0x86dd
 }

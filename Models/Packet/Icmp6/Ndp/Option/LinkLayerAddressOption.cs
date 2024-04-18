@@ -18,7 +18,7 @@ public class LinkLayerAddressOption(ByteSegment data) : NdpOption(data) {
         get => Header[NdpOptionField.LengthPosition];
         set => Header[NdpOptionField.LengthPosition] = (byte)value;
     }
-    
+
     public MacAddress LinkLayerAddress {
         get => PayloadBytes.ToMacAddress(0);
         set => ByteWriter.WriteTo(PayloadBytes, value, 0);

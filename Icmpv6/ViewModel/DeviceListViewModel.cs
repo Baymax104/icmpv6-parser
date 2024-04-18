@@ -2,12 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using HandyControl.Controls;
 using Icmpv6.Repo;
 using Icmpv6.VO;
 using Icmpv6.VO.Messages;
 using Microsoft.Extensions.DependencyInjection;
-using SharpPcap;
 
 namespace Icmpv6.ViewModel;
 

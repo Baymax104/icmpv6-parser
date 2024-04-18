@@ -4,11 +4,11 @@ using NdpPacket = Models.Packet.Icmp6.Ndp.NdpPacket;
 namespace Icmpv6.VO;
 
 public record PacketView {
-    
+
     public List<PacketAttributeView> Packets { get; }
-    
+
     public NetPacket Instance { get; init; }
-    
+
     public int Id { get; init; }
 
     public PacketView(NetPacket instance) {

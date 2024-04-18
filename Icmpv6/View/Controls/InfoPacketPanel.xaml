@@ -18,7 +18,7 @@
             ItemsSource="{Binding Value.Packets}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Expander 
+                    <Expander
                         Header="{Binding PacketName}"
                         IsExpanded="True">
                         <DataGrid
@@ -30,7 +30,7 @@
                             PreviewMouseWheel="DataGridPreviewMouseWheel">
                             <DataGrid.Columns>
                                 <DataGridTextColumn
-                                    Header="数据包属性"
+                                    Header="协议首部字段"
                                     Width="*"
                                     CanUserResize="False"
                                     CanUserSort="False"
@@ -38,7 +38,7 @@
                                     IsReadOnly="True"
                                     Binding="{Binding Property}" />
                                 <DataGridTextColumn
-                                    Header="属性值"
+                                    Header="字段值"
                                     Width="*"
                                     CanUserResize="False"
                                     CanUserSort="False"

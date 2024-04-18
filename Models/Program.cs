@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Models.Packet;
-using Models.Packet.Icmp6.Ndp;
 using SharpPcap;
 using SharpPcap.LibPcap;
 

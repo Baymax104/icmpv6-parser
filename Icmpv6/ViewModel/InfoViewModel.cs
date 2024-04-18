@@ -1,15 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using HandyControl.Controls;
 using Icmpv6.VO;
 using Icmpv6.VO.Messages;
 using Models.Packet;
 
 namespace Icmpv6.ViewModel;
 
-public partial class InfoViewModel : 
-    ObservableRecipient, 
+public partial class InfoViewModel :
+    ObservableRecipient,
     IRecipient<ShowDeviceMessage>,
     IRecipient<ShowCaptureMessage>,
     IRecipient<ResetMessage> {
@@ -62,6 +61,5 @@ public partial class InfoViewModel :
                 Infos.RemoveAt(i);
             }
         }
-        Growl.Success("清空成功");
     }
 }

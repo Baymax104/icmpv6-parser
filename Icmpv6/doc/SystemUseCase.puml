@@ -1,7 +1,7 @@
 ﻿@startuml
 'https://plantuml.com/use-case-diagram
 
-skinparam dpi 400
+skinparam dpi 450
 left to right direction
 
 actor 用户 as User
