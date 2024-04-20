@@ -16,10 +16,6 @@ public class DestinationUnreachablePacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Payload)} = {Payload}
-}}
-        ".Trim();
+        return nameof(DestinationUnreachablePacket);
     }
 }

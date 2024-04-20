@@ -64,5 +64,7 @@ public struct NdpField {
 
     public const int RMOptionsPosition = 36;
 
+    public const int RMHeaderLength = 36;
+
     #endregion
 }

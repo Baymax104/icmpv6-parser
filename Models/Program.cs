@@ -10,7 +10,7 @@ internal static class Program {
     private static void Main() {
         // var list = LibPcapLiveDeviceList.Instance;
         // foreach (var d in list) Console.WriteLine(d);
-        Read();
+        // Read();
         // Write();
     }
 

@@ -30,12 +30,6 @@ public class EchoRequestPacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Identifier)} = {Identifier},
-    {nameof(SequenceNumber)} = {SequenceNumber},
-    {nameof(Data)} = {BitConverter.ToString(Data)}
-}}
-        ".Trim();
+        return nameof(EchoRequestPacket);
     }
 }

@@ -59,16 +59,6 @@ public class RouterAdvertisementPacket : NdpPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(CurHopLimit)} = {CurHopLimit},
-    {nameof(ManagedAddressConfiguration)} = {ManagedAddressConfiguration},
-    {nameof(OtherConfiguration)} = {OtherConfiguration},
-    {nameof(RouterLifetime)} = {RouterLifetime},
-    {nameof(ReachableTime)} = {ReachableTime},
-    {nameof(RetransmitTimer)} = {RetransmitTimer}
-    {nameof(Options)} = {PrintOptions()}
-}}
-        ".Trim();
+        return nameof(RouterAdvertisementPacket);
     }
 }

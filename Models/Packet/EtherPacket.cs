@@ -46,12 +46,6 @@ public class EtherPacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Destination)} = {Destination},
-    {nameof(Source)} = {Source},
-    {nameof(Type)} = {Type}
-}}
-        ".Trim();
+        return nameof(EtherPacket);
     }
 }

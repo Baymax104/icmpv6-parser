@@ -43,6 +43,7 @@ public class Icmp6Packet : NetPacket {
             Icmp6Type.PacketTooBig => new PacketTooBigPacket(segment),
             Icmp6Type.TimeExceeded => new TimeExceededPacket(segment),
             Icmp6Type.ParameterProblem => new ParameterProblemPacket(segment),
+            Icmp6Type.RedirectMessage => new RedirectMessagePacket(segment),
             _ => null
         };
         return packet is not null ? new(packet) : new(segment);

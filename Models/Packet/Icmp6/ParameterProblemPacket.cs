@@ -21,11 +21,6 @@ public class ParameterProblemPacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Pointer)} = {Pointer}
-    {nameof(Payload)} = {Payload}
-}}
-        ".Trim();
+        return nameof(ParameterProblemPacket);
     }
 }

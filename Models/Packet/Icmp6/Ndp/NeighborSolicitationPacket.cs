@@ -23,11 +23,6 @@ public class NeighborSolicitationPacket : NdpPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(TargetAddress)} = {TargetAddress},
-    {nameof(Options)} = {PrintOptions()}
-}}
-        ".Trim();
+        return nameof(NeighborSolicitationPacket);
     }
 }

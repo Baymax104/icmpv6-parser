@@ -74,17 +74,6 @@ public class Ip6Packet : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Version)} = {Version},
-    {nameof(TrafficClass)} = {TrafficClass},
-    {nameof(FlowLabel)} = {FlowLabel}
-    {nameof(PayloadLength)} = {PayloadLength},
-    {nameof(NextHeader)} = {NextHeader},
-    {nameof(HopLimit)} = {HopLimit},
-    {nameof(SourceAddress)} = {SourceAddress},
-    {nameof(DestinationAddress)} = {DestinationAddress},
-}}
-        ".Trim();
+        return nameof(Ip6Packet);
     }
 }

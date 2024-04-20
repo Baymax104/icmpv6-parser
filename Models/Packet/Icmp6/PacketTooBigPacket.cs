@@ -21,11 +21,6 @@ public class PacketTooBigPacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Mtu)} = {Mtu}
-    {nameof(Payload)} = {Payload}
-}}
-        ".Trim();
+        return nameof(PacketTooBigPacket);
     }
 }

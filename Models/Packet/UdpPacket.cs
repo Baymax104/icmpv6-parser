@@ -35,14 +35,6 @@ public class UdpPacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(SourcePort)} = {SourcePort},
-    {nameof(DestinationPort)} = {DestinationPort},
-    {nameof(Length)} = {Length},
-    {nameof(Checksum)} = {Checksum},
-    {nameof(Payload)} = {Payload}
-}}
-        ".Trim();
+        return nameof(UdpPacket);
     }
 }

@@ -17,10 +17,6 @@ public class RouterSolicitationPacket : NdpPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Options)} = {PrintOptions()}
-}}
-        ".Trim();
+        return nameof(RouterSolicitationPacket);
     }
 }

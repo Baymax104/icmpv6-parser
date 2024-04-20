@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Models.Field;
+﻿using Models.Field;
 using Models.Packet.Icmp6.Ndp.Option;
 using Models.Type;
 using Models.Util;
@@ -49,12 +48,4 @@ public abstract class NdpPacket(ByteSegment data) : NetPacket(data) {
         }
     }
 
-    protected string PrintOptions() {
-        if (Options.Count == 0) {
-            return "[]";
-        }
-        var builder = new StringBuilder();
-        foreach (var option in Options) builder.Append(option).Append(",");
-        return builder.ToString();
-    }
 }

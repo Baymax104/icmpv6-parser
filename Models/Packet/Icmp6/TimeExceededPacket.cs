@@ -16,10 +16,6 @@ public class TimeExceededPacket : NetPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Payload)} = {Payload}
-}}
-        ".Trim();
+        return nameof(TimeExceededPacket);
     }
 }

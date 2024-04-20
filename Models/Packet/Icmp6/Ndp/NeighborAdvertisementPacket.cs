@@ -56,14 +56,6 @@ public class NeighborAdvertisementPacket : NdpPacket {
     }
 
     public override string ToString() {
-        return $@"
-{{
-    {nameof(Router)} = {Router},
-    {nameof(Solicited)} = {Solicited},
-    {nameof(Override)} = {Override},
-    {nameof(TargetAddress)} = {TargetAddress},
-    {nameof(Options)} = {PrintOptions()}
-}}
-        ".Trim();
+        return nameof(NeighborAdvertisementPacket);
     }
 }
