@@ -6,13 +6,13 @@ skinparam dpi 300
 package View {
     component 设备列表视图 as DeviceListView
     component 捕获列表视图 as CaptureListView
-    component 实体展示视图 as InfoView
+    component 信息展示视图 as InfoView
 }
 
 package ViewModel {
     component 设备列表模型 as DeviceListViewModel
     component 捕获列表模型 as CaptureListViewModel
-    component 实体列表模型 as InfoViewModel
+    component 信息列表模型 as InfoViewModel
 }
 
 package Model {

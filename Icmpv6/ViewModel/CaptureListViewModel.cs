@@ -112,9 +112,9 @@ public partial class CaptureListViewModel :
         device.Filter = "icmp6";
         try {
             while (true) {
-                Statistics = GetStatisticsView(device);
                 var packet = await repo.CaptureAsync(device, token);
                 if (packet != null) {
+                    Statistics = GetStatisticsView(device);
                     var view = new CaptureView(packet) { Id = Captures.Count + 1 };
                     Captures.Add(view);
                 }

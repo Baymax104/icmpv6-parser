@@ -5,8 +5,11 @@ namespace Icmpv6.Repo;
 
 public class Repository {
 
-    public List<LibPcapLiveDevice> GetAllDevices() {
-        return LibPcapLiveDeviceList.Instance.ToList();
+    public IEnumerable<LibPcapLiveDevice> GetAllDevices() {
+        var devices = LibPcapLiveDeviceList.Instance.ToList()
+            .Where(d => !d.Loopback)
+            .Where(d => d.MacAddress != null && d.MacAddress.GetAddressBytes().Length != 0);
+        return devices;
     }
 
     public Task<RawCapture?> CaptureAsync(LibPcapLiveDevice device, CancellationToken token) {

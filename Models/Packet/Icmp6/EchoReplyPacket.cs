@@ -22,7 +22,7 @@ public class EchoReplyPacket : NetPacket {
     }
 
     public byte[] Data {
-        get => PayloadBytes?.ActualBytes ?? Array.Empty<byte>();
+        get => PayloadBytes?.ActualBytes ?? [];
     }
 
     protected override sealed Payload ParsePayload() {

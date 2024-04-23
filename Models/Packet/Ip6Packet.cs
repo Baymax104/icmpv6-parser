@@ -66,8 +66,8 @@ public class Ip6Packet : NetPacket {
             return new();
         }
         NetPacket? packet = NextHeader switch {
-            ProtocolType.Icmpv6 => new Icmp6Packet(nextSegment),
-            ProtocolType.Udp => new UdpPacket(nextSegment),
+            ProtocolType.ICMPv6 => new Icmp6Packet(nextSegment),
+            ProtocolType.UDP => new UdpPacket(nextSegment),
             _ => null
         };
         return packet is not null ? new(packet) : new(nextSegment);

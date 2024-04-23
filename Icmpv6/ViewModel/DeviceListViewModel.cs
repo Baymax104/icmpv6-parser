@@ -24,7 +24,9 @@ public partial class DeviceListViewModel : ObservableRecipient {
     public DeviceListViewModel() {
         IsActive = true;
         var devs = repo.GetAllDevices();
-        devs.ForEach(d => devices.Add(new(d)));
+        foreach (var d in devs) {
+            devices.Add(new(d));
+        }
     }
 
     [RelayCommand]

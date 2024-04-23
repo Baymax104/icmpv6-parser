@@ -1,7 +1,7 @@
 ﻿@startuml
 'https://plantuml.com/use-case-diagram
 
-skinparam dpi 600
+skinparam dpi 400
 left to right direction
 
 actor 用户 as User
@@ -12,7 +12,7 @@ package ICMPv6协议分析系统 {
     usecase 获取设备列表
 
     usecase 数据包捕获
-    usecase 查看捕获列表
+'    usecase 查看捕获列表
     usecase 读取数据包文件
     usecase 保存数据包文件
 
@@ -25,7 +25,7 @@ User --> 查看设备列表
 User --> 数据包捕获
 查看设备列表 ..> 获取设备列表: <include>
 
-User --> 查看捕获列表
+'User --> 查看捕获列表
 User --> 读取数据包文件
 User --> 保存数据包文件
 查看数据包 ..> 数据包解析 :<include>
