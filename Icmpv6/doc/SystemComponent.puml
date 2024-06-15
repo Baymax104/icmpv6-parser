@@ -4,31 +4,31 @@
 skinparam dpi 300
 
 package View {
-    component 设备列表视图 as DeviceListView
-    component 捕获列表视图 as CaptureListView
-    component 信息展示视图 as InfoView
+    component DeviceListPanel
+    component CaptureListPanel
+    component InfoPanel
 }
 
 package ViewModel {
-    component 设备列表模型 as DeviceListViewModel
-    component 捕获列表模型 as CaptureListViewModel
-    component 信息列表模型 as InfoViewModel
+    component DeviceListViewModel
+    component CaptureListViewModel
+    component InfoViewModel
 }
 
 package Model {
-    component 数据包解析 as PacketParse
+    component NetPacket
     component Repository
 }
 
-DeviceListView --> DeviceListViewModel
-CaptureListView --> CaptureListViewModel
-InfoView --> InfoViewModel
+DeviceListPanel --> DeviceListViewModel
+CaptureListPanel --> CaptureListViewModel
+InfoPanel --> InfoViewModel
 
 CaptureListViewModel -> DeviceListViewModel
 InfoViewModel -> DeviceListViewModel
 InfoViewModel -> CaptureListViewModel
 
-InfoViewModel--> PacketParse
+InfoViewModel--> NetPacket
 InfoViewModel --> Repository
 DeviceListViewModel --> Repository
 
